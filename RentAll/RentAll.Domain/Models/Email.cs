@@ -6,7 +6,12 @@ namespace RentAll.Domain
 {
     public class Email
     {
-        public int Id { get; }
-        public string EAddress { get; set; }
+        #region properties
+
+        public int Id { get; private set; }
+        public string EmailAddress { get; set; }
+
+        #endregion
+
     }
 }

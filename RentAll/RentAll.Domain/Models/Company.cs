@@ -4,13 +4,16 @@ namespace RentAll.Domain
 {
     public class Company
     {
-        public int Id { get; }
+        #region properties
+
+        public int Id { get; private set; }
         public string Name { get; set; }
         public int FiscalCode { get; set; }
         public string FiscalAttribute { get; set; }
-        public string RecomNo { get; set; }
+        public string RecomNumber { get; set; }
         public Address Address { get; set; }
         public List<Person> ContactPersons { get; set; }
 
+        #endregion
     }
 }

@@ -6,7 +6,9 @@ namespace RentAll.Domain
 {
     public class Lease
     {
-        public int Id { get; }
+        #region properties
+
+        public int Id { get; private set; }
         public Company Landlord { get; set; }
         public Company Tenant { get; set; }
         public List<Unit> Premises { get; set; }
@@ -18,5 +20,7 @@ namespace RentAll.Domain
         public double MaintenanceCostSqm { get; set; }
         public double MarketingFeeSqm { get; set; }
         public bool Valid { get; set; }
+
+        #endregion
     }
 }

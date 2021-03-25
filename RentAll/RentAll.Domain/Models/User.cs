@@ -6,10 +6,13 @@ namespace RentAll.Domain
 {
     public class User
     {
+        #region properties
 
-        public int Id { get; }
+        public int Id { get; private set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public List<Role> Roles;
+        public List<Role> Roles { get; set; }
+
+        #endregion
     }
 }
