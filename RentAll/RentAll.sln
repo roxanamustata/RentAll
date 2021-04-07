@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentAll.Domain", "RentAll.Domain\RentAll.Domain.csproj", "{213D6A74-E488-40BC-8635-90826CD8D104}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Domain", "RentAll.Domain\RentAll.Domain.csproj", "{213D6A74-E488-40BC-8635-90826CD8D104}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentAll.Dal", "RentAll.Dal\RentAll.Dal.csproj", "{3C062726-C587-4D14-A6A5-44FEE4754A48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Dal", "RentAll.Dal\RentAll.Dal.csproj", "{3C062726-C587-4D14-A6A5-44FEE4754A48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentAll.Infrastructure", "RentAll.Infrastructure\RentAll.Infrastructure.csproj", "{F2E17871-0377-42B1-B6EB-00C37AC1BD0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Infrastructure", "RentAll.Infrastructure\RentAll.Infrastructure.csproj", "{F2E17871-0377-42B1-B6EB-00C37AC1BD0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentAll.Web", "RentAll.Web\RentAll.Web.csproj", "{650D6112-E669-45B3-BBAA-D1A72F75EFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Web", "RentAll.Web\RentAll.Web.csproj", "{650D6112-E669-45B3-BBAA-D1A72F75EFCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentAll.ConsoleApp", "RentAll.ConsoleApp\RentAll.ConsoleApp.csproj", "{30B155A5-CC60-4731-9F9E-F51FDBBB165E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{650D6112-E669-45B3-BBAA-D1A72F75EFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{650D6112-E669-45B3-BBAA-D1A72F75EFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{650D6112-E669-45B3-BBAA-D1A72F75EFCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30B155A5-CC60-4731-9F9E-F51FDBBB165E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30B155A5-CC60-4731-9F9E-F51FDBBB165E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30B155A5-CC60-4731-9F9E-F51FDBBB165E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30B155A5-CC60-4731-9F9E-F51FDBBB165E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

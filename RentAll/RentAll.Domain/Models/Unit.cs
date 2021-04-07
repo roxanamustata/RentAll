@@ -18,5 +18,19 @@ namespace RentAll.Domain
         public List<Lease> Leases { get; set; }
 
         #endregion
+
+        public bool IsLeased()
+        {
+            foreach(Lease Lease in Leases)
+            {
+                if (Lease.Valid)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
     }
 }

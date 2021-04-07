@@ -22,5 +22,20 @@ namespace RentAll.Domain
         public bool Valid { get; set; }
 
         #endregion
+
+
+        #region public methods
+        public double CalculateCostsPerLease()
+        {
+            double TotalCosts = 0;
+            foreach (Unit Unit in this.Premises)
+            {
+                TotalCosts += (this.RentSqm + this.MaintenanceCostSqm + this.MarketingFeeSqm) * Unit.Area;
+            }
+            return TotalCosts;
+        }
+
+        #endregion
+
     }
 }

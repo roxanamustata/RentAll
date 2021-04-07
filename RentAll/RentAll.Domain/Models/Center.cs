@@ -18,6 +18,41 @@ namespace RentAll.Domain
         #endregion
 
 
+        #region public methods
+
+
+        public double CalculateGrossLeasableArea()
+        {
+            double GLA = 0;
+            foreach (Unit Unit in this.Premises)
+            {
+                GLA += Unit.Area;
+
+            }
+
+            return GLA;
+        }
+
+        #endregion
+        public  double CalculateOcupancyDegree()
+        {
+            double grossLeasableArea = CalculateGrossLeasableArea();
+            double leasedArea = 0;
+            foreach (Unit unit in Premises)
+            {
+                if (unit.IsLeased())
+                {
+                    leasedArea += unit.Area;
+                }
+            }
+            return leasedArea / grossLeasableArea * 100;
+        }
+
+
+
 
     }
+
+
+
 }
