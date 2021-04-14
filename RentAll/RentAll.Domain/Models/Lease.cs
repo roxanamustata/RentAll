@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace RentAll.Domain
@@ -15,11 +16,13 @@ namespace RentAll.Domain
         public User LeasingManager { get; set; }
         public DateTime SigningDate { get; set; }
         public DateTime StartDate { get; set; }
-        public int Term { get; set; }
+        public int TermInMonths { get; set; }
         public double RentSqm { get; set; }
         public double MaintenanceCostSqm { get; set; }
         public double MarketingFeeSqm { get; set; }
         public bool Valid { get; set; }
+
+        
 
         #endregion
 
@@ -27,6 +30,7 @@ namespace RentAll.Domain
         #region public methods
         public double CalculateCostsPerLease()
         {
+
             double TotalCosts = 0;
             foreach (Unit Unit in this.Premises)
             {
@@ -37,5 +41,12 @@ namespace RentAll.Domain
 
         #endregion
 
+        public DateTime CalculateLeaseEndDate()
+        {
+            TimeSpan duration = new TimeSpan(TermInMonths * 30,0,0,0);
+            DateTime endDate= StartDate.Add(duration);
+
+            return endDate;
+        }
     }
 }
