@@ -8,9 +8,9 @@ namespace RentAll.Domain.Interfaces
     {
         Center FindCenterById(int centerId);
 
-        Unit FindUnit(int centerId, string unitCode);
+        Unit FindUnitInCenterByCode(int centerId, string unitCode);
 
-        void AddLeaseToPremises(int centerId, Unit unit, Lease lease);
+        void AddLeaseToUnitInCenter(int centerId, Unit unit, Lease lease);
 
         double CalculateGrossLeasableAreaPerCenter(int centerId);
 

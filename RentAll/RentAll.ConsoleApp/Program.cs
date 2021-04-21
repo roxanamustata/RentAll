@@ -14,11 +14,13 @@ namespace RentAll.ConsoleApp
         static void Main(string[] args)
         {
             ICenterRepository centerRepository = new CenterRepository();
+            ILeaseRepository leaseRepository = new LeaseRepository();
+
             Console.WriteLine($"Gross leasable area of shopping center is: {centerRepository.CalculateGrossLeasableAreaPerCenter(1)} sqm");
 
-            Lease lease = DomainModelFactory.GetLease(new int[] { 200, 50 });
-            centerRepository.AddLeaseToPremises(1,DomainModelFactory.GetUnitOnGroundfloor(50), lease);
-            centerRepository.AddLeaseToPremises(1, DomainModelFactory.GetUnitOnGroundfloor(200), lease);
+           
+            centerRepository.AddLeaseToUnitInCenter(1,DomainModelFactory.GetUnitOnGroundfloor(50), leaseRepository.FindLeaseById(1));
+            centerRepository.AddLeaseToUnitInCenter(1, DomainModelFactory.GetUnitOnGroundfloor(200), leaseRepository.FindLeaseById(1));
 
             Console.WriteLine($"Occupancy degree of the shopping center is: {Math.Round(centerRepository.CalculateOcupancyDegreePerCenter(1), 2)}%");
             Console.WriteLine($"Average rent of shopping center is: {Math.Round(centerRepository.CalculateAverageRentPerSQMPerCenter(1), 2)} EUR/SQM");
