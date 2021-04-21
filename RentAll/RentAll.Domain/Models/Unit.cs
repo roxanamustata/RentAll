@@ -31,6 +31,10 @@ namespace RentAll.Domain
             return false;
         }
 
+        public Lease GetValidLease()
+        {
+            return Leases.Find(l => l.Valid == true);
+        }
 
     }
 }

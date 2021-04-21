@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RentAll.Domain
@@ -8,7 +9,7 @@ namespace RentAll.Domain
     {
         #region properties
 
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public Company Owner { get; set; }
         public List<Floor> Floors { get; set; }
@@ -20,37 +21,58 @@ namespace RentAll.Domain
 
         #region public methods
 
+        //public double CalculateOcupancyDegreePerCenter()
+        //{
+        //    double grossLeasableArea = CalculateGrossLeasableAreaPerCenter();
+        //    double leasedArea = 0;
+        //    foreach (var unit in Premises)
+        //    {
+        //        if (unit.IsLeased())
+        //        {
+        //            leasedArea += unit.Area;
+        //        }
+        //    }
+        //    return leasedArea / grossLeasableArea * 100;
+        //}
 
-        public double CalculateGrossLeasableArea()
-        {
-            double GLA = 0;
-            foreach (Unit Unit in this.Premises)
-            {
-                GLA += Unit.Area;
 
-            }
+        //public double CalculateGrossLeasableAreaPerCenter()
+        //{
+        //    double GrossLeasableArea = 0;
+        //    Premises.ForEach(p => GrossLeasableArea += p.Area);
+           
+        //    return GrossLeasableArea;
+        //}
 
-            return GLA;
-        }
+        //public double CalculateGrossLeasableAreaPerFloor(string floorName)
+        //{
+        //    double GrossLeasableArea = 0;
+        //    Premises.Where(p=>p.Floor.Name==floorName).Sum(p=> GrossLeasableArea+=p.Area);
+
+        //    return GrossLeasableArea;
+        //}
+
+
+        //public double CalculateOcupancyDegreePerFloor(string floorName)
+        //{
+        //    double grossLeasableArea = CalculateGrossLeasableAreaPerFloor(floorName);
+        //    double leasedArea = 0;
+        //    foreach (Unit unit in Premises)
+        //    {
+        //        if (unit.IsLeased()&&unit.Floor.Name==floorName)
+        //        {
+        //            leasedArea += unit.Area;
+        //        }
+        //    }
+        //    return leasedArea / grossLeasableArea * 100;
+        //}
 
         #endregion
-        public  double CalculateOcupancyDegree()
-        {
-            double grossLeasableArea = CalculateGrossLeasableArea();
-            double leasedArea = 0;
-            foreach (Unit unit in Premises)
-            {
-                if (unit.IsLeased())
-                {
-                    leasedArea += unit.Area;
-                }
-            }
-            return leasedArea / grossLeasableArea * 100;
-        }
 
 
-
-
+        #region private methods
+        
+        #endregion
     }
 
 

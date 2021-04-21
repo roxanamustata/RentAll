@@ -10,7 +10,7 @@ namespace RentAll.Domain
         public string Name { get; set; }
 
         #endregion
-
+            
     }
 
 
