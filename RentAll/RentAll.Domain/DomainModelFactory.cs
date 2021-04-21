@@ -80,10 +80,12 @@ namespace RentAll.Domain
         }
 
 
-        public static Lease GetLease(int[] areas)
+        public static Lease GetLease(int centerId, int leaseId, int[] areas)
         {
             var lease = new Lease
             {
+                Id = leaseId,
+                CenterId = centerId,
                 RentSqm = 10,
                 MaintenanceCostSqm = 5,
                 MarketingFeeSqm = 2,

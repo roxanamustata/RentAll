@@ -40,7 +40,7 @@ namespace RentAll.Infrastructure.Repositories
             return center;
         }
 
-        public Unit FindUnit(int centerId, string unitCode)
+        public Unit FindUnitInCenterByCode(int centerId, string unitCode)
         {
             Center center = FindCenterById(centerId);
             Unit unit = null;
@@ -60,9 +60,9 @@ namespace RentAll.Infrastructure.Repositories
             return unit;
         }
 
-        public void AddLeaseToPremises(int centerId, Unit unit, Lease lease)
+        public void AddLeaseToUnitInCenter(int centerId, Unit unit, Lease lease)
         {
-            Unit foundUnit = FindUnit(centerId, unit.Code);
+            Unit foundUnit = FindUnitInCenterByCode(centerId, unit.Code);
             foundUnit.Leases.Add(lease);
         }
 
@@ -171,25 +171,33 @@ namespace RentAll.Infrastructure.Repositories
         }
         public (double, double) CalculateLeasedAreaAndTotalRentPerActivity(int centerId, string activityName)
         {
+            var leaseRepository = new LeaseRepository();
+            var leases = leaseRepository.FindValidLeasesInCenter(centerId);
             double leasedAreaPerActivity = 0;
             double totalRentPerActivity = 0;
-            var leases = FindLeasesByActivity(centerId, activityName);
+            
             foreach (var item in leases)
             {
-                leasedAreaPerActivity += item.getAreaByUnitType(UnitType.Retail);
-                totalRentPerActivity += item.getAreaByUnitType(UnitType.Retail) * item.RentSqm;
-            }
+                if (item.Activity.Name == activityName)
+                {
+                    leasedAreaPerActivity += leaseRepository.GetAreaByUnitType(item,UnitType.Retail);
+                    totalRentPerActivity += leaseRepository.GetAreaByUnitType(item,UnitType.Retail) * item.RentSqm;
+                }
+                }
             return (leasedAreaPerActivity, totalRentPerActivity);
         }
         public (double, double) CalculateLeasedAreaAndTotalRentPerActivityRange(int centerId, string activityRangeName)
         {
+            var leaseRepository = new LeaseRepository();
+            var leases = leaseRepository.FindValidLeasesInCenter(centerId);
+
             double leasedAreaPerActivityRange = 0;
             double totalRentPerActivityRange = 0;
-            var leases = FindLeasesByActivity(centerId, activityRangeName);
+            
             foreach (var item in leases)
             {
-                leasedAreaPerActivityRange += item.getAreaByUnitType(UnitType.Retail);
-                totalRentPerActivityRange += item.getAreaByUnitType(UnitType.Retail) * item.RentSqm;
+                leasedAreaPerActivityRange += leaseRepository.GetAreaByUnitType(item, UnitType.Retail);
+                totalRentPerActivityRange += leaseRepository.GetAreaByUnitType(item, UnitType.Retail) * item.RentSqm;
             }
             return (leasedAreaPerActivityRange, totalRentPerActivityRange);
         }
