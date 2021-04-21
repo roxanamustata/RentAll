@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RentAll.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -17,12 +18,13 @@ namespace RentAll.Domain
         public DateTime SigningDate { get; set; }
         public DateTime StartDate { get; set; }
         public int TermInMonths { get; set; }
+        
+        //TODO each unit from Premises may have different rent and costs on sqm
         public double RentSqm { get; set; }
         public double MaintenanceCostSqm { get; set; }
         public double MarketingFeeSqm { get; set; }
         public bool Valid { get; set; }
-
-        
+        public Activity Activity { get; set; }
 
         #endregion
 
@@ -39,14 +41,36 @@ namespace RentAll.Domain
             return TotalCosts;
         }
 
-        #endregion
-
         public DateTime CalculateLeaseEndDate()
         {
-            TimeSpan duration = new TimeSpan(TermInMonths * 30,0,0,0);
-            DateTime endDate= StartDate.Add(duration);
+            TimeSpan duration = new TimeSpan(TermInMonths * 30, 0, 0, 0);
+            DateTime endDate = StartDate.Add(duration);
 
             return endDate;
         }
+
+        public double CalculateRentPerLease()
+        {
+            double totalRent = 0;
+            Premises.ForEach(u => totalRent += u.Area * RentSqm);
+            return totalRent;
+        }
+
+
+        public double getAreaByUnitType (UnitType unitType)
+        {
+            double totalAreaByUnitType = 0;
+            foreach(var item in Premises)
+            {
+                if (item.Type==unitType)
+                {
+                    totalAreaByUnitType += item.Area;
+                }
+            }
+            return totalAreaByUnitType;
+        }
+        #endregion
+
+
     }
 }
