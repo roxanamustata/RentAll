@@ -10,7 +10,7 @@ namespace RentAll.Domain.Models
 
         public int Id { get; private set; }
         public string Name { get; set; }
-        public ActivityRange ActivityRange { get; set; }
+        public ActivityCategory ActivityCategory { get; set; }
 
         #endregion
     }
