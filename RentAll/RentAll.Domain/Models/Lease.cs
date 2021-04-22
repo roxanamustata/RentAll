@@ -20,11 +20,38 @@ namespace RentAll.Domain
         public int TermInMonths { get; set; }
 
         public int CenterId { get; set; }
-        
-        //TODO each unit from Premises may have different rent and costs on sqm
-        public double RentSqm { get; set; }
-        public double MaintenanceCostSqm { get; set; }
-        public double MarketingFeeSqm { get; set; }
+
+        public double TotalMonthlyRent { get
+            {
+                double total = 0;
+                foreach(var unit in Premises)
+                {
+                    total += unit.Area * unit.MonthlyRentSqm;
+                }
+                return total;
+            }
+        }
+        public double TotalMonthlyMaintenanceCost { get
+            {
+                double total = 0;
+                foreach (var unit in Premises)
+                {
+                    total += unit.Area * unit.MonthlyMaintenanceCostSqm;
+                }
+                return total;
+            }
+        }
+        public double TotalMarketingFee { get
+            {
+                double total = 0;
+                foreach (var unit in Premises)
+                {
+                    total += unit.Area * unit.MonthlyMarketingFeeSqm;
+                }
+                return total;
+            }
+        }
+
         public bool Valid { get; set; }
         public Activity Activity { get; set; }
 

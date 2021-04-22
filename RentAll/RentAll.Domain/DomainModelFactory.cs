@@ -8,97 +8,76 @@ namespace RentAll.Domain
     public class DomainModelFactory
     {
 
-        public static Center GetShoppingCenter(int id, int[] areas)
+        public static Center GetShoppingCenter(int id, string name)
         {
 
             var shoppingCenter = new Center
             {
                 Id = id,
-                Floors = new List<Floor>(),
+                Name = name,
+                Floors = new List<Floor>() { new Floor { Name = "Ground Floor" }, new Floor { Name = "First Floor" } },
                 Premises = new List<Unit>()
+
             };
-
-            for (int i = 0; i < areas.Length / 2; i++)
-            {
-                shoppingCenter.Premises.Add(GetUnitOnGroundfloor(areas[i]));
-            }
-            for (int i = areas.Length / 2; i < areas.Length; i++)
-            {
-                shoppingCenter.Premises.Add(GetUnitOnFirstfloor(areas[i]));
-            }
-
-            var groundFloor = new Floor { Name = "Ground Floor" };
-            var firstFloor = new Floor { Name = "First Floor" };
-            shoppingCenter.Floors.Add(groundFloor);
-            shoppingCenter.Floors.Add(firstFloor);
-
 
             return shoppingCenter;
 
         }
 
-
-
-        public static Unit GetUnitOnGroundfloor(int area)
+        public static Unit GetUnitOnGroundfloor(int unitId, double area)
         {
             var unit = new Unit
             {
+                Id = unitId,
                 Area = area,
+                MonthlyRentSqm = 10,
+                MonthlyMaintenanceCostSqm = 5,
+                MonthlyMarketingFeeSqm = 2,
                 Leases = new List<Lease>(),
                 Floor = new Floor { Name = "Ground Floor" },
                 Code = "G" + area,
-                Type = UnitType.Retail
+                Type = UnitType.Retail,
+
             };
             return unit;
         }
 
-        public static Unit GetUnitOnFirstfloor(int area)
+        public static Unit GetUnitOnFirstfloor(int unitId, double area)
         {
             var unit = new Unit
             {
+                Id = unitId,
                 Area = area,
+                MonthlyRentSqm = 10,
+                MonthlyMaintenanceCostSqm = 5,
+                MonthlyMarketingFeeSqm = 2,
                 Leases = new List<Lease>(),
                 Floor = new Floor { Name = "First Floor" },
                 Code = "F" + area,
-                Type = UnitType.Retail
+                Type = UnitType.Retail,
 
             };
             return unit;
         }
 
 
-
-        public static List<Unit> GetUnits(int[] areas)
+        public static Lease GetLease(int leaseId)
         {
-            var listOfUnits = new List<Unit>();
-            for (int i = 0; i < areas.Length - 2; i++)
-            {
-                listOfUnits.Add(GetUnitOnGroundfloor(areas[i]));
-            }
-            listOfUnits.Add(GetUnitOnFirstfloor(areas[^1]));
-            return listOfUnits;
-        }
 
-
-        public static Lease GetLease(int centerId, int leaseId, int[] areas)
-        {
             var lease = new Lease
             {
                 Id = leaseId,
-                CenterId = centerId,
-                RentSqm = 10,
-                MaintenanceCostSqm = 5,
-                MarketingFeeSqm = 2,
                 Valid = true,
                 TermInMonths = 60,
                 StartDate = DateTime.Now,
                 Activity = new Activity
                 {
                     Name = "Apparel",
-                    ActivityRange = new ActivityRange { Name = "Non-Food" }
-                }
+                    ActivityCategory = new ActivityCategory { Name = "Non-Food" },
+                },
+                Premises = new List<Unit>()
             };
-            lease.Premises = GetUnits(areas);
+
 
             return lease;
         }

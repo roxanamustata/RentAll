@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Infrastructure", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Web", "RentAll.Web\RentAll.Web.csproj", "{650D6112-E669-45B3-BBAA-D1A72F75EFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentAll.ConsoleApp", "RentAll.ConsoleApp\RentAll.ConsoleApp.csproj", "{30B155A5-CC60-4731-9F9E-F51FDBBB165E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.ConsoleApp", "RentAll.ConsoleApp\RentAll.ConsoleApp.csproj", "{30B155A5-CC60-4731-9F9E-F51FDBBB165E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
