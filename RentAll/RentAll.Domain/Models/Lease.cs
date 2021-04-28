@@ -11,6 +11,7 @@ namespace RentAll.Domain
         #region properties
 
         public int Id { get; set; }
+        public string LeaseNumber { get; set; }
         public Company Landlord { get; set; }
         public Company Tenant { get; set; }
         public List<Unit> Premises { get; set; }
@@ -19,19 +20,25 @@ namespace RentAll.Domain
         public DateTime StartDate { get; set; }
         public int TermInMonths { get; set; }
 
+        public DateTime EndDate { get; set; }
+
         public int CenterId { get; set; }
 
-        public double TotalMonthlyRent { get
+        public double TotalMonthlyRent
+        {
+            get
             {
                 double total = 0;
-                foreach(var unit in Premises)
+                foreach (var unit in Premises)
                 {
                     total += unit.Area * unit.MonthlyRentSqm;
                 }
                 return total;
             }
         }
-        public double TotalMonthlyMaintenanceCost { get
+        public double TotalMonthlyMaintenanceCost
+        {
+            get
             {
                 double total = 0;
                 foreach (var unit in Premises)
@@ -41,7 +48,9 @@ namespace RentAll.Domain
                 return total;
             }
         }
-        public double TotalMarketingFee { get
+        public double TotalMarketingFee
+        {
+            get
             {
                 double total = 0;
                 foreach (var unit in Premises)
@@ -59,7 +68,7 @@ namespace RentAll.Domain
 
 
         #region public methods
-        
+
         #endregion
 
 
