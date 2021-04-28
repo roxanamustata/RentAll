@@ -36,7 +36,7 @@ namespace RentAll.Infrastructure.Repositories
         #endregion
 
 
-        #region public center methods
+        #region public methods
 
         public Center FindCenterById(int centerId)
         {
@@ -56,188 +56,8 @@ namespace RentAll.Infrastructure.Repositories
             }
             return center;
         }
+              
 
-        public Unit FindUnitInCenterByCode(int centerId, string unitCode)
-        {
-            Center center = FindCenterById(centerId);
-            Unit unit = null;
-            foreach (var item in center.Premises)
-            {
-                if (item.Code == unitCode)
-                {
-                    unit = item;
-                }
-
-            }
-            if (unit == null)
-            {
-                throw new InvalidOperationException($"Unit with code {unitCode} not found");
-
-            }
-            return unit;
-        }
-
-        public void AddLeaseToUnitInCenter(int centerId, Unit unit, Lease lease)
-        {
-            Unit foundUnit = FindUnitInCenterByCode(centerId, unit.Code);
-            foundUnit.Leases.Add(lease);
-        }
-
-        public double CalculateGrossLeasableAreaPerCenter(int centerId)
-        {
-            var center = FindCenterById(centerId);
-            double GrossLeasableArea = 0;
-            center.Premises.ForEach(p => GrossLeasableArea += p.Area);
-
-            return GrossLeasableArea;
-        }
-
-        public double CalculateLeasedAreaPerCenter(int centerId)
-        {
-            var center = FindCenterById(centerId);
-
-            double leasedArea = 0;
-            foreach (var unit in center.Premises)
-            {
-                if (IsLeased(unit))
-                {
-                    leasedArea += unit.Area;
-                }
-            }
-            return leasedArea;
-
-        }
-
-        public double CalculateGrossLeasableAreaPerFloor(int centerId, string floorName)
-        {
-            var center = FindCenterById(centerId);
-            double GrossLeasableArea = 0;
-            center.Premises.Where(p => p.Floor.Name == floorName).Sum(p => GrossLeasableArea += p.Area);
-
-            return GrossLeasableArea;
-        }
-
-        public double CalculateLeasedAreaPerFloor(int centerId, string floorName)
-        {
-            var center = FindCenterById(centerId);
-
-            double leasedArea = 0;
-            foreach (Unit unit in center.Premises)
-            {
-                if (IsLeased(unit) && unit.Floor.Name == floorName)
-                {
-                    leasedArea += unit.Area;
-                }
-            }
-            return leasedArea;
-        }
-
-        public double CalculateOcupancyDegreePerCenter(int centerId)
-        {
-            return CalculateLeasedAreaPerCenter(centerId) / CalculateGrossLeasableAreaPerCenter(centerId) * 100;
-        }
-
-        public double CalculateOcupancyDegreePerFloor(int centerId, string floorName)
-        {
-            return Math.Round(CalculateLeasedAreaPerFloor(centerId, floorName) / CalculateGrossLeasableAreaPerFloor(centerId, floorName) * 100, 2);
-        }
-
-        public double CalculateAverageRentPerSQMPerCenter(int centerId)
-        {
-            var center = FindCenterById(centerId);
-
-            double totalRent = 0;
-
-            foreach (Unit unit in center.Premises)
-            {
-                if (IsLeased(unit))
-                {
-                    totalRent += GetValidLease(unit).TotalMonthlyRent;
-                }
-            }
-
-            return Math.Round(totalRent / CalculateLeasedAreaPerCenter(centerId), 2);
-        }
-
-        public List<Lease> FindLeasesByActivity(int centerId, string activityName)
-        {
-            var center = FindCenterById(centerId);
-
-            var listOfLeases = new List<Lease>();
-            foreach (var item in center.Premises)
-            {
-                if (IsLeased(item) && GetValidLease(item).Activity.Name == activityName)
-                {
-                    listOfLeases.Add(GetValidLease(item));
-                }
-            }
-            return listOfLeases;
-        }
-        public List<Lease> FindLeasesByActivityRange(int centerId, string activityRangeName)
-        {
-            var center = FindCenterById(centerId);
-
-            var listOfLeases = new List<Lease>();
-            foreach (var item in center.Premises)
-            {
-                if (IsLeased(item))
-                {
-                    Lease lease = GetValidLease(item);
-                    if (lease.Activity.ActivityCategory.Name.Equals(activityRangeName))
-                    {
-                        listOfLeases.Add(lease);
-                    }
-                }
-            }
-            return listOfLeases;
-        }
-        public (double, double) CalculateLeasedAreaAndTotalRentPerActivity(int centerId, string activityName)
-        {
-
-            var leases = FindValidLeasesInCenter(centerId);
-            double leasedAreaPerActivity = 0;
-            double totalRentPerActivity = 0;
-
-            foreach (var item in leases)
-            {
-                if (item.Activity.Name == activityName)
-                {
-                    leasedAreaPerActivity += GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
-                    totalRentPerActivity += GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
-                }
-            }
-            return (leasedAreaPerActivity, totalRentPerActivity);
-        }
-        public (double, double) CalculateLeasedAreaAndTotalRentPerActivityRange(int centerId, string activityRangeName)
-        {
-
-            var leases = FindValidLeasesInCenter(centerId);
-
-            double leasedAreaPerActivityRange = 0;
-            double totalRentPerActivityRange = 0;
-
-            foreach (var item in leases)
-            {
-                leasedAreaPerActivityRange += GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
-                totalRentPerActivityRange += GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
-            }
-            return (leasedAreaPerActivityRange, totalRentPerActivityRange);
-        }
-
-
-
-        public double CalculateAverageRentPerSQMPerActivity(int centerId, string activityName)
-        {
-            return CalculateLeasedAreaAndTotalRentPerActivityRange(centerId, activityName).Item2 / CalculateLeasedAreaAndTotalRentPerActivity(centerId, activityName).Item1;
-        }
-        public double CalculateAverageRentPerSQMPerActivityRange(int centerId, string activityRangeName)
-        {
-            return CalculateLeasedAreaAndTotalRentPerActivityRange(centerId, activityRangeName).Item2 / CalculateLeasedAreaAndTotalRentPerActivityRange(centerId, activityRangeName).Item1;
-
-        }
-        #endregion
-
-        #region public unit methods
         public Unit FindUnitById(int unitId)
         {
             Unit unit = null;
@@ -260,8 +80,9 @@ namespace RentAll.Infrastructure.Repositories
         {
             return unit.Leases.Find(l => l.Valid == true);
         }
-        public bool IsLeased(Unit unit)
+        public bool IsLeased(int unitId)
         {
+            var unit = FindUnitById(unitId);
             foreach (Lease Lease in unit.Leases)
             {
                 if (Lease.Valid)
@@ -271,10 +92,31 @@ namespace RentAll.Infrastructure.Repositories
             }
             return false;
         }
+        public Unit FindUnitInCenterByCode(int centerId, string unitCode)
+        {
+            Center center = FindCenterById(centerId);
+            Unit unit = null;
+            foreach (var item in center.Premises)
+            {
+                if (item.Code == unitCode)
+                {
+                    unit = item;
+                }
 
-        #endregion
+            }
+            if (unit == null)
+            {
+                throw new InvalidOperationException($"Unit with code {unitCode} not found");
 
-        #region public lease methods
+            }
+            return unit;
+        }
+        public void AddLeaseToUnitInCenter(int centerId, Unit unit, Lease lease)
+        {
+            Unit foundUnit = FindUnitInCenterByCode(centerId, unit.Code);
+            foundUnit.Leases.Add(lease);
+        }
+
         public Lease FindLeaseById(int leaseId)
         {
             Lease lease = null;
@@ -292,6 +134,38 @@ namespace RentAll.Infrastructure.Repositories
 
             }
             return lease;
+        }
+        public List<Lease> FindLeasesByActivity(int centerId, string activityName)
+        {
+            var center = FindCenterById(centerId);
+
+            var listOfLeases = new List<Lease>();
+            foreach (var item in center.Premises)
+            {
+                if (IsLeased(item.Id) && GetValidLease(item).Activity.Name == activityName)
+                {
+                    listOfLeases.Add(GetValidLease(item));
+                }
+            }
+            return listOfLeases;
+        }
+        public List<Lease> FindLeasesByActivityRange(int centerId, string activityRangeName)
+        {
+            var center = FindCenterById(centerId);
+
+            var listOfLeases = new List<Lease>();
+            foreach (var item in center.Premises)
+            {
+                if (IsLeased(item.Id))
+                {
+                    Lease lease = GetValidLease(item);
+                    if (lease.Activity.ActivityCategory.Name.Equals(activityRangeName))
+                    {
+                        listOfLeases.Add(lease);
+                    }
+                }
+            }
+            return listOfLeases;
         }
         public List<Lease> FindValidLeasesInCenter(int centerId)
         {
@@ -315,31 +189,7 @@ namespace RentAll.Infrastructure.Repositories
             }
             return leases;
         }
-        public double CalculateCostsPerLease(int leaseId)
-        {
-            Lease lease = FindLeaseById(leaseId);
-            double TotalCosts = 0;
-            foreach (Unit Unit in lease.Premises)
-            {
-                TotalCosts += lease.TotalMonthlyRent + lease.TotalMonthlyMaintenanceCost + lease.TotalMarketingFee;
-            }
-            return TotalCosts;
-        }
-        public DateTime CalculateLeaseEndDate(int leaseId)
-        {
-            Lease lease = FindLeaseById(leaseId);
-            TimeSpan duration = new TimeSpan(lease.TermInMonths * 30, 0, 0, 0);
-            DateTime endDate = lease.StartDate.Add(duration);
-
-            return endDate;
-        }
-        public double CalculateRentPerLease(int leaseId)
-        {
-            Lease lease = FindLeaseById(leaseId);
-            double totalRent = 0;
-            lease.Premises.ForEach(u => totalRent += lease.TotalMonthlyRent);
-            return totalRent;
-        }
+        
         public (double, double) GetLeaseAreaAndRentByUnitType(Lease lease, UnitType unitType)
         {
             double totalAreaByUnitType = 0;
@@ -354,6 +204,7 @@ namespace RentAll.Infrastructure.Repositories
             }
             return (totalAreaByUnitType, totalRentByUnitType);
         }
+        
         #endregion
 
     }
