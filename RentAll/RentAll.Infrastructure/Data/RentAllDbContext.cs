@@ -11,13 +11,12 @@ namespace RentAll.Infrastructure.Data
 {
     public class RentAllDbContext:DbContext
     {
-        //private string _connectionString=
-        //"Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
-        //    "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly string _connectionString ="Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public RentAllDbContext():base()
         {
-            //_connectionString = connectionString;
+           
         }
 
         public RentAllDbContext(DbContextOptions<RentAllDbContext> options):base(options)
@@ -27,8 +26,7 @@ namespace RentAll.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
-            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(_connectionString);
         }
 
         public DbSet<Activity> Activities { get; set; }

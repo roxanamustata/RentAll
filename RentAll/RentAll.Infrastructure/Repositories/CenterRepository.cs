@@ -20,18 +20,7 @@ namespace RentAll.Infrastructure.Repositories
         #region constructors
         public CenterRepository()
         {
-            centers.Add(DomainModelFactory.GetShoppingCenter(1, "Iulius Mall Timisoara"));
-            centers.Add(DomainModelFactory.GetShoppingCenter(2, "Iulius Mall Cluj"));
-            centers.Add(DomainModelFactory.GetShoppingCenter(3, "Iulius Mall Iasi"));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(1, 50));
-            units.Add(DomainModelFactory.GetUnitOnGroundfloor(2, 500));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(3, 150));
-            units.Add(DomainModelFactory.GetUnitOnGroundfloor(4, 250));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(5, 750));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(6, 2750));
-            leases.Add(DomainModelFactory.GetLease(1));
-            leases.Add(DomainModelFactory.GetLease(2));
-            leases.Add(DomainModelFactory.GetLease(3));
+
         }
         #endregion
 
