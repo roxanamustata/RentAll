@@ -30,7 +30,8 @@ namespace RentAll.Infrastructure.Services
         {
             var center = CenterRepository.FindCenterById(centerId);
             double GrossLeasableArea = 0;
-            center.Premises.ForEach(p => GrossLeasableArea += p.Area);
+            center.Premises.Sum(p => GrossLeasableArea += p.Area);
+                //ForEach();
 
             return GrossLeasableArea;
         }
@@ -55,7 +56,7 @@ namespace RentAll.Infrastructure.Services
         {
             var center = CenterRepository.FindCenterById(centerId);
             double GrossLeasableArea = 0;
-            center.Premises.Where(p => p.Floor.Name == floorName).Sum(p => GrossLeasableArea += p.Area);
+            center.Premises.Where(p => p.Floor.FloorName == floorName).Sum(p => GrossLeasableArea += p.Area);
 
             return GrossLeasableArea;
         }
@@ -67,7 +68,7 @@ namespace RentAll.Infrastructure.Services
             double leasedArea = 0;
             foreach (Unit unit in center.Premises)
             {
-                if (CenterRepository.IsLeased(unit.Id) && unit.Floor.Name == floorName)
+                if (CenterRepository.IsLeased(unit.Id) && unit.Floor.FloorName == floorName)
                 {
                     leasedArea += unit.Area;
                 }
@@ -111,7 +112,7 @@ namespace RentAll.Infrastructure.Services
 
             foreach (var item in leases)
             {
-                if (item.Activity.Name == activityName)
+                if (item.Activity.ActivityName == activityName)
                 {
                     leasedAreaPerActivity += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
                     totalRentPerActivity += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
@@ -165,7 +166,8 @@ namespace RentAll.Infrastructure.Services
         {
             Lease lease = CenterRepository.FindLeaseById(leaseId);
             double totalRent = 0;
-            lease.Premises.ForEach(u => totalRent += lease.TotalMonthlyRent);
+            lease.Premises.Sum(u => totalRent += lease.TotalMonthlyRent);
+                              
             return totalRent;
         }
         #endregion

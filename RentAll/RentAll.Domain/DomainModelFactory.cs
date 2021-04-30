@@ -14,8 +14,8 @@ namespace RentAll.Domain
             var shoppingCenter = new Center
             {
                 Id = id,
-                Name = name,
-                Floors = new List<Floor>() { new Floor { Name = "Ground Floor" }, new Floor { Name = "First Floor" } },
+                CenterName = name,
+                Floors = new List<Floor>() { new Floor { FloorName = "Ground Floor" }, new Floor { FloorName = "First Floor" } },
                 Premises = new List<Unit>()
 
             };
@@ -34,8 +34,8 @@ namespace RentAll.Domain
                 MonthlyMaintenanceCostSqm = 5,
                 MonthlyMarketingFeeSqm = 2,
                 Leases = new List<Lease>(),
-                Floor = new Floor { Name = "Ground Floor" },
-                Code = "G" + area,
+                Floor = new Floor { FloorName = "Ground Floor" },
+                UnitCode = "G" + area,
                 Type = UnitType.Retail,
 
             };
@@ -52,8 +52,8 @@ namespace RentAll.Domain
                 MonthlyMaintenanceCostSqm = 5,
                 MonthlyMarketingFeeSqm = 2,
                 Leases = new List<Lease>(),
-                Floor = new Floor { Name = "First Floor" },
-                Code = "F" + area,
+                Floor = new Floor { FloorName = "First Floor" },
+                UnitCode = "F" + area,
                 Type = UnitType.Retail,
 
             };
@@ -72,8 +72,8 @@ namespace RentAll.Domain
                 StartDate = DateTime.Now,
                 Activity = new Activity
                 {
-                    Name = "Apparel",
-                    ActivityCategory = new ActivityCategory { Name = "Non-Food" },
+                    ActivityName = "Apparel",
+                    Category = new Category { CategoryName = "Non-Food" },
                 },
                 Premises = new List<Unit>()
             };

@@ -7,12 +7,13 @@ namespace RentAll.Domain
         #region properties
 
         public int Id { get; private set; }
-        public string Name { get; set; }
+        public string CompanyName { get; set; }
         public int FiscalCode { get; set; }
         public string FiscalAttribute { get; set; }
         public string RecomNumber { get; set; }
         public Address Address { get; set; }
-        public List<Person> ContactPersons { get; set; }
+        public ICollection<Person> ContactPersons { get; set; }
+        public ICollection<Lease> Leases { get; set; }
 
         #endregion
     }

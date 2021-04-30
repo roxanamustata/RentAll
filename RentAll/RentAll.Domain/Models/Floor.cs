@@ -7,7 +7,7 @@ namespace RentAll.Domain
         #region properties
 
         public int Id { get; private set; }
-        public string Name { get; set; }
+        public string FloorName { get; set; }
 
         #endregion
             

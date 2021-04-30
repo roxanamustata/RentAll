@@ -1,23 +1,26 @@
-using NUnit.Framework;
-using RentAll.Domain;
+﻿using NUnit.Framework;
 using RentAll.Domain.Interfaces;
 using RentAll.Infrastructure.Repositories;
 using RentAll.Infrastructure.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RentAll.Tests
 {
     [TestFixture]
-    public class CenterRepositoryFixture
+    public class CenterServiceFixture
     {
-      private CenterRepository centerRepository;
-     
+        private CenterRepository centerRepository;
+        private ICenterService centerService;
 
-        public CenterRepositoryFixture()
+        public CenterServiceFixture()
         {
             centerRepository = new CenterRepository();
-            
+            centerService = new CenterService(centerRepository);
         }
-
 
         [SetUp]
         public void Setup()
@@ -38,25 +41,24 @@ namespace RentAll.Tests
             unit2.Leases.Add(lease1);
         }
 
+
         [TestCase(1)]
-        [TestCase(4)]
-        public void FindLeaseByIdTest(int leaseId)
+        public void CalculateCostsPerLeaseTest(int leaseId)
         {
-           
-            var result = centerRepository.FindLeaseById(leaseId);
-            Assert.IsNotNull(result);
-        }
-       
-        [TestCase(1)]
-        [TestCase(2)]
-        public void IsLeasedTest(int unitId)
-        {
-            
-            var result = centerRepository.IsLeased(unitId);
-            Assert.IsTrue(result);
+            double expected = 9350;
+            double result = centerService.CalculateCostsPerLease(leaseId);
+            Assert.AreEqual(expected, result);
+
         }
 
+        [TestCase(1)]
+        public void CalculateOcupancyDegreePerCenterTest(int centerId)
+        {
+            double expected = 78.57;
+            double result = Math.Round(centerService.CalculateOcupancyDegreePerCenter(centerId),2);
+            Assert.AreEqual(expected, result);
 
+        }
 
 
     }

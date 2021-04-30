@@ -1,0 +1,70 @@
+﻿
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RentAll.Domain;
+using RentAll.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace RentAll.Infrastructure.Data
+{
+    public class RentAllDbContext:DbContext
+    {
+        //private string _connectionString=
+        //"Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+        //    "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
+        public RentAllDbContext():base()
+        {
+            //_connectionString = connectionString;
+        }
+
+        public RentAllDbContext(DbContextOptions<RentAllDbContext> options):base(options)
+        {
+                
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+        }
+
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Center> Centers { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Email> Emails { get; set; }
+        public DbSet<Floor> Floors { get; set; }
+        public DbSet<Lease> Leases { get; set; }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Phone> Phones { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Unit> Units { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        public void Configure(ModelBuilder builder)
+        {
+
+                //builder.Entity<Lease>(entity =>
+                //{
+                //    entity.HasOne(t => t.Tenant)
+                //        .WithMany(c => c.Leases)
+                //        .HasForeignKey(l => l.TenantId)
+                //        .OnDelete(DeleteBehavior.Restrict)
+                //        .HasConstraintName("FK_Lease_TenantId");
+
+                //    entity.HasOne(o => o.Landlord)
+                //        .WithMany(c => c.Leases)
+                //        .HasForeignKey(l => l.LandlordId)
+                //        .OnDelete(DeleteBehavior.Restrict)
+                //        .HasConstraintName("FK_Lease_LandlordId");
+                //});
+
+
+
+        }
+    }
+}

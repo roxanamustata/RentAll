@@ -12,9 +12,9 @@ namespace RentAll.Infrastructure.Repositories
     public class CenterRepository : ICenterRepository
     {
         #region fields
-        private List<Center> centers = new List<Center>();
-        private List<Unit> units = new List<Unit>();
-        private List<Lease> leases = new List<Lease>();
+        private ICollection<Center> centers = new List<Center>();
+        private ICollection<Unit> units = new List<Unit>();
+        private ICollection<Lease> leases = new List<Lease>();
         #endregion
 
         #region constructors
@@ -78,7 +78,7 @@ namespace RentAll.Infrastructure.Repositories
         }
         public Lease GetValidLease(Unit unit)
         {
-            return unit.Leases.Find(l => l.Valid == true);
+            return unit.Leases.FirstOrDefault(l => l.Valid == true);
         }
         public bool IsLeased(int unitId)
         {
@@ -98,7 +98,7 @@ namespace RentAll.Infrastructure.Repositories
             Unit unit = null;
             foreach (var item in center.Premises)
             {
-                if (item.Code == unitCode)
+                if (item.UnitCode == unitCode)
                 {
                     unit = item;
                 }
@@ -113,7 +113,7 @@ namespace RentAll.Infrastructure.Repositories
         }
         public void AddLeaseToUnitInCenter(int centerId, Unit unit, Lease lease)
         {
-            Unit foundUnit = FindUnitInCenterByCode(centerId, unit.Code);
+            Unit foundUnit = FindUnitInCenterByCode(centerId, unit.UnitCode);
             foundUnit.Leases.Add(lease);
         }
 
@@ -142,7 +142,7 @@ namespace RentAll.Infrastructure.Repositories
             var listOfLeases = new List<Lease>();
             foreach (var item in center.Premises)
             {
-                if (IsLeased(item.Id) && GetValidLease(item).Activity.Name == activityName)
+                if (IsLeased(item.Id) && GetValidLease(item).Activity.ActivityName == activityName)
                 {
                     listOfLeases.Add(GetValidLease(item));
                 }
@@ -159,7 +159,7 @@ namespace RentAll.Infrastructure.Repositories
                 if (IsLeased(item.Id))
                 {
                     Lease lease = GetValidLease(item);
-                    if (lease.Activity.ActivityCategory.Name.Equals(activityRangeName))
+                    if (lease.Activity.Category.CategoryName.Equals(activityRangeName))
                     {
                         listOfLeases.Add(lease);
                     }
@@ -167,7 +167,7 @@ namespace RentAll.Infrastructure.Repositories
             }
             return listOfLeases;
         }
-        public List<Lease> FindValidLeasesInCenter(int centerId)
+        public ICollection<Lease> FindValidLeasesInCenter(int centerId)
         {
             var foundLeases = new List<Lease>();
 

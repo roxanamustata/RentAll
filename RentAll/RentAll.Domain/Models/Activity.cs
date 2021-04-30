@@ -9,8 +9,8 @@ namespace RentAll.Domain.Models
         #region properties
 
         public int Id { get; private set; }
-        public string Name { get; set; }
-        public ActivityCategory ActivityCategory { get; set; }
+        public string ActivityName { get; set; }
+        public Category Category { get; set; }
 
         #endregion
     }

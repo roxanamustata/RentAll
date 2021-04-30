@@ -15,7 +15,7 @@ namespace RentAll.Domain.Interfaces
         Lease FindLeaseById(int leaseId);
         List<Lease> FindLeasesByActivity(int centerId, string activityName);
         List<Lease> FindLeasesByActivityRange(int centerId, string activityRangeName);
-        List<Lease> FindValidLeasesInCenter(int centerId);
+        ICollection<Lease> FindValidLeasesInCenter(int centerId);
         (double, double) GetLeaseAreaAndRentByUnitType(Lease lease, UnitType unitType);
 
     }

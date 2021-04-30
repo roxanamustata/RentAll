@@ -11,7 +11,7 @@ namespace RentAll.Domain
         public int Id { get; private set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public List<Role> Roles { get; set; }
+        public ICollection<Role> Roles { get; set; }
 
         #endregion
     }
