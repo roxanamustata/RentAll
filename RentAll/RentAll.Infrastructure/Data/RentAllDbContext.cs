@@ -12,23 +12,23 @@ namespace RentAll.Infrastructure.Data
 {
     public class RentAllDbContext : DbContext
     {
-        private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
-            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        //private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+        //    "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public RentAllDbContext() : base()
-        {
+        //public RentAllDbContext() : base()
+        //{
 
-        }
+        //}
 
         public RentAllDbContext(DbContextOptions<RentAllDbContext> options) : base(options)
         {
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_connectionString);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(_connectionString);
+        //}
 
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Category> Categories { get; set; }
