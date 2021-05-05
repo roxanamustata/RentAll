@@ -1,5 +1,7 @@
-﻿using RentAll.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using RentAll.Domain;
 using RentAll.Domain.Interfaces;
+using RentAll.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +10,16 @@ using System.Text;
 namespace RentAll.Infrastructure.Repositories
 {
 
-
     public class CenterRepository : ICenterRepository
     {
         #region fields
-        private ICollection<Center> centers = new List<Center>();
-        private ICollection<Unit> units = new List<Unit>();
-        private ICollection<Lease> leases = new List<Lease>();
+        private readonly RentAllDbContext _rentAllDbContext;
         #endregion
 
         #region constructors
-        public CenterRepository()
+        public CenterRepository(RentAllDbContext rentAllDbContext)
         {
-
+            _rentAllDbContext = rentAllDbContext;
         }
         #endregion
 
@@ -29,41 +28,13 @@ namespace RentAll.Infrastructure.Repositories
 
         public Center FindCenterById(int centerId)
         {
-            Center center = null;
-            foreach (var item in centers)
-            {
-                if (item.Id == centerId)
-                {
-                    center = item;
-                }
+            return _rentAllDbContext.Centers.Find(centerId);
 
-            }
-            if (center == null)
-            {
-                throw new InvalidOperationException($"Center with id {centerId} not found");
-
-            }
-            return center;
         }
-              
 
         public Unit FindUnitById(int unitId)
         {
-            Unit unit = null;
-            foreach (var item in units)
-            {
-                if (item.Id == unitId)
-                {
-                    unit = item;
-                }
-
-            }
-            if (unit == null)
-            {
-                throw new InvalidOperationException($"Unit with id {unitId} not found");
-
-            }
-            return unit;
+            return _rentAllDbContext.Units.Find(unitId);
         }
         public Lease GetValidLease(Unit unit)
         {
@@ -72,6 +43,7 @@ namespace RentAll.Infrastructure.Repositories
         public bool IsLeased(int unitId)
         {
             var unit = FindUnitById(unitId);
+
             foreach (Lease Lease in unit.Leases)
             {
                 if (Lease.Valid)
@@ -85,7 +57,7 @@ namespace RentAll.Infrastructure.Repositories
         {
             Center center = FindCenterById(centerId);
             Unit unit = null;
-            foreach (var item in center.Premises)
+            foreach (var item in center.Units)
             {
                 if (item.UnitCode == unitCode)
                 {
@@ -108,28 +80,15 @@ namespace RentAll.Infrastructure.Repositories
 
         public Lease FindLeaseById(int leaseId)
         {
-            Lease lease = null;
-            foreach (var item in leases)
-            {
-                if (item.Id == leaseId)
-                {
-                    lease = item;
-                }
+            return _rentAllDbContext.Leases.Find(leaseId);
 
-            }
-            if (lease == null)
-            {
-                throw new InvalidOperationException($"Center with id {leaseId} not found");
-
-            }
-            return lease;
         }
         public List<Lease> FindLeasesByActivity(int centerId, string activityName)
         {
             var center = FindCenterById(centerId);
 
             var listOfLeases = new List<Lease>();
-            foreach (var item in center.Premises)
+            foreach (var item in center.Units)
             {
                 if (IsLeased(item.Id) && GetValidLease(item).Activity.ActivityName == activityName)
                 {
@@ -143,7 +102,7 @@ namespace RentAll.Infrastructure.Repositories
             var center = FindCenterById(centerId);
 
             var listOfLeases = new List<Lease>();
-            foreach (var item in center.Premises)
+            foreach (var item in center.Units)
             {
                 if (IsLeased(item.Id))
                 {
@@ -158,42 +117,12 @@ namespace RentAll.Infrastructure.Repositories
         }
         public ICollection<Lease> FindValidLeasesInCenter(int centerId)
         {
-            var foundLeases = new List<Lease>();
+            return _rentAllDbContext.Leases.Where(l => l.Valid == true).ToList();
 
-            foreach (var item in leases)
-            {
-                if (item.CenterId == centerId)
-                {
-                    if (item.Valid == true)
-                    {
-                        foundLeases.Add(item);
-                    }
-                }
-
-            }
-            if (foundLeases == null)
-            {
-                throw new InvalidOperationException($"No valid leases were found for center with id {centerId}");
-
-            }
-            return leases;
         }
-        
-        public (double, double) GetLeaseAreaAndRentByUnitType(Lease lease, UnitType unitType)
-        {
-            double totalAreaByUnitType = 0;
-            double totalRentByUnitType = 0;
-            foreach (var item in lease.Premises)
-            {
-                if (item.Type == unitType)
-                {
-                    totalAreaByUnitType += item.Area;
-                    totalRentByUnitType += item.MonthlyRentSqm * item.Area;
-                }
-            }
-            return (totalAreaByUnitType, totalRentByUnitType);
-        }
-        
+
+
+
         #endregion
 
     }

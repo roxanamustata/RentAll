@@ -20,5 +20,6 @@ namespace RentAll.Domain.Interfaces
         double CalculateCostsPerLease(int leaseId);
         DateTime CalculateLeaseEndDate(int leaseId);
         double CalculateRentPerLease(int leaseId);
+        (double, double) GetLeaseAreaAndRentByUnitType(Lease lease, UnitType unitType);
     }
 }

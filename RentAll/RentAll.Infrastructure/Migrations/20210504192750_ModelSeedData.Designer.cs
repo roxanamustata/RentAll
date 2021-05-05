@@ -10,8 +10,8 @@ using RentAll.Infrastructure.Data;
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    [Migration("20210430100255_initial")]
-    partial class Initial
+    [Migration("20210504192750_ModelSeedData")]
+    partial class ModelSeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,15 +23,15 @@ namespace RentAll.Infrastructure.Migrations
 
             modelBuilder.Entity("LeaseUnit", b =>
                 {
-                    b.Property<int>("LeasesId")
+                    b.Property<int>("LeaseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PremisesId")
+                    b.Property<int>("UnitId")
                         .HasColumnType("int");
 
-                    b.HasKey("LeasesId", "PremisesId");
+                    b.HasKey("LeaseId", "UnitId");
 
-                    b.HasIndex("PremisesId");
+                    b.HasIndex("UnitId");
 
                     b.ToTable("LeaseUnit");
                 });
@@ -182,6 +182,9 @@ namespace RentAll.Infrastructure.Migrations
                     b.Property<int>("CenterId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -193,9 +196,6 @@ namespace RentAll.Infrastructure.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
 
                     b.Property<int>("TermInMonths")
                         .HasColumnType("int");
@@ -210,7 +210,7 @@ namespace RentAll.Infrastructure.Migrations
 
                     b.HasIndex("ActivityId");
 
-                    b.HasIndex("TenantId");
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("UserId");
 
@@ -235,6 +235,20 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Activities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ActivityName = "Apparel",
+                            CategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ActivityName = "Shoes",
+                            CategoryId = 1
+                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Models.Category", b =>
@@ -250,6 +264,18 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryName = "Food"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Entertainment"
+                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Person", b =>
@@ -308,12 +334,7 @@ namespace RentAll.Infrastructure.Migrations
                     b.Property<string>("RoleName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -376,18 +397,33 @@ namespace RentAll.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
+                });
+
             modelBuilder.Entity("LeaseUnit", b =>
                 {
                     b.HasOne("RentAll.Domain.Lease", null)
                         .WithMany()
-                        .HasForeignKey("LeasesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("LeaseId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RentAll.Domain.Unit", null)
                         .WithMany()
-                        .HasForeignKey("PremisesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -435,14 +471,14 @@ namespace RentAll.Infrastructure.Migrations
             modelBuilder.Entity("RentAll.Domain.Lease", b =>
                 {
                     b.HasOne("RentAll.Domain.Models.Activity", "Activity")
-                        .WithMany()
+                        .WithMany("Leases")
                         .HasForeignKey("ActivityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RentAll.Domain.Company", "Tenant")
                         .WithMany("Leases")
-                        .HasForeignKey("TenantId")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -484,17 +520,10 @@ namespace RentAll.Infrastructure.Migrations
                         .HasForeignKey("PersonId");
                 });
 
-            modelBuilder.Entity("RentAll.Domain.Role", b =>
-                {
-                    b.HasOne("RentAll.Domain.User", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("RentAll.Domain.Unit", b =>
                 {
                     b.HasOne("RentAll.Domain.Center", null)
-                        .WithMany("Premises")
+                        .WithMany("Units")
                         .HasForeignKey("CenterId");
 
                     b.HasOne("RentAll.Domain.Floor", "Floor")
@@ -504,17 +533,37 @@ namespace RentAll.Infrastructure.Migrations
                     b.Navigation("Floor");
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("RentAll.Domain.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RentAll.Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RentAll.Domain.Center", b =>
                 {
                     b.Navigation("Floors");
 
-                    b.Navigation("Premises");
+                    b.Navigation("Units");
                 });
 
             modelBuilder.Entity("RentAll.Domain.Company", b =>
                 {
                     b.Navigation("ContactPersons");
 
+                    b.Navigation("Leases");
+                });
+
+            modelBuilder.Entity("RentAll.Domain.Models.Activity", b =>
+                {
                     b.Navigation("Leases");
                 });
 
@@ -530,11 +579,6 @@ namespace RentAll.Infrastructure.Migrations
                     b.Navigation("Emails");
 
                     b.Navigation("Phones");
-                });
-
-            modelBuilder.Entity("RentAll.Domain.User", b =>
-                {
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

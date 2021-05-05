@@ -13,13 +13,13 @@ namespace RentAll.Tests
     [TestFixture]
     public class CenterServiceFixture
     {
-        private CenterRepository centerRepository;
-        private ICenterService centerService;
+        private readonly ICenterRepository _centerRepository;
+        private readonly ICenterService _centerService;
 
-        public CenterServiceFixture()
+        public CenterServiceFixture(ICenterRepository centerRepository, ICenterService centerService)
         {
-            centerRepository = new CenterRepository();
-            centerService = new CenterService(centerRepository);
+            _centerRepository = centerRepository;
+            _centerService = centerService;
         }
 
         [SetUp]
@@ -27,16 +27,16 @@ namespace RentAll.Tests
         {
             // Arrange
 
-            var center1 = centerRepository.FindCenterById(1);
-            var unit1 = centerRepository.FindUnitById(1);
-            var unit2 = centerRepository.FindUnitById(2);
-            var unit3 = centerRepository.FindUnitById(3);
-            center1.Premises.Add(unit1);
-            center1.Premises.Add(unit2);
-            center1.Premises.Add(unit3);
-            var lease1 = centerRepository.FindLeaseById(1);
-            lease1.Premises.Add(unit1);
-            lease1.Premises.Add(unit2);
+            var center1 = _centerRepository.FindCenterById(1);
+            var unit1 = _centerRepository.FindUnitById(1);
+            var unit2 = _centerRepository.FindUnitById(2);
+            var unit3 = _centerRepository.FindUnitById(3);
+            center1.Units.Add(unit1);
+            center1.Units.Add(unit2);
+            center1.Units.Add(unit3);
+            var lease1 = _centerRepository.FindLeaseById(1);
+            lease1.Units.Add(unit1);
+            lease1.Units.Add(unit2);
             unit1.Leases.Add(lease1);
             unit2.Leases.Add(lease1);
         }
@@ -46,7 +46,7 @@ namespace RentAll.Tests
         public void CalculateCostsPerLeaseTest(int leaseId)
         {
             double expected = 9350;
-            double result = centerService.CalculateCostsPerLease(leaseId);
+            double result = _centerService.CalculateCostsPerLease(leaseId);
             Assert.AreEqual(expected, result);
 
         }
@@ -55,7 +55,7 @@ namespace RentAll.Tests
         public void CalculateOcupancyDegreePerCenterTest(int centerId)
         {
             double expected = 78.57;
-            double result = Math.Round(centerService.CalculateOcupancyDegreePerCenter(centerId),2);
+            double result = Math.Round(_centerService.CalculateOcupancyDegreePerCenter(centerId),2);
             Assert.AreEqual(expected, result);
 
         }

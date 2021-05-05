@@ -3,25 +3,26 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RentAll.Domain;
 using RentAll.Domain.Models;
+using RentAll.Infrastructure.EntityConfigurations;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace RentAll.Infrastructure.Data
 {
-    public class RentAllDbContext:DbContext
+    public class RentAllDbContext : DbContext
     {
-        private readonly string _connectionString ="Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+        private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
             "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public RentAllDbContext():base()
+        public RentAllDbContext() : base()
         {
-           
+
         }
 
-        public RentAllDbContext(DbContextOptions<RentAllDbContext> options):base(options)
+        public RentAllDbContext(DbContextOptions<RentAllDbContext> options) : base(options)
         {
-                
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -43,26 +44,24 @@ namespace RentAll.Infrastructure.Data
         public DbSet<Unit> Units { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public void Configure(ModelBuilder builder)
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new LeaseConfiguration());
 
-                //builder.Entity<Lease>(entity =>
-                //{
-                //    entity.HasOne(t => t.Tenant)
-                //        .WithMany(c => c.Leases)
-                //        .HasForeignKey(l => l.TenantId)
-                //        .OnDelete(DeleteBehavior.Restrict)
-                //        .HasConstraintName("FK_Lease_TenantId");
+            modelBuilder.Entity<Category>().HasData(
+                new Category() { Id = 1, CategoryName = "Food" },
+                new { Id = 2, CategoryName = "Entertainment" });
 
-                //    entity.HasOne(o => o.Landlord)
-                //        .WithMany(c => c.Leases)
-                //        .HasForeignKey(l => l.LandlordId)
-                //        .OnDelete(DeleteBehavior.Restrict)
-                //        .HasConstraintName("FK_Lease_LandlordId");
-                //});
+            modelBuilder.Entity<Activity>().HasData(
+
+                new { Id = 1, ActivityName = "Apparel", CategoryId = 1 },
+                new { Id = 2, ActivityName = "Shoes", CategoryId = 1 });
 
 
 
         }
+
     }
 }

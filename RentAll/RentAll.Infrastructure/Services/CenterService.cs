@@ -10,40 +10,29 @@ namespace RentAll.Infrastructure.Services
 {
     public class CenterService : ICenterService
     {
-        private ICenterRepository _centerRepository;
+        private readonly ICenterRepository _centerRepository;
 
-        public CenterService(CenterRepository centerRepository)
+        public CenterService(ICenterRepository centerRepository)
         {
             _centerRepository = centerRepository;
-        }
-
-        public ICenterRepository CenterRepository
-        {
-            get
-            {
-                return _centerRepository;
-            }
         }
 
         #region public methods
         public double CalculateGrossLeasableAreaPerCenter(int centerId)
         {
-            var center = CenterRepository.FindCenterById(centerId);
-            double GrossLeasableArea = 0;
-            center.Premises.Sum(p => GrossLeasableArea += p.Area);
-                //ForEach();
-
-            return GrossLeasableArea;
+            var center = _centerRepository.FindCenterById(centerId);
+            return center.Units.Sum(p => p.Area);
+            
         }
 
         public double CalculateLeasedAreaPerCenter(int centerId)
         {
-            var center = CenterRepository.FindCenterById(centerId);
+            var center = _centerRepository.FindCenterById(centerId);
 
             double leasedArea = 0;
-            foreach (var unit in center.Premises)
+            foreach (var unit in center.Units)
             {
-                if (CenterRepository.IsLeased(unit.Id))
+                if (_centerRepository.IsLeased(unit.Id))
                 {
                     leasedArea += unit.Area;
                 }
@@ -54,21 +43,21 @@ namespace RentAll.Infrastructure.Services
 
         public double CalculateGrossLeasableAreaPerFloor(int centerId, string floorName)
         {
-            var center = CenterRepository.FindCenterById(centerId);
+            var center = _centerRepository.FindCenterById(centerId);
             double GrossLeasableArea = 0;
-            center.Premises.Where(p => p.Floor.FloorName == floorName).Sum(p => GrossLeasableArea += p.Area);
+            center.Units.Where(p => p.Floor.FloorName == floorName).Sum(p=>p.Area);
 
             return GrossLeasableArea;
         }
 
         public double CalculateLeasedAreaPerFloor(int centerId, string floorName)
         {
-            var center = CenterRepository.FindCenterById(centerId);
+            var center = _centerRepository.FindCenterById(centerId);
 
             double leasedArea = 0;
-            foreach (Unit unit in center.Premises)
+            foreach (Unit unit in center.Units)
             {
-                if (CenterRepository.IsLeased(unit.Id) && unit.Floor.FloorName == floorName)
+                if (_centerRepository.IsLeased(unit.Id) && unit.Floor.FloorName == floorName)
                 {
                     leasedArea += unit.Area;
                 }
@@ -88,15 +77,15 @@ namespace RentAll.Infrastructure.Services
 
         public double CalculateAverageRentPerSQMPerCenter(int centerId)
         {
-            var center = CenterRepository.FindCenterById(centerId);
+            var center = _centerRepository.FindCenterById(centerId);
 
             double totalRent = 0;
 
-            foreach (Unit unit in center.Premises)
+            foreach (Unit unit in center.Units)
             {
-                if (CenterRepository.IsLeased(unit.Id))
+                if (_centerRepository.IsLeased(unit.Id))
                 {
-                    totalRent += CenterRepository.GetValidLease(unit).TotalMonthlyRent;
+                    totalRent += _centerRepository.GetValidLease(unit).TotalMonthlyRent;
                 }
             }
 
@@ -106,7 +95,7 @@ namespace RentAll.Infrastructure.Services
         public (double, double) CalculateLeasedAreaAndTotalRentPerActivity(int centerId, string activityName)
         {
 
-            var leases = CenterRepository.FindValidLeasesInCenter(centerId);
+            var leases = _centerRepository.FindValidLeasesInCenter(centerId);
             double leasedAreaPerActivity = 0;
             double totalRentPerActivity = 0;
 
@@ -114,8 +103,8 @@ namespace RentAll.Infrastructure.Services
             {
                 if (item.Activity.ActivityName == activityName)
                 {
-                    leasedAreaPerActivity += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
-                    totalRentPerActivity += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
+                    leasedAreaPerActivity += GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
+                    totalRentPerActivity += GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
                 }
             }
             return (leasedAreaPerActivity, totalRentPerActivity);
@@ -123,17 +112,18 @@ namespace RentAll.Infrastructure.Services
         public (double, double) CalculateLeasedAreaAndTotalRentPerActivityRange(int centerId, string activityRangeName)
         {
 
-            var leases = CenterRepository.FindValidLeasesInCenter(centerId);
+            var leases = _centerRepository.FindValidLeasesInCenter(centerId);
 
-            double leasedAreaPerActivityRange = 0;
-            double totalRentPerActivityRange = 0;
+            double leasedAreaPerCategory = 0;
+            double totalRentPerCategory = 0;
 
+            
             foreach (var item in leases)
             {
-                leasedAreaPerActivityRange += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
-                totalRentPerActivityRange += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
+                leasedAreaPerCategory +=GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
+                totalRentPerCategory += GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
             }
-            return (leasedAreaPerActivityRange, totalRentPerActivityRange);
+            return (leasedAreaPerCategory, totalRentPerCategory);
         }
 
         public double CalculateAverageRentPerSQMPerActivity(int centerId, string activityName)
@@ -148,7 +138,7 @@ namespace RentAll.Infrastructure.Services
 
         public double CalculateCostsPerLease(int leaseId)
         {
-            Lease lease = CenterRepository.FindLeaseById(leaseId);
+            Lease lease = _centerRepository.FindLeaseById(leaseId);
 
             return lease.TotalMonthlyRent + lease.TotalMonthlyMaintenanceCost + lease.TotalMarketingFee;
 
@@ -156,7 +146,7 @@ namespace RentAll.Infrastructure.Services
         }
         public DateTime CalculateLeaseEndDate(int leaseId)
         {
-            Lease lease = CenterRepository.FindLeaseById(leaseId);
+            Lease lease = _centerRepository.FindLeaseById(leaseId);
             TimeSpan duration = new TimeSpan(lease.TermInMonths * 30, 0, 0, 0);
             DateTime endDate = lease.StartDate.Add(duration);
 
@@ -164,12 +154,29 @@ namespace RentAll.Infrastructure.Services
         }
         public double CalculateRentPerLease(int leaseId)
         {
-            Lease lease = CenterRepository.FindLeaseById(leaseId);
-            double totalRent = 0;
-            lease.Premises.Sum(u => totalRent += lease.TotalMonthlyRent);
+            Lease lease = _centerRepository.FindLeaseById(leaseId);
+           
+            return lease.Units.Sum(u => lease.TotalMonthlyRent);
                               
-            return totalRent;
+           
         }
+        public (double, double) GetLeaseAreaAndRentByUnitType(Lease lease, UnitType unitType)
+        {
+            double totalAreaByUnitType = 0;
+            double totalRentByUnitType = 0;
+            foreach (var item in lease.Units)
+            {
+                if (item.Type == unitType)
+                {
+                    totalAreaByUnitType += item.Area;
+                    totalRentByUnitType += item.MonthlyRentSqm * item.Area;
+                }
+            }
+            return (totalAreaByUnitType, totalRentByUnitType);
+        }
+
+
+
         #endregion
     }
 }

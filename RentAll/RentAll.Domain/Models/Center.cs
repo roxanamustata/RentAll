@@ -15,7 +15,7 @@ namespace RentAll.Domain
         public Company Owner { get; set; }
         public ICollection<Floor> Floors { get; set; }
         public int ParkingCapacity { get; set; }
-        public ICollection<Unit> Premises { get; set; }
+        public ICollection<Unit> Units { get; set; }
 
         #endregion
 

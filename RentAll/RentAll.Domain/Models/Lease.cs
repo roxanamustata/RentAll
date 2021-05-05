@@ -13,11 +13,9 @@ namespace RentAll.Domain
 
         public int Id { get; set; }
         public string LeaseNumber { get; set; }
-        //public int LandlordId { get; set; }
-        //public Company Landlord { get; set; }
-        public int TenantId { get; set; }
+        public int CompanyId { get; set; }
         public Company Tenant { get; set; }
-        public ICollection<Unit> Premises { get; set; }
+        public ICollection<Unit> Units { get; set; }
         public int UserId { get; set; }
         public User LeasingManager { get; set; }
         public DateTime SigningDate { get; set; }
@@ -38,7 +36,7 @@ namespace RentAll.Domain
             get
             {
                 double total = 0;
-                foreach (var unit in Premises)
+                foreach (var unit in Units)
                 {
                     total += unit.Area * unit.MonthlyRentSqm;
                 }
@@ -51,7 +49,7 @@ namespace RentAll.Domain
             get
             {
                 double total = 0;
-                foreach (var unit in Premises)
+                foreach (var unit in Units)
                 {
                     total += unit.Area * unit.MonthlyMaintenanceCostSqm;
                 }
@@ -64,7 +62,7 @@ namespace RentAll.Domain
             get
             {
                 double total = 0;
-                foreach (var unit in Premises)
+                foreach (var unit in Units)
                 {
                     total += unit.Area * unit.MonthlyMarketingFeeSqm;
                 }
