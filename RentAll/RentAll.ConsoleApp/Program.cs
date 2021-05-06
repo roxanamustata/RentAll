@@ -33,23 +33,23 @@ namespace RentAll.ConsoleApp
             //    rentAllDbContext.Activities.AddRange(new Activity
             //    {
             //        ActivityName = "Fast-Food",
-            //        Category = rentAllDbContext.Categories.Find(5)
+            //        Category = rentAllDbContext.Categories.FirstOrDefault(c=>c.CategoryName=="Food")
             //    },
             //    new Activity
             //    {
             //        ActivityName = "Restaurant",
-            //        Category = rentAllDbContext.Categories.Find(5)
+            //        Category = rentAllDbContext.Categories.FirstOrDefault(c => c.CategoryName == "Food")
             //    }
-            //    );
+            //    ) ;
 
             //    rentAllDbContext.SaveChanges();
 
 
             //}
 
-            var connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;" +
-            "Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
-            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //var connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;" +
+            //"Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+            //"ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
 
 
@@ -136,16 +136,24 @@ namespace RentAll.ConsoleApp
             //    create queries, use filters, projections and ordering.
             //    investigate what queries are generated in sql profile
 
+            //var options = new DbContextOptionsBuilder<RentAllDbContext>()
+            //.UseSqlServer(new SqlConnection(connectionString)).Options;
+
+            //using (var context1 = new RentAllDbContext(options))
+            //{
+            //    var funCategory = context1.Categories.Single(c => c.CategoryName == "Entertainment");
+            //    var activitiesCount = context1.Entry(funCategory).Collection(c => c.Activities).Query().Count();
+            //    Console.WriteLine(activitiesCount);
+            //}
 
 
 
-
-          //  Create queries with all types of joins.
+            //  Create queries with all types of joins.
 
 
         }
     }
-    }
+}
 
 
 

@@ -246,6 +246,30 @@ namespace RentAll.Infrastructure.Migrations
                             Id = 2,
                             ActivityName = "Shoes",
                             CategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ActivityName = "Cinema",
+                            CategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ActivityName = "Playground",
+                            CategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ActivityName = "Medical Center",
+                            CategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ActivityName = "Car Registration",
+                            CategoryId = 3
                         });
                 });
 
@@ -267,12 +291,17 @@ namespace RentAll.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryName = "Food"
+                            CategoryName = "Non-Food"
                         },
                         new
                         {
                             Id = 2,
                             CategoryName = "Entertainment"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Services"
                         });
                 });
 

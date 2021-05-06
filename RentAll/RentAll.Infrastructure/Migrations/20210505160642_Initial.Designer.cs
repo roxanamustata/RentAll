@@ -10,8 +10,8 @@ using RentAll.Infrastructure.Data;
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    [Migration("20210504192750_ModelSeedData")]
-    partial class ModelSeedData
+    [Migration("20210505160642_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,20 +235,6 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Activities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ActivityName = "Apparel",
-                            CategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ActivityName = "Shoes",
-                            CategoryId = 1
-                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Models.Category", b =>
@@ -264,18 +250,6 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryName = "Food"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryName = "Entertainment"
-                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Person", b =>

@@ -12,23 +12,23 @@ namespace RentAll.Infrastructure.Data
 {
     public class RentAllDbContext : DbContext
     {
-        //private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
-        //    "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        //public RentAllDbContext() : base()
-        //{
+        public RentAllDbContext() : base()
+        {
 
-        //}
+        }
 
         public RentAllDbContext(DbContextOptions<RentAllDbContext> options) : base(options)
         {
 
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(_connectionString);
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_connectionString);
+        }
 
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -51,15 +51,22 @@ namespace RentAll.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new LeaseConfiguration());
 
             modelBuilder.Entity<Category>().HasData(
-                new Category() { Id = 1, CategoryName = "Food" },
-                new { Id = 2, CategoryName = "Entertainment" });
+                new Category() { Id = 1, CategoryName = "Non-Food" },
+                new { Id = 2, CategoryName = "Entertainment" },        
+                new { Id = 3, CategoryName = "Services" });
 
             modelBuilder.Entity<Activity>().HasData(
 
                 new { Id = 1, ActivityName = "Apparel", CategoryId = 1 },
                 new { Id = 2, ActivityName = "Shoes", CategoryId = 1 });
 
+            modelBuilder.Entity<Activity>().HasData(
 
+            new { Id = 3, ActivityName = "Cinema", CategoryId = 2 },
+            new { Id = 4, ActivityName = "Playground", CategoryId = 2 },
+            new { Id = 5, ActivityName = "Medical Center", CategoryId = 3 },
+            new { Id = 6, ActivityName = "Car Registration", CategoryId = 3 }
+            );
 
         }
 

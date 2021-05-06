@@ -10,8 +10,8 @@ using RentAll.Infrastructure.Data;
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    [Migration("20210504192613_Initial")]
-    partial class Initial
+    [Migration("20210505163926_ModelSeedData")]
+    partial class ModelSeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,6 +235,44 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Activities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ActivityName = "Apparel",
+                            CategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ActivityName = "Shoes",
+                            CategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ActivityName = "Cinema",
+                            CategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ActivityName = "Playground",
+                            CategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ActivityName = "Medical Center",
+                            CategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ActivityName = "Car Registration",
+                            CategoryId = 3
+                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Models.Category", b =>
@@ -250,6 +288,23 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryName = "Non-Food"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Entertainment"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Services"
+                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Person", b =>
