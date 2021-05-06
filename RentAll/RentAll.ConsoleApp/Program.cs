@@ -1,20 +1,25 @@
 ﻿using RentAll.Domain;
 using RentAll.Domain.Interfaces;
+using RentAll.Domain.Models;
 using RentAll.Infrastructure.Repositories;
 using RentAll.Infrastructure.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using Unity;
 
 namespace RentAll.ConsoleApp
 {
     class Program
     {
-
+        static Program()
+        {
+            ServiceLocator.RegisterAll();
+        }
         static void Main(string[] args)
         {
-            CenterRepository centerRepository = new CenterRepository();
+            var centerRepository = new CenterRepository();
             ICenterService centerService = new CenterService(centerRepository);
 
             var center1 = centerRepository.FindCenterById(1);
@@ -44,7 +49,12 @@ namespace RentAll.ConsoleApp
 
             Console.WriteLine($"Total monthly costs per lease with id {lease1.Id} are: {centerService.CalculateCostsPerLease(lease1.Id)} EUR");
 
+                        
 
+            var leaseFactory = ServiceLocator.Resolve<LeaseFactory>("Storage");
+            var lease=leaseFactory.CreateLease();
+
+            Console.WriteLine(lease);
 
         }
 
