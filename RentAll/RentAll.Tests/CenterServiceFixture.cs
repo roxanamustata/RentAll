@@ -16,8 +16,8 @@ namespace RentAll.Tests
     [TestFixture]
     public class CenterServiceFixture
     {
-        private readonly Mock<ICenterRepository> mockCenterRepository = new Mock<ICenterRepository>();
-        public ICenterRepository MockCentersRepository { get; set; }
+        private readonly Mock<ICenterRepository> _mockCenterRepository = new Mock<ICenterRepository>();
+        //public ICenterRepository MockCentersRepository { get; set; }
 
 
 
@@ -170,20 +170,20 @@ namespace RentAll.Tests
             // Mock the Center Repository using Moq
 
             // Return all the centers
-            mockCenterRepository.Setup(mr => mr.FindAll()).Returns(centers);
+            _mockCenterRepository.Setup(mr => mr.FindAll()).Returns(centers);
 
             // return a center by Id
-            mockCenterRepository.Setup(mr => mr.FindCenterById(
+            _mockCenterRepository.Setup(mr => mr.FindCenterById(
                 It.IsAny<int>())).Returns((int i) => centers.Where(
                 x => x.Id == i).Single());
 
             // return a center by Name
-            mockCenterRepository.Setup(mr => mr.FindByName(
+            _mockCenterRepository.Setup(mr => mr.FindByName(
                 It.IsAny<string>())).Returns((string s) => centers.Where(
                 x => x.Name == s).Single());
 
             // Allows us to test saving a center
-            mockCenterRepository.Setup(mr => mr.Save(It.IsAny<Center>())).Returns(
+            _mockCenterRepository.Setup(mr => mr.Save(It.IsAny<Center>())).Returns(
                 (Center target) =>
                 {
 
@@ -213,61 +213,74 @@ namespace RentAll.Tests
                 });
 
 
-            MockCentersRepository = mockCenterRepository.Object;
+            //MockCentersRepository = mockCenterRepository.Object;        
         }
 
+        [Test]
+        public void TestCalculateGrossLeasableAreaPerCenter() 
+        {
+            var service = new CenterService(_mockCenterRepository.Object);
+            service.CalculateGrossLeasableAreaPerCenter(1);
+
+            _mockCenterRepository.Verify(m => m.FindCenterById(1), Times.Once);
+
+        }
 
         // Can we return a product By Id?
         [TestCase(1)]
         public void CanReturnCenterById(int id)
         {
-
+            var centerService = new CenterService(_mockCenterRepository.Object);
             // Try finding a product by id
-            Center testCenter = MockCentersRepository.FindCenterById(id);
+            //Center testCenter = centerService.FindCenterById(id);
 
-            Assert.IsNotNull(testCenter); // Test if null
-            Assert.IsInstanceOf(typeof(Center), testCenter); // Test type
-            Assert.AreEqual("Iulius Mall Timisoara", testCenter.Name); // Verify it is the right product
+            //Assert.IsNotNull(testCenter); // Test if null
+            //Assert.IsInstanceOf(typeof(Center), testCenter); // Test type
+            //Assert.AreEqual("Iulius Mall Timisoara", testCenter.Name); // Verify it is the right product
         }
 
         [TestCase("Iulius Mall Timisoara")]
         public void CanReturnCenterByName(string name)
         {
             // Try finding a product by Name
-            Center testCenter = MockCentersRepository.FindByName(name);
+            //Center testCenter = MockCentersRepository.FindByName(name);
 
-            Assert.IsNotNull(testCenter); // Test if null
-            Assert.IsInstanceOf(typeof(Center), testCenter); // Test type
-            Assert.AreEqual(1, testCenter.Id); // Verify it is the right product
+            //Assert.IsNotNull(testCenter); // Test if null
+            //Assert.IsInstanceOf(typeof(Center), testCenter); // Test type
+            //Assert.AreEqual(1, testCenter.Id); // Verify it is the right product
         }
+
+
 
 
         [TestCase]
         public void CanReturnAllProducts()
         {
-            // Try finding all products
-            IList<Center> testCenters = this.MockCentersRepository.FindAll();
+            var centerService = new CenterService(_mockCenterRepository.Object);
+            
 
-            Assert.IsNotNull(testCenters); // Test if null
-            Assert.AreEqual(2, testCenters.Count); // Verify the correct Number
+            
+
+            //Assert.IsNotNull(testCenters); // Test if null
+            //Assert.AreEqual(2, testCenters.Count); // Verify the correct Number
         }
 
 
-        [TestCase(1)]
-        public void CalculateGrossLeasableAreaPerCenter(int id)
+        [TestCase(1,5550)]
+        public void TestCalculateGrossLeasableAreaPerCenter(int id, int expectedResult)
         {
-            var centerService = new CenterService(MockCentersRepository);
-           
-                      
+            var centerService = new CenterService(_mockCenterRepository.Object);
+
+
             double result = centerService.CalculateGrossLeasableAreaPerCenter(id);
-            Assert.AreEqual(5550, result);
+            Assert.AreEqual(expectedResult, result);
 
         }
 
-        [TestCase(1, "Ground Floor")]
-        public void CalculateGrossLeasableAreaPerFloor(int centerId, string floorName)
+        [TestCase(1, "Ground Floor", 550)]
+        public void CalculateGrossLeasableAreaPerFloor(int centerId, string floorName, int expectedResult)
         {
-            var centerService = new CenterService(MockCentersRepository);
+            var centerService = new CenterService(_mockCenterRepository.Object);
 
 
             double result = centerService.CalculateGrossLeasableAreaPerFloor(centerId,floorName);
