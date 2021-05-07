@@ -6,6 +6,11 @@ namespace RentAll.Domain.Interfaces
 {
     public interface ICenterRepository
     {
+        IList<Center> FindAll();
+
+        Center FindByName(string productName);
+
+        bool Save(Center center);
         Center FindCenterById(int centerId);
         Unit FindUnitById(int unitId);
         Lease GetValidLease(Unit unit);

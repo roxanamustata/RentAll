@@ -51,10 +51,13 @@ namespace RentAll.ConsoleApp
 
                         
 
-            var leaseFactory = ServiceLocator.Resolve<LeaseFactory>("Storage");
+            var leaseFactory = ServiceLocator.Resolve<LeaseFactory>();
             var lease=leaseFactory.CreateLease();
+            
 
             Console.WriteLine(lease);
+            Console.ReadLine();
+           
 
         }
 

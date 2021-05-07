@@ -20,18 +20,18 @@ namespace RentAll.Infrastructure.Repositories
         #region constructors
         public CenterRepository()
         {
-            centers.Add(DomainModelFactory.GetShoppingCenter(1, "Iulius Mall Timisoara"));
-            centers.Add(DomainModelFactory.GetShoppingCenter(2, "Iulius Mall Cluj"));
-            centers.Add(DomainModelFactory.GetShoppingCenter(3, "Iulius Mall Iasi"));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(1, 50));
-            units.Add(DomainModelFactory.GetUnitOnGroundfloor(2, 500));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(3, 150));
-            units.Add(DomainModelFactory.GetUnitOnGroundfloor(4, 250));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(5, 750));
-            units.Add(DomainModelFactory.GetUnitOnFirstfloor(6, 2750));
-            leases.Add(DomainModelFactory.GetLease(1));
-            leases.Add(DomainModelFactory.GetLease(2));
-            leases.Add(DomainModelFactory.GetLease(3));
+            //centers.Add(DomainModelFactory.GetShoppingCenter(1, "Iulius Mall Timisoara"));
+            //centers.Add(DomainModelFactory.GetShoppingCenter(2, "Iulius Mall Cluj"));
+            //centers.Add(DomainModelFactory.GetShoppingCenter(3, "Iulius Mall Iasi"));
+            //units.Add(DomainModelFactory.GetUnitOnFirstfloor(1, 50));
+            //units.Add(DomainModelFactory.GetUnitOnGroundfloor(2, 500));
+            //units.Add(DomainModelFactory.GetUnitOnFirstfloor(3, 150));
+            //units.Add(DomainModelFactory.GetUnitOnGroundfloor(4, 250));
+            //units.Add(DomainModelFactory.GetUnitOnFirstfloor(5, 750));
+            //units.Add(DomainModelFactory.GetUnitOnFirstfloor(6, 2750));
+            //leases.Add(DomainModelFactory.GetLease(1));
+            //leases.Add(DomainModelFactory.GetLease(2));
+            //leases.Add(DomainModelFactory.GetLease(3));
         }
         #endregion
 
@@ -40,41 +40,35 @@ namespace RentAll.Infrastructure.Repositories
 
         public Center FindCenterById(int centerId)
         {
-            Center center = null;
-            foreach (var item in centers)
-            {
-                if (item.Id == centerId)
-                {
-                    center = item;
-                }
-
-            }
-            if (center == null)
-            {
-                throw new InvalidOperationException($"Center with id {centerId} not found");
-
-            }
-            return center;
+            return centers.FirstOrDefault(c => c.Id == centerId);
         }
-              
+
+        public IList<Center> FindAll()
+        {
+            return centers;
+        }
+
+        public Center FindByName(string productName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save(Center center)
+        {
+            if (centers.FirstOrDefault(c => c.Id == center.Id) == null)
+            {
+                centers.Add(center);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public Unit FindUnitById(int unitId)
         {
-            Unit unit = null;
-            foreach (var item in units)
-            {
-                if (item.Id == unitId)
-                {
-                    unit = item;
-                }
-
-            }
-            if (unit == null)
-            {
-                throw new InvalidOperationException($"Unit with id {unitId} not found");
-
-            }
-            return unit;
+            return units.FirstOrDefault(u => u.Id == unitId);
         }
         public Lease GetValidLease(Unit unit)
         {
@@ -94,22 +88,8 @@ namespace RentAll.Infrastructure.Repositories
         }
         public Unit FindUnitInCenterByCode(int centerId, string unitCode)
         {
-            Center center = FindCenterById(centerId);
-            Unit unit = null;
-            foreach (var item in center.Premises)
-            {
-                if (item.Code == unitCode)
-                {
-                    unit = item;
-                }
-
-            }
-            if (unit == null)
-            {
-                throw new InvalidOperationException($"Unit with code {unitCode} not found");
-
-            }
-            return unit;
+            return FindCenterById(centerId).Premises.FirstOrDefault(p=>p.Code==unitCode);
+         
         }
         public void AddLeaseToUnitInCenter(int centerId, Unit unit, Lease lease)
         {
@@ -119,21 +99,7 @@ namespace RentAll.Infrastructure.Repositories
 
         public Lease FindLeaseById(int leaseId)
         {
-            Lease lease = null;
-            foreach (var item in leases)
-            {
-                if (item.Id == leaseId)
-                {
-                    lease = item;
-                }
-
-            }
-            if (lease == null)
-            {
-                throw new InvalidOperationException($"Center with id {leaseId} not found");
-
-            }
-            return lease;
+            return leases.FirstOrDefault(l=>l.Id==leaseId);
         }
         public List<Lease> FindLeasesByActivity(int centerId, string activityName)
         {
@@ -204,6 +170,7 @@ namespace RentAll.Infrastructure.Repositories
             }
             return (totalAreaByUnitType, totalRentByUnitType);
         }
+
         
         #endregion
 

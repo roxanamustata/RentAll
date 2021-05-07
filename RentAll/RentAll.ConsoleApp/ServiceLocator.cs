@@ -22,10 +22,8 @@ namespace RentAll.ConsoleApp
             Container.RegisterType<IUserRepository, UserRepository>();
 
             Container.RegisterType<ICenterService, CenterService>();
-
-            Container.RegisterType<IUnit, StorageUnit>(new InjectionConstructor("Storage"));
-            Container.RegisterType<IUnit, RetailUnit>(new InjectionConstructor("Retail"));
-            Container.RegisterType<IUnit, OfficeUnit>(new InjectionConstructor("Office"));
+                        
+            Container.RegisterType<IUnit, OfficeUnit>();
 
         }
 
@@ -34,9 +32,6 @@ namespace RentAll.ConsoleApp
             return Container.Resolve<T>();
         }
 
-        public static T Resolve<T>(string type)
-        {
-            return Container.Resolve<T>(type);
-        }
+        
     }
 }

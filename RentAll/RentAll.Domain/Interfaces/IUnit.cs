@@ -6,6 +6,6 @@ namespace RentAll.Domain.Interfaces
 {
    public interface IUnit
     {
-       string GetUnitType();
+        string GetUnitType();
     }
 }
