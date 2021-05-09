@@ -6,19 +6,21 @@ namespace RentAll.Domain.Interfaces
 {
     public interface ICenterService
     {
-        double CalculateGrossLeasableAreaPerCenter(int centerId);
-        double CalculateLeasedAreaPerCenter(int centerId);
-        double CalculateGrossLeasableAreaPerFloor(int centerId, string floorName);
-        double CalculateLeasedAreaPerFloor(int centerId, string floorName);
-        double CalculateOcupancyDegreePerCenter(int centerId);
-        double CalculateOcupancyDegreePerFloor(int centerId, string floorName);
-        double CalculateAverageRentPerSQMPerCenter(int centerId);
-        (double, double) CalculateLeasedAreaAndTotalRentPerActivity(int centerId, string activityName);
-        (double, double) CalculateLeasedAreaAndTotalRentPerActivityRange(int centerId, string activityRangeName);
-        double CalculateAverageRentPerSQMPerActivity(int centerId, string activityName);
-        double CalculateAverageRentPerSQMPerActivityRange(int centerId, string activityRangeName);
-        double CalculateCostsPerLease(int leaseId);
-        DateTime CalculateLeaseEndDate(int leaseId);
-        double CalculateRentPerLease(int leaseId);
+        double CalculateGrossLeasableAreaOnCenter(int centerId);
+        double CalculateLeasedAreaOnCenter(int centerId);
+        double CalculateOcupancyDegreeOnCenter(int centerId);
+        double CalculateGrossLeasableAreaInCenterOnFloor(int centerId, string floorName);
+        double CalculateLeasedAreaInCenterOnFloor(int centerId, string floorName);
+        double CalculateOcupancyDegreeInCenterOnFloor(int centerId, string floorName);
+        double CalculateTotalRentOnCenter(int centerId);
+        double CalculateAverageRentPerSqmOnCenter(int centerId);
+        double CalculateLeasedAreaInCenterOnActivity(int centerId, string activityName);
+        double CalculateTotalRentInCenterOnActivity(int centerId, string activityName);
+        double CalculateAverageRentPerSqmInCenterOnActivity(int centerId, string activityName);
+        double CalculateLeasedAreaInCenterOnActivityCategory(int centerId, string categoryName);
+        double CalculateTotalRentInCenterOnActivityCategory(int centerId, string categoryName);
+        double CalculateAverageRentPerSqmInCenterOnActivityCategory(int centerId, string categoryName);
+        double CalculateTotalCostsPerLease(int leaseId);
+        
     }
 }

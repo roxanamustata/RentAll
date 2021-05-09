@@ -1,5 +1,6 @@
 ﻿using RentAll.Domain;
 using RentAll.Domain.Interfaces;
+
 using RentAll.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -10,166 +11,116 @@ namespace RentAll.Infrastructure.Services
 {
     public class CenterService : ICenterService
     {
-        private ICenterRepository _centerRepository;
+        #region fields
+        private CenterRepository _centerRepository;
+        #endregion
 
+        #region constructors
         public CenterService(CenterRepository centerRepository)
         {
             _centerRepository = centerRepository;
         }
-
-        public ICenterRepository CenterRepository
-        {
-            get
-            {
-                return _centerRepository;
-            }
-        }
+        #endregion
 
         #region public methods
-        public double CalculateGrossLeasableAreaPerCenter(int centerId)
+        public double CalculateGrossLeasableAreaOnCenter(int centerId)
         {
-            var center = CenterRepository.FindCenterById(centerId);
-            double GrossLeasableArea = 0;
-            center.Premises.Sum(p => GrossLeasableArea += p.Area);
-                //ForEach();
-
-            return GrossLeasableArea;
-        }
-
-        public double CalculateLeasedAreaPerCenter(int centerId)
-        {
-            var center = CenterRepository.FindCenterById(centerId);
-
-            double leasedArea = 0;
-            foreach (var unit in center.Premises)
-            {
-                if (CenterRepository.IsLeased(unit.Id))
-                {
-                    leasedArea += unit.Area;
-                }
-            }
-            return leasedArea;
+            return _centerRepository.FindAllUnitsInCenter(centerId)
+                    .Sum(u => u.Area);
 
         }
 
-        public double CalculateGrossLeasableAreaPerFloor(int centerId, string floorName)
+        public double CalculateLeasedAreaOnCenter(int centerId)
         {
-            var center = CenterRepository.FindCenterById(centerId);
-            double GrossLeasableArea = 0;
-            center.Premises.Where(p => p.Floor.FloorName == floorName).Sum(p => GrossLeasableArea += p.Area);
-
-            return GrossLeasableArea;
-        }
-
-        public double CalculateLeasedAreaPerFloor(int centerId, string floorName)
-        {
-            var center = CenterRepository.FindCenterById(centerId);
-
-            double leasedArea = 0;
-            foreach (Unit unit in center.Premises)
-            {
-                if (CenterRepository.IsLeased(unit.Id) && unit.Floor.FloorName == floorName)
-                {
-                    leasedArea += unit.Area;
-                }
-            }
-            return leasedArea;
-        }
-
-        public double CalculateOcupancyDegreePerCenter(int centerId)
-        {
-            return CalculateLeasedAreaPerCenter(centerId) / CalculateGrossLeasableAreaPerCenter(centerId) * 100;
-        }
-
-        public double CalculateOcupancyDegreePerFloor(int centerId, string floorName)
-        {
-            return Math.Round(CalculateLeasedAreaPerFloor(centerId, floorName) / CalculateGrossLeasableAreaPerFloor(centerId, floorName) * 100, 2);
-        }
-
-        public double CalculateAverageRentPerSQMPerCenter(int centerId)
-        {
-            var center = CenterRepository.FindCenterById(centerId);
-
-            double totalRent = 0;
-
-            foreach (Unit unit in center.Premises)
-            {
-                if (CenterRepository.IsLeased(unit.Id))
-                {
-                    totalRent += CenterRepository.GetValidLease(unit).TotalMonthlyRent;
-                }
-            }
-
-            return Math.Round(totalRent / CalculateLeasedAreaPerCenter(centerId), 2);
-        }
-
-        public (double, double) CalculateLeasedAreaAndTotalRentPerActivity(int centerId, string activityName)
-        {
-
-            var leases = CenterRepository.FindValidLeasesInCenter(centerId);
-            double leasedAreaPerActivity = 0;
-            double totalRentPerActivity = 0;
-
-            foreach (var item in leases)
-            {
-                if (item.Activity.ActivityName == activityName)
-                {
-                    leasedAreaPerActivity += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
-                    totalRentPerActivity += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
-                }
-            }
-            return (leasedAreaPerActivity, totalRentPerActivity);
-        }
-        public (double, double) CalculateLeasedAreaAndTotalRentPerActivityRange(int centerId, string activityRangeName)
-        {
-
-            var leases = CenterRepository.FindValidLeasesInCenter(centerId);
-
-            double leasedAreaPerActivityRange = 0;
-            double totalRentPerActivityRange = 0;
-
-            foreach (var item in leases)
-            {
-                leasedAreaPerActivityRange += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item1;
-                totalRentPerActivityRange += CenterRepository.GetLeaseAreaAndRentByUnitType(item, UnitType.Retail).Item2;
-            }
-            return (leasedAreaPerActivityRange, totalRentPerActivityRange);
-        }
-
-        public double CalculateAverageRentPerSQMPerActivity(int centerId, string activityName)
-        {
-            return CalculateLeasedAreaAndTotalRentPerActivityRange(centerId, activityName).Item2 / CalculateLeasedAreaAndTotalRentPerActivity(centerId, activityName).Item1;
-        }
-        public double CalculateAverageRentPerSQMPerActivityRange(int centerId, string activityRangeName)
-        {
-            return CalculateLeasedAreaAndTotalRentPerActivityRange(centerId, activityRangeName).Item2 / CalculateLeasedAreaAndTotalRentPerActivityRange(centerId, activityRangeName).Item1;
+            return _centerRepository.FindAllLeasedUnitsInCenter(centerId)
+                    .Sum(u => u.Area);
 
         }
 
-        public double CalculateCostsPerLease(int leaseId)
+        public double CalculateOcupancyDegreeOnCenter(int centerId)
         {
-            Lease lease = CenterRepository.FindLeaseById(leaseId);
+            return Math.Round(CalculateLeasedAreaOnCenter(centerId)
+                / CalculateGrossLeasableAreaOnCenter(centerId) * 100, 2);
+        }
 
-            return lease.TotalMonthlyRent + lease.TotalMonthlyMaintenanceCost + lease.TotalMarketingFee;
+        public double CalculateGrossLeasableAreaInCenterOnFloor(int centerId, string floorName)
+        {
+            return _centerRepository.FindAllUnitsInCenterOnFloor(centerId, floorName)
+                    .Sum(u => u.Area);
+        }
+
+        public double CalculateLeasedAreaInCenterOnFloor(int centerId, string floorName)
+        {
+            return _centerRepository.FindAllLeasedUnitsInCenterOnFloor(centerId, floorName)
+                    .Sum(u => u.Area);
+        }
+
+
+        public double CalculateOcupancyDegreeInCenterOnFloor(int centerId, string floorName)
+        {
+            return Math.Round(CalculateLeasedAreaInCenterOnFloor(centerId, floorName)
+                / CalculateGrossLeasableAreaInCenterOnFloor(centerId, floorName) * 100, 2);
+        }
+
+        public double CalculateTotalRentOnCenter(int centerId)
+        {
+            return _centerRepository.FindAllLeasedUnitsInCenter(centerId)
+                       .Sum(u => u.Area * u.MonthlyRentSqm);
+
+        }
+
+        public double CalculateAverageRentPerSqmOnCenter(int centerId)
+        {
+            return Math.Round(CalculateTotalRentOnCenter(centerId)
+                / CalculateLeasedAreaOnCenter(centerId), 2);
+        }
+
+        public double CalculateLeasedAreaInCenterOnActivity(int centerId, string activityName)
+        {
+
+            return _centerRepository.FindAllLeasedRetailUnitsInCenterByActivity(centerId, activityName)
+                     .Sum(u => u.Area);
+        }
+
+        public double CalculateTotalRentInCenterOnActivity(int centerId, string activityName)
+        {
+
+            return _centerRepository.FindAllLeasedRetailUnitsInCenterByActivity(centerId, activityName)
+                    .Sum(u => u.Area * u.MonthlyRentSqm);
+        }
+
+        public double CalculateAverageRentPerSqmInCenterOnActivity(int centerId, string activityName)
+        {
+            return Math.Round(CalculateTotalRentInCenterOnActivity(centerId, activityName)
+                              / CalculateLeasedAreaInCenterOnActivity(centerId, activityName), 2);
+        }
+
+        public double CalculateLeasedAreaInCenterOnActivityCategory(int centerId, string categoryName)
+        {
+            return _centerRepository.FindAllLeasedRetailUnitsInCenterByActivityCategory(centerId, categoryName)
+                    .Sum(u => u.Area);
+        }
+        public double CalculateTotalRentInCenterOnActivityCategory(int centerId, string categoryName)
+        {
+            return _centerRepository.FindAllLeasedRetailUnitsInCenterByActivityCategory(centerId, categoryName)
+                    .Sum(u => u.Area * u.MonthlyRentSqm);
+        }
+        public double CalculateAverageRentPerSqmInCenterOnActivityCategory(int centerId, string categoryName)
+        {
+            return Math.Round(CalculateTotalRentInCenterOnActivityCategory(centerId, categoryName)
+                              / CalculateLeasedAreaInCenterOnActivityCategory(centerId, categoryName), 2);
+        }
+
+
+
+        public double CalculateTotalCostsPerLease(int leaseId)
+        {
+            return _centerRepository.FindUnitsByLeaseId(leaseId)
+                    .Sum(u => u.Area * (u.MonthlyRentSqm + u.MonthlyMaintenanceCostSqm + u.MonthlyMarketingFeeSqm));
 
 
         }
-        public DateTime CalculateLeaseEndDate(int leaseId)
-        {
-            Lease lease = CenterRepository.FindLeaseById(leaseId);
-            TimeSpan duration = new TimeSpan(lease.TermInMonths * 30, 0, 0, 0);
-            DateTime endDate = lease.StartDate.Add(duration);
 
-            return endDate;
-        }
-        public double CalculateRentPerLease(int leaseId)
-        {
-            Lease lease = CenterRepository.FindLeaseById(leaseId);
-            double totalRent = 0;
-            lease.Premises.Sum(u => totalRent += lease.TotalMonthlyRent);
-                              
-            return totalRent;
-        }
         #endregion
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentAll.Infrastructure.Data;
 
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    partial class RentAllDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210508125311_UpdateUnits")]
+    partial class UpdateUnits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -495,7 +497,7 @@ namespace RentAll.Infrastructure.Migrations
             modelBuilder.Entity("RentAll.Domain.Unit", b =>
                 {
                     b.HasOne("RentAll.Domain.Center", "Center")
-                        .WithMany("Units")
+                        .WithMany("Premises")
                         .HasForeignKey("CenterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -528,7 +530,7 @@ namespace RentAll.Infrastructure.Migrations
                 {
                     b.Navigation("Floors");
 
-                    b.Navigation("Units");
+                    b.Navigation("Premises");
                 });
 
             modelBuilder.Entity("RentAll.Domain.Company", b =>

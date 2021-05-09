@@ -1,5 +1,7 @@
-﻿using RentAll.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using RentAll.Domain;
 using RentAll.Domain.Interfaces;
+using RentAll.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +14,13 @@ namespace RentAll.Infrastructure.Repositories
     public class CenterRepository : ICenterRepository
     {
         #region fields
-        private ICollection<Center> centers = new List<Center>();
-        private ICollection<Unit> units = new List<Unit>();
-        private ICollection<Lease> leases = new List<Lease>();
+        private RentAllDbContext _rentAllDbContext;
         #endregion
 
         #region constructors
-        public CenterRepository()
+        public CenterRepository(RentAllDbContext rentAllDbContext)
         {
-
+            _rentAllDbContext = rentAllDbContext;
         }
         #endregion
 
@@ -29,171 +29,181 @@ namespace RentAll.Infrastructure.Repositories
 
         public Center FindCenterById(int centerId)
         {
-            Center center = null;
-            foreach (var item in centers)
-            {
-                if (item.Id == centerId)
-                {
-                    center = item;
-                }
-
-            }
-            if (center == null)
-            {
-                throw new InvalidOperationException($"Center with id {centerId} not found");
-
-            }
-            return center;
+            return _rentAllDbContext.Centers.Find(centerId);
         }
-              
+
+        public List<Center> GetAllCenters()
+        {
+            return _rentAllDbContext.Centers.ToList();
+        }
+
+
 
         public Unit FindUnitById(int unitId)
         {
-            Unit unit = null;
-            foreach (var item in units)
-            {
-                if (item.Id == unitId)
-                {
-                    unit = item;
-                }
+            return _rentAllDbContext.Units.Find(unitId);
 
-            }
-            if (unit == null)
-            {
-                throw new InvalidOperationException($"Unit with id {unitId} not found");
+        }
 
-            }
-            return unit;
-        }
-        public Lease GetValidLease(Unit unit)
+        public List<Unit> FindUnitsByLeaseId(int leaseId)
         {
-            return unit.Leases.FirstOrDefault(l => l.Valid == true);
+            return _rentAllDbContext.Units
+                .Include(u => u.Leases)
+                .Where(u => u.Leases.All(l => l.Id == leaseId))
+                .ToList();
+
         }
-        public bool IsLeased(int unitId)
+
+        public List<Unit> FindAllUnitsInCenter(int centerId)
         {
-            var unit = FindUnitById(unitId);
-            foreach (Lease Lease in unit.Leases)
-            {
-                if (Lease.Valid)
-                {
-                    return true;
-                }
-            }
-            return false;
+
+            return _rentAllDbContext.Units
+                        .Include(u => u.Center)
+                        .Where(u => u.CenterId == centerId)
+                        .ToList();
+
         }
+        public List<Unit> FindAllLeasedUnitsInCenter(int centerId)
+        {
+
+            return _rentAllDbContext.Units
+                        .Include(u => u.Center)
+                        .Include(u => u.Leases)
+                        .Where(u => u.CenterId == centerId)
+                        .Where(u => u.Leases.Any(l => l.Valid == true))
+                        .ToList();
+
+        }
+        public List<Unit> FindAllUnitsInCenterOnFloor(int centerId, string floorName)
+        {
+
+            return _rentAllDbContext.Units
+                        .Include(u => u.Center)
+                        .Include(u => u.Floor)
+                        .Where(u => u.CenterId == centerId)
+                        .Where(u => u.Floor.FloorName == floorName)
+                        .ToList();
+
+        }
+
+        public List<Unit> FindAllLeasedUnitsInCenterOnFloor(int centerId, string floorName)
+        {
+
+            return _rentAllDbContext.Units
+                        .Include(u => u.Center)
+                        .Include(u => u.Floor)
+                        .Include(u => u.Leases)
+                        .Where(u => u.CenterId == centerId)
+                        .Where(u => u.Floor.FloorName == floorName)
+                        .Where(u => u.Leases.Any(l => l.Valid == true))
+                        .ToList();
+
+        }
+
+        public List<Unit> FindAllLeasedRetailUnitsInCenterByActivity(int centerId, string activityName)
+        {
+            return _rentAllDbContext.Units
+                        .Include(u => u.Center)
+                        .Include(u => u.Leases)
+                        .Where(u => u.CenterId == centerId)
+                        .Where(u => u.Leases.Any(l => l.Valid == true))
+                        .Where(u => u.Type == UnitType.Retail)
+                        .Where(u => u.Leases.Any(l => l.Activity.ActivityName == activityName))
+                        .ToList();
+        }
+
+        public List<Unit> FindAllLeasedRetailUnitsInCenterByActivityCategory(int centerId, string categoryName)
+        {
+            return _rentAllDbContext.Units
+                        .Include(u => u.Center)
+                        .Include(u => u.Leases)
+                        .Where(u => u.CenterId == centerId)
+                        .Where(u => u.Leases.Any(l => l.Valid == true))
+                        .Where(u => u.Type == UnitType.Retail)
+                        .Where(u => u.Leases.Any(l => l.Activity.Category.CategoryName == categoryName))
+                        .ToList();
+        }
+
+
+        public Lease GetValidLeaseOnUnit(int unitId)
+        {
+            return _rentAllDbContext.Leases
+                 .Include(l => l.Units)
+                 .Where(l => l.Valid == true)
+                 .Where(l => l.Units.Any(u => u.Id == unitId))
+                 .Single();
+
+
+        }
+
+        public List<Lease> GetValidLeasesOnCenter(int centerId)
+        {
+            return _rentAllDbContext.Leases
+                 .Include(l => l.Center)
+                 .Where(l => l.CenterId == centerId)
+                 .Where(l => l.Valid == true)
+                 .ToList();
+
+        }
+
+
+        public bool IsUnitLeased(int unitId)
+        {
+
+            return _rentAllDbContext.Units
+                .Include(u => u.Leases)
+                .Where(u => u.Id == unitId).Single()
+                .Leases.Any(l => l.Valid);
+
+        }
+
         public Unit FindUnitInCenterByCode(int centerId, string unitCode)
         {
-            Center center = FindCenterById(centerId);
-            Unit unit = null;
-            foreach (var item in center.Premises)
-            {
-                if (item.UnitCode == unitCode)
-                {
-                    unit = item;
-                }
+            return _rentAllDbContext.Units
+                   .Include(u => u.Center)
+                   .Where(u => u.CenterId == centerId)
+                   .Where(u => u.UnitCode == unitCode)
+                   .Single();
 
-            }
-            if (unit == null)
-            {
-                throw new InvalidOperationException($"Unit with code {unitCode} not found");
-
-            }
-            return unit;
-        }
-        public void AddLeaseToUnitInCenter(int centerId, Unit unit, Lease lease)
-        {
-            Unit foundUnit = FindUnitInCenterByCode(centerId, unit.UnitCode);
-            foundUnit.Leases.Add(lease);
         }
 
         public Lease FindLeaseById(int leaseId)
         {
-            Lease lease = null;
-            foreach (var item in leases)
-            {
-                if (item.Id == leaseId)
-                {
-                    lease = item;
-                }
-
-            }
-            if (lease == null)
-            {
-                throw new InvalidOperationException($"Center with id {leaseId} not found");
-
-            }
-            return lease;
+            return _rentAllDbContext.Leases.Find(leaseId);
         }
-        public List<Lease> FindLeasesByActivity(int centerId, string activityName)
+
+
+        public List<Lease> FindLeasesInCenterByActivity(int centerId, string activityName)
         {
-            var center = FindCenterById(centerId);
-
-            var listOfLeases = new List<Lease>();
-            foreach (var item in center.Premises)
-            {
-                if (IsLeased(item.Id) && GetValidLease(item).Activity.ActivityName == activityName)
-                {
-                    listOfLeases.Add(GetValidLease(item));
-                }
-            }
-            return listOfLeases;
+            return _rentAllDbContext.Leases
+                .Include(l => l.Center)
+                .Include(l => l.Activity)
+                .Where(l => l.CenterId == centerId)
+                .Where(l => l.Activity.ActivityName == activityName)
+                .ToList();
         }
-        public List<Lease> FindLeasesByActivityRange(int centerId, string activityRangeName)
+
+
+        public List<Lease> FindLeasesInCenterByActivityCategory(int centerId, string categoryName)
         {
-            var center = FindCenterById(centerId);
-
-            var listOfLeases = new List<Lease>();
-            foreach (var item in center.Premises)
-            {
-                if (IsLeased(item.Id))
-                {
-                    Lease lease = GetValidLease(item);
-                    if (lease.Activity.Category.CategoryName.Equals(activityRangeName))
-                    {
-                        listOfLeases.Add(lease);
-                    }
-                }
-            }
-            return listOfLeases;
+            return _rentAllDbContext.Leases
+                 .Include(l => l.Center)
+                 .Include(l => l.Activity)
+                 .Include(l => l.Activity.Category)
+                 .Where(l => l.CenterId == centerId)
+                 .Where(l => l.Activity.Category.CategoryName == categoryName)
+                 .ToList();
         }
-        public ICollection<Lease> FindValidLeasesInCenter(int centerId)
+        public List<Lease> FindValidLeasesInCenter(int centerId)
         {
-            var foundLeases = new List<Lease>();
+            return _rentAllDbContext.Leases
+                 .Include(l => l.Center)
+                 .Where(l => l.CenterId == centerId)
+                 .Where(l => l.Valid == true)
+                 .ToList();
 
-            foreach (var item in leases)
-            {
-                if (item.CenterId == centerId)
-                {
-                    if (item.Valid == true)
-                    {
-                        foundLeases.Add(item);
-                    }
-                }
-
-            }
-            if (foundLeases == null)
-            {
-                throw new InvalidOperationException($"No valid leases were found for center with id {centerId}");
-
-            }
-            return leases;
         }
-        
-        public (double, double) GetLeaseAreaAndRentByUnitType(Lease lease, UnitType unitType)
-        {
-            double totalAreaByUnitType = 0;
-            double totalRentByUnitType = 0;
-            foreach (var item in lease.Premises)
-            {
-                if (item.Type == unitType)
-                {
-                    totalAreaByUnitType += item.Area;
-                    totalRentByUnitType += item.MonthlyRentSqm * item.Area;
-                }
-            }
-            return (totalAreaByUnitType, totalRentByUnitType);
-        }
-        
+
         #endregion
 
     }

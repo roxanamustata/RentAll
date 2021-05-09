@@ -10,7 +10,7 @@ using RentAll.Infrastructure.Data;
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    [Migration("20210430100255_initial")]
+    [Migration("20210507132607_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

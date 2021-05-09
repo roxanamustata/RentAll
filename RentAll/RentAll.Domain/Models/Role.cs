@@ -12,6 +12,7 @@ namespace RentAll.Domain
         public int Id { get; private set; }
         public string RoleName { get; set; }
 
+        public ICollection<User> Users { get; set; }
         #endregion
 
     }
