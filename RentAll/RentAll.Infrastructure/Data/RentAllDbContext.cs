@@ -43,34 +43,16 @@ namespace RentAll.Infrastructure.Data
         public DbSet<Unit> Units { get; set; }
         public DbSet<User> Users { get; set; }
 
-       
-
-        //public void Configure(ModelBuilder modelBuilder)
-        //{
-
-        //    base.OnModelCreating(modelBuilder);
-           
-
-            //modelBuilder.Entity<Category>().HasData(
-            //    new Category() { Id = 1, CategoryName = "Non-Food" },
-            //    new { Id = 2, CategoryName = "Entertainment" },
-            //    new { Id = 3, CategoryName = "Services" });
-
-            //modelBuilder.Entity<Activity>().HasData(
-
-            //    new { Id = 1, ActivityName = "Apparel", CategoryId = 1 },
-            //    new { Id = 2, ActivityName = "Shoes", CategoryId = 1 });
-
-            //modelBuilder.Entity<Activity>().HasData(
-
-            //new { Id = 3, ActivityName = "Cinema", CategoryId = 2 },
-            //new { Id = 4, ActivityName = "Playground", CategoryId = 2 },
-            //new { Id = 5, ActivityName = "Medical Center", CategoryId = 3 },
-            //new { Id = 6, ActivityName = "Car Registration", CategoryId = 3 }
-            //);
 
 
+        public void Configure(ModelBuilder modelBuilder)
+        {
 
-        //}
+            modelBuilder.ApplyConfiguration(new LeaseConfig());
+            modelBuilder.ApplyConfiguration(new CenterConfig());
+  
+
+
+        }
     }
 }

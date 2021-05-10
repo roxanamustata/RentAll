@@ -16,7 +16,8 @@ namespace RentAll.Domain
 
         public int CenterId { get; set; }
         public Center Center { get; set; }
-
+        
+        public int FloorId { get; set; }
         public Floor Floor { get; set; }
 
         public double MonthlyRentSqm { get; set; }

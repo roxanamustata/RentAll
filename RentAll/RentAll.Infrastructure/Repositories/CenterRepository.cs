@@ -27,23 +27,138 @@ namespace RentAll.Infrastructure.Repositories
 
         #region public methods
 
-        public Center FindCenterById(int centerId)
+        public void Save()
+        {
+            _rentAllDbContext.SaveChanges();
+        }
+
+        #region CRUD center
+
+        public List<Center> GetCenters()
+        {
+            return _rentAllDbContext.Centers.ToList();
+        }
+        public Center GetCenterById(int centerId)
         {
             return _rentAllDbContext.Centers.Find(centerId);
         }
 
-        public List<Center> GetAllCenters()
+        public void InsertCenter(Center center)
         {
-            return _rentAllDbContext.Centers.ToList();
+            _rentAllDbContext.Centers.Add(center);
+            Save();
         }
 
+        public void DeleteCenter(int centerId)
+        {
+            var center = GetCenterById(centerId);
+            _rentAllDbContext.Centers.Remove(center);
+            Save();
+        }
+        public void UpdateCenter(Center center)
+        {
+            _rentAllDbContext.Centers.Attach(center);
+            var entry = _rentAllDbContext.Entry(center);
+            entry.State = EntityState.Modified;
 
+            Save();
+        }
+        #endregion
 
-        public Unit FindUnitById(int unitId)
+        #region CRUD unit
+       
+        public Unit GetUnitById(int unitId)
         {
             return _rentAllDbContext.Units.Find(unitId);
 
         }
+        public Unit GetUnitFromCenterByUnitCode(int centerId, string unitCode)
+        {
+            return _rentAllDbContext.Units
+                   .Include(u => u.Center)
+                   .Where(u => u.CenterId == centerId)
+                   .Where(u => u.UnitCode == unitCode)
+                   .Single();
+
+        }
+
+        public async void InsertUnit(Unit unit)
+        {
+            
+            var center = await _rentAllDbContext.Centers
+                .Include(c => c.Units)
+                .ThenInclude(u => u.Leases)
+                .FirstOrDefaultAsync(c => c.Id == unit.CenterId);
+
+            center.Units.Add(unit);
+
+            Save();
+        }
+        public void DeleteUnit(int unitId)
+        {
+            var unit = GetUnitById(unitId);
+            _rentAllDbContext.Units.Remove(unit);
+            Save();
+        }
+        public void UpdateUnit(Unit unit)
+        {
+            _rentAllDbContext.Units.Attach(unit);
+            var entry = _rentAllDbContext.Entry(unit);
+            entry.State = EntityState.Modified;
+            Save();
+        }
+        #endregion
+
+        #region CRUD lease
+        public Lease GetLeaseById(int leaseId)
+        {
+            return _rentAllDbContext.Leases.Find(leaseId);
+        }
+
+        public void InsertLease(Lease lease)
+        {
+            _rentAllDbContext.Leases.Add(lease);
+            Save();
+        }
+        public void DeleteLease(int leaseId)
+        {
+            var lease = GetLeaseById(leaseId);
+            _rentAllDbContext.Leases.Remove(lease);
+            Save();
+
+        }
+        public void UpdateLease(Lease lease)
+        {
+            _rentAllDbContext.Leases.Attach(lease);
+            var entry = _rentAllDbContext.Entry(lease);
+            entry.State = EntityState.Modified;
+            Save();
+        }
+
+        #endregion
+
+        #region CRUD category
+
+
+        #endregion
+
+
+
+        #region CRUD activity
+
+
+        #endregion
+
+
+
+        #region CRUD Floor
+
+
+        #endregion
+
+
+
+
 
         public List<Unit> FindUnitsByLeaseId(int leaseId)
         {
@@ -157,20 +272,6 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public Unit FindUnitInCenterByCode(int centerId, string unitCode)
-        {
-            return _rentAllDbContext.Units
-                   .Include(u => u.Center)
-                   .Where(u => u.CenterId == centerId)
-                   .Where(u => u.UnitCode == unitCode)
-                   .Single();
-
-        }
-
-        public Lease FindLeaseById(int leaseId)
-        {
-            return _rentAllDbContext.Leases.Find(leaseId);
-        }
 
 
         public List<Lease> FindLeasesInCenterByActivity(int centerId, string activityName)
