@@ -16,32 +16,28 @@ namespace RentAll.Tests
     [TestFixture]
     public class CenterServiceFixture
     {
-        private readonly Mock<ICenterRepository> _mockCenterRepository = new Mock<ICenterRepository>();
-        //public ICenterRepository MockCentersRepository { get; set; }
-
-
-
+        private Mock<ICenterRepository> _mockCenterRepository;
 
 
         [SetUp]
         public void Setup()
         {
-
+            _mockCenterRepository = new Mock<ICenterRepository>();
             //ToDo: setup of the _centerRepository mock
             // create some mock products to play with
 
-            List<Floor> floors = new List<Floor>() {
+            var floors = new List<Floor>() {
                             new Floor {Id=1,  Name = "Ground Floor" },
                             new Floor {Id=2, Name = "First Floor" }
             };
 
-            List<ActivityCategory> categories = new List<ActivityCategory>()
+            var categories = new List<ActivityCategory>()
             {
                 new ActivityCategory{Id=1, Name="Non-food"},
                 new ActivityCategory{Id=2, Name="Food"}
 
             };
-            List<Activity> activities = new List<Activity>()
+            var activities = new List<Activity>()
             {
                 new Activity{Id=1, Name="Apparel", ActivityCategory=categories.Where(c=>c.Id==1).Single(),},
                 new Activity{Id=2, Name="Shoes",ActivityCategory=categories.Where(c=>c.Id==1).Single()},
@@ -49,7 +45,7 @@ namespace RentAll.Tests
 
             };
 
-            IList<Center> centers = new List<Center>
+            var centers = new List<Center>
                 {
                     new Center {
                         Id = 1,
@@ -67,22 +63,24 @@ namespace RentAll.Tests
                     }
 
                    };
-            IList<Lease> leases = new List<Lease>()
+            var leases = new List<Lease>()
             {
                 new Lease {
                     Id = 1,
 
-                   Activity = activities.Where(a=>a.Id==1).Single()
+                   Activity = activities.Where(a=>a.Id==1).Single(),
+                   Valid=true
                 },
 
                 new Lease {
                     Id = 2,
 
-                   Activity = activities.Where(a=>a.Id==2).Single()
+                   Activity = activities.Where(a=>a.Id==2).Single(),
+                   Valid=true
                 },
 
             };
-            List<Unit> units = new List<Unit>()
+            var units = new List<Unit>()
             {
                 new Unit {
                                 Id=1,
@@ -108,6 +106,7 @@ namespace RentAll.Tests
                                 MonthlyRentSqm=15,
 
                             },
+
                             new Unit {
                                 Id=3,
                                 Code="A3",
@@ -155,14 +154,33 @@ namespace RentAll.Tests
 
             };
 
+            var center1 = centers.Where(c => c.Id == 1).Single();
+            var unit1 = units.Where(u => u.Id == 1).Single();
+            var unit2 = units.Where(u => u.Id == 2).Single();
+            var unit3 = units.Where(u => u.Id == 3).Single();
+
+            center1.Premises = new List<Unit>() { unit1, unit2, unit3 };
+
+
+
             // Mock the Center Repository using Moq
 
             // Return all the centers
             _mockCenterRepository.Setup(mr => mr.FindAll()).Returns(centers);
 
+
+
             // return a center by Id
             _mockCenterRepository.Setup(mr => mr.FindCenterById(
                 It.IsAny<int>())).Returns((int i) => centers.Where(
+                x => x.Id == i).Single());
+
+            _mockCenterRepository.Setup(mr => mr.FindUnitById(
+                It.IsAny<int>())).Returns((int i) => units.Where(
+                x => x.Id == i).Single());
+
+            _mockCenterRepository.Setup(mr => mr.FindLeaseById(
+                It.IsAny<int>())).Returns((int i) => leases.Where(
                 x => x.Id == i).Single());
 
             // return a center by Name
@@ -201,18 +219,18 @@ namespace RentAll.Tests
                 });
 
 
-            //MockCentersRepository = mockCenterRepository.Object;        
-        }
-
-        [TestCase(1)]
-        public void TestFindCenterById(int centerId)
-        {
-            var service = new CenterService(_mockCenterRepository.Object);
-            _mockCenterRepository.Verify(m => m.FindCenterById(centerId), Times.Once);
 
         }
 
-        
+        //[TestCase(1)]
+        //public void TestFindCenterById(int centerId)
+        //{
+        //    var service = new CenterService(_mockCenterRepository.Object);
+        //    _mockCenterRepository.Verify(m => m.FindCenterById(centerId), Times.Once);
+
+        //}
+
+
         [TestCase(1, 5550)]
         public void TestCalculateGrossLeasableAreaPerCenter(int id, int expectedResult)
         {
@@ -231,13 +249,23 @@ namespace RentAll.Tests
 
         }
 
-        [TestCase(1,550)]
-        public void TestCalculateLeasedAreaPerCenter(int centerId, int expectedResult)
+        [TestCase(1, 550)]
+        public void TestCalculateLeasedAreaPerCenter(int centerId, double expectedResult)
         {
             var centerService = new CenterService(_mockCenterRepository.Object);
             double result = centerService.CalculateLeasedAreaPerCenter(1);
             Assert.AreEqual(expectedResult, result);
         }
+
+        [TestCase(1, 8250)]
+        public void TestCalculateRentPerLease(int leaseId, double expectedResult)
+        {
+
+            var centerService = new CenterService(_mockCenterRepository.Object);
+            double result = centerService.CalculateLeasedAreaPerCenter(leaseId);
+            Assert.AreEqual(expectedResult, result);
+        }
+
 
 
 
