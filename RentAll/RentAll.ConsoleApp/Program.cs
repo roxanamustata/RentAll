@@ -31,11 +31,9 @@ namespace RentAll.ConsoleApp
             //Console.WriteLine(center.CenterName);
 
 
-            //List<Unit> unitsInCenter = centerRepository.FindAllUnitsInCenter(2);
-            //foreach (var item in unitsInCenter)
-            //{
-            //    Console.WriteLine(item.Area);
-            //}
+            var grossLeasableArea = centerService.CalculateGrossLeasableAreaOnCenter(2);
+            Console.WriteLine(grossLeasableArea);
+
             //Lease lease = centerRepository.GetValidLease(2);
             //Console.WriteLine(lease.LeaseNumber);
 
@@ -108,22 +106,22 @@ namespace RentAll.ConsoleApp
 
             //centerRepository.DeleteUnit(4);
 
-            var lease = new Lease
-            {
-                Id=5,
-                ActivityId = 1,
-                CenterId = 4,
-                LeaseNumber = "120",
-                SigningDate = DateTime.Now,
-                StartDate = DateTime.Now,
-                TermInMonths = 120,
-                Units = new List<Unit> { centerRepository.GetUnitById(3) },
-                TenantId = 2,
-                UserId = 1
+            //var lease = new Lease
+            //{
+            //    Id=5,
+            //    ActivityId = 1,
+            //    CenterId = 4,
+            //    LeaseNumber = "120",
+            //    SigningDate = DateTime.Now,
+            //    StartDate = DateTime.Now,
+            //    TermInMonths = 120,
+            //    Units = new List<Unit> { centerRepository.GetUnitById(3) },
+            //    TenantId = 2,
+            //    UserId = 1
 
-            };
+            //};
 
-            centerRepository.UpdateLease(lease);
+            //centerRepository.UpdateLease(lease);
             //centerRepository.DeleteLease(4);
 
         }

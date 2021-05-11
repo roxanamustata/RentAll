@@ -66,7 +66,7 @@ namespace RentAll.Infrastructure.Repositories
         #endregion
 
         #region CRUD unit
-       
+
         public Unit GetUnitById(int unitId)
         {
             return _rentAllDbContext.Units.Find(unitId);
@@ -84,7 +84,7 @@ namespace RentAll.Infrastructure.Repositories
 
         public async void InsertUnit(Unit unit)
         {
-            
+
             var center = await _rentAllDbContext.Centers
                 .Include(c => c.Units)
                 .ThenInclude(u => u.Leases)
@@ -160,48 +160,45 @@ namespace RentAll.Infrastructure.Repositories
 
 
 
-        public List<Unit> FindUnitsByLeaseId(int leaseId)
+        public IEnumerable<Unit> FindUnitsByLeaseId(int leaseId)
         {
             return _rentAllDbContext.Units
                 .Include(u => u.Leases)
-                .Where(u => u.Leases.All(l => l.Id == leaseId))
-                .ToList();
+                .Where(u => u.Leases.All(l => l.Id == leaseId));
+
 
         }
 
-        public List<Unit> FindAllUnitsInCenter(int centerId)
+        public IEnumerable<Unit> FindAllUnitsInCenter(int centerId)
         {
 
             return _rentAllDbContext.Units
                         .Include(u => u.Center)
-                        .Where(u => u.CenterId == centerId)
-                        .ToList();
+                        .Where(u => u.CenterId == centerId);
 
         }
-        public List<Unit> FindAllLeasedUnitsInCenter(int centerId)
+        public IEnumerable<Unit> FindAllLeasedUnitsInCenter(int centerId)
         {
 
             return _rentAllDbContext.Units
                         .Include(u => u.Center)
                         .Include(u => u.Leases)
                         .Where(u => u.CenterId == centerId)
-                        .Where(u => u.Leases.Any(l => l.Valid == true))
-                        .ToList();
+                        .Where(u => u.Leases.Any(l => l.Valid == true));
 
-        }
-        public List<Unit> FindAllUnitsInCenterOnFloor(int centerId, string floorName)
+                    }
+        public IEnumerable<Unit> FindAllUnitsInCenterOnFloor(int centerId, string floorName)
         {
 
             return _rentAllDbContext.Units
                         .Include(u => u.Center)
                         .Include(u => u.Floor)
                         .Where(u => u.CenterId == centerId)
-                        .Where(u => u.Floor.FloorName == floorName)
-                        .ToList();
+                        .Where(u => u.Floor.FloorName == floorName);
 
         }
 
-        public List<Unit> FindAllLeasedUnitsInCenterOnFloor(int centerId, string floorName)
+        public IEnumerable<Unit> FindAllLeasedUnitsInCenterOnFloor(int centerId, string floorName)
         {
 
             return _rentAllDbContext.Units
@@ -210,12 +207,11 @@ namespace RentAll.Infrastructure.Repositories
                         .Include(u => u.Leases)
                         .Where(u => u.CenterId == centerId)
                         .Where(u => u.Floor.FloorName == floorName)
-                        .Where(u => u.Leases.Any(l => l.Valid == true))
-                        .ToList();
+                        .Where(u => u.Leases.Any(l => l.Valid == true));
 
         }
 
-        public List<Unit> FindAllLeasedRetailUnitsInCenterByActivity(int centerId, string activityName)
+        public IEnumerable<Unit> FindAllLeasedRetailUnitsInCenterByActivity(int centerId, string activityName)
         {
             return _rentAllDbContext.Units
                         .Include(u => u.Center)
@@ -223,11 +219,11 @@ namespace RentAll.Infrastructure.Repositories
                         .Where(u => u.CenterId == centerId)
                         .Where(u => u.Leases.Any(l => l.Valid == true))
                         .Where(u => u.Type == UnitType.Retail)
-                        .Where(u => u.Leases.Any(l => l.Activity.ActivityName == activityName))
-                        .ToList();
+                        .Where(u => u.Leases.Any(l => l.Activity.ActivityName == activityName));
+
         }
 
-        public List<Unit> FindAllLeasedRetailUnitsInCenterByActivityCategory(int centerId, string categoryName)
+        public IEnumerable<Unit> FindAllLeasedRetailUnitsInCenterByActivityCategory(int centerId, string categoryName)
         {
             return _rentAllDbContext.Units
                         .Include(u => u.Center)
@@ -235,10 +231,9 @@ namespace RentAll.Infrastructure.Repositories
                         .Where(u => u.CenterId == centerId)
                         .Where(u => u.Leases.Any(l => l.Valid == true))
                         .Where(u => u.Type == UnitType.Retail)
-                        .Where(u => u.Leases.Any(l => l.Activity.Category.CategoryName == categoryName))
-                        .ToList();
-        }
+                        .Where(u => u.Leases.Any(l => l.Activity.Category.CategoryName == categoryName));
 
+        }
 
         public Lease GetValidLeaseOnUnit(int unitId)
         {
@@ -251,16 +246,15 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public List<Lease> GetValidLeasesOnCenter(int centerId)
+        public IEnumerable<Lease> GetValidLeasesOnCenter(int centerId)
         {
             return _rentAllDbContext.Leases
                  .Include(l => l.Center)
                  .Where(l => l.CenterId == centerId)
-                 .Where(l => l.Valid == true)
-                 .ToList();
+                 .Where(l => l.Valid == true);
+
 
         }
-
 
         public bool IsUnitLeased(int unitId)
         {
@@ -272,36 +266,33 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-
-
-        public List<Lease> FindLeasesInCenterByActivity(int centerId, string activityName)
+        public IEnumerable<Lease> FindLeasesInCenterByActivity(int centerId, string activityName)
         {
             return _rentAllDbContext.Leases
                 .Include(l => l.Center)
                 .Include(l => l.Activity)
                 .Where(l => l.CenterId == centerId)
-                .Where(l => l.Activity.ActivityName == activityName)
-                .ToList();
+                .Where(l => l.Activity.ActivityName == activityName);
+
         }
 
-
-        public List<Lease> FindLeasesInCenterByActivityCategory(int centerId, string categoryName)
+        public IEnumerable<Lease> FindLeasesInCenterByActivityCategory(int centerId, string categoryName)
         {
             return _rentAllDbContext.Leases
                  .Include(l => l.Center)
                  .Include(l => l.Activity)
                  .Include(l => l.Activity.Category)
                  .Where(l => l.CenterId == centerId)
-                 .Where(l => l.Activity.Category.CategoryName == categoryName)
-                 .ToList();
+                 .Where(l => l.Activity.Category.CategoryName == categoryName);
+
         }
-        public List<Lease> FindValidLeasesInCenter(int centerId)
+        public IEnumerable<Lease> FindValidLeasesInCenter(int centerId)
         {
             return _rentAllDbContext.Leases
                  .Include(l => l.Center)
                  .Where(l => l.CenterId == centerId)
-                 .Where(l => l.Valid == true)
-                 .ToList();
+                 .Where(l => l.Valid == true);
+
 
         }
 

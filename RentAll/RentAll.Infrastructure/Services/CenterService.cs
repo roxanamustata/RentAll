@@ -112,7 +112,6 @@ namespace RentAll.Infrastructure.Services
         }
 
 
-
         public double CalculateTotalCostsPerLease(int leaseId)
         {
             return _centerRepository.FindUnitsByLeaseId(leaseId)
