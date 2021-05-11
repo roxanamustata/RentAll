@@ -4,7 +4,7 @@ namespace RentAll.Domain.Models
 {
     public class Category
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string CategoryName { get; set; }
         public ICollection<Activity> Activities { get; set; }
     }

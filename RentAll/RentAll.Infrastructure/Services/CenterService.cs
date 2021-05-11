@@ -12,11 +12,11 @@ namespace RentAll.Infrastructure.Services
     public class CenterService : ICenterService
     {
         #region fields
-        private CenterRepository _centerRepository;
+        private ICenterRepository _centerRepository;
         #endregion
 
         #region constructors
-        public CenterService(CenterRepository centerRepository)
+        public CenterService(ICenterRepository centerRepository)
         {
             _centerRepository = centerRepository;
         }

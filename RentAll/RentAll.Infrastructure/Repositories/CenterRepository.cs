@@ -186,7 +186,7 @@ namespace RentAll.Infrastructure.Repositories
                         .Where(u => u.CenterId == centerId)
                         .Where(u => u.Leases.Any(l => l.Valid == true));
 
-                    }
+        }
         public IEnumerable<Unit> FindAllUnitsInCenterOnFloor(int centerId, string floorName)
         {
 

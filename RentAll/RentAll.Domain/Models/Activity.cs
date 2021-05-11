@@ -8,7 +8,7 @@ namespace RentAll.Domain.Models
     {
         #region properties
 
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string ActivityName { get; set; }
        
         public Category Category { get; set; }
