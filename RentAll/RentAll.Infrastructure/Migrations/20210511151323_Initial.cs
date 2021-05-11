@@ -8,6 +8,24 @@ namespace RentAll.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AbstractUnits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UnitCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Area = table.Column<double>(type: "float", nullable: false),
+                    MonthlyRentSqm = table.Column<double>(type: "float", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MonthlyMaintenanceCostSqm = table.Column<double>(type: "float", nullable: true),
+                    MonthlyMarketingFeeSqm = table.Column<double>(type: "float", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbstractUnits", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -281,11 +299,11 @@ namespace RentAll.Infrastructure.Migrations
                     UnitCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Area = table.Column<double>(type: "float", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
+                    CenterId = table.Column<int>(type: "int", nullable: false),
                     FloorId = table.Column<int>(type: "int", nullable: true),
                     MonthlyRentSqm = table.Column<double>(type: "float", nullable: false),
                     MonthlyMaintenanceCostSqm = table.Column<double>(type: "float", nullable: false),
-                    MonthlyMarketingFeeSqm = table.Column<double>(type: "float", nullable: false),
-                    CenterId = table.Column<int>(type: "int", nullable: true)
+                    MonthlyMarketingFeeSqm = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -295,7 +313,7 @@ namespace RentAll.Infrastructure.Migrations
                         column: x => x.CenterId,
                         principalTable: "Centers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Units_Floors_FloorId",
                         column: x => x.FloorId,
@@ -425,6 +443,9 @@ namespace RentAll.Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Addresses_Persons_PersonId",
                 table: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "AbstractUnits");
 
             migrationBuilder.DropTable(
                 name: "Emails");

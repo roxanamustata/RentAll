@@ -13,8 +13,9 @@ namespace RentAll.Domain
         public string UnitCode { get; set; }
         public double Area { get; set; }
         public UnitType Type { get; set; }
-        
-        //public int CenterId { get; set; }
+
+        public int CenterId { get; set; }
+        public Center Center { get; set; }
         public Floor Floor { get; set; }
 
         public double MonthlyRentSqm { get; set; }

@@ -10,7 +10,7 @@ using RentAll.Infrastructure.Data;
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    [Migration("20210505160642_Initial")]
+    [Migration("20210511151323_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,6 +217,33 @@ namespace RentAll.Infrastructure.Migrations
                     b.ToTable("Leases");
                 });
 
+            modelBuilder.Entity("RentAll.Domain.Models.AbstractUnit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Area")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("MonthlyRentSqm")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UnitCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AbstractUnits");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AbstractUnit");
+                });
+
             modelBuilder.Entity("RentAll.Domain.Models.Activity", b =>
                 {
                     b.Property<int>("Id")
@@ -323,7 +350,7 @@ namespace RentAll.Infrastructure.Migrations
                     b.Property<double>("Area")
                         .HasColumnType("float");
 
-                    b.Property<int?>("CenterId")
+                    b.Property<int>("CenterId")
                         .HasColumnType("int");
 
                     b.Property<int?>("FloorId")
@@ -384,6 +411,26 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("RentAll.Domain.Models.OfficeUnit", b =>
+                {
+                    b.HasBaseType("RentAll.Domain.Models.AbstractUnit");
+
+                    b.Property<double>("MonthlyMaintenanceCostSqm")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue("OfficeUnit");
+                });
+
+            modelBuilder.Entity("RentAll.Domain.Models.RetailUnit", b =>
+                {
+                    b.HasBaseType("RentAll.Domain.Models.AbstractUnit");
+
+                    b.Property<double>("MonthlyMarketingFeeSqm")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue("RetailUnit");
                 });
 
             modelBuilder.Entity("LeaseUnit", b =>
@@ -496,13 +543,17 @@ namespace RentAll.Infrastructure.Migrations
 
             modelBuilder.Entity("RentAll.Domain.Unit", b =>
                 {
-                    b.HasOne("RentAll.Domain.Center", null)
+                    b.HasOne("RentAll.Domain.Center", "Center")
                         .WithMany("Units")
-                        .HasForeignKey("CenterId");
+                        .HasForeignKey("CenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RentAll.Domain.Floor", "Floor")
                         .WithMany()
                         .HasForeignKey("FloorId");
+
+                    b.Navigation("Center");
 
                     b.Navigation("Floor");
                 });

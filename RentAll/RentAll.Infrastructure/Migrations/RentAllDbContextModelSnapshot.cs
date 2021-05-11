@@ -215,6 +215,33 @@ namespace RentAll.Infrastructure.Migrations
                     b.ToTable("Leases");
                 });
 
+            modelBuilder.Entity("RentAll.Domain.Models.AbstractUnit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Area")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("MonthlyRentSqm")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UnitCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AbstractUnits");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AbstractUnit");
+                });
+
             modelBuilder.Entity("RentAll.Domain.Models.Activity", b =>
                 {
                     b.Property<int>("Id")
@@ -233,44 +260,6 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Activities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ActivityName = "Apparel",
-                            CategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ActivityName = "Shoes",
-                            CategoryId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ActivityName = "Cinema",
-                            CategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ActivityName = "Playground",
-                            CategoryId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ActivityName = "Medical Center",
-                            CategoryId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ActivityName = "Car Registration",
-                            CategoryId = 3
-                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Models.Category", b =>
@@ -286,23 +275,6 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryName = "Non-Food"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryName = "Entertainment"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryName = "Services"
-                        });
                 });
 
             modelBuilder.Entity("RentAll.Domain.Person", b =>
@@ -376,7 +348,7 @@ namespace RentAll.Infrastructure.Migrations
                     b.Property<double>("Area")
                         .HasColumnType("float");
 
-                    b.Property<int?>("CenterId")
+                    b.Property<int>("CenterId")
                         .HasColumnType("int");
 
                     b.Property<int?>("FloorId")
@@ -437,6 +409,62 @@ namespace RentAll.Infrastructure.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("RentAll.Domain.Models.OfficeUnit", b =>
+                {
+                    b.HasBaseType("RentAll.Domain.Models.AbstractUnit");
+
+                    b.Property<double>("MonthlyMaintenanceCostSqm")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue("OfficeUnit");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            Area = 5000.0,
+                            MonthlyRentSqm = 15.0,
+                            UnitCode = "A1",
+                            MonthlyMaintenanceCostSqm = 3.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Area = 500.0,
+                            MonthlyRentSqm = 30.0,
+                            UnitCode = "A2",
+                            MonthlyMaintenanceCostSqm = 3.0
+                        });
+                });
+
+            modelBuilder.Entity("RentAll.Domain.Models.RetailUnit", b =>
+                {
+                    b.HasBaseType("RentAll.Domain.Models.AbstractUnit");
+
+                    b.Property<double>("MonthlyMarketingFeeSqm")
+                        .HasColumnType("float");
+
+                    b.HasDiscriminator().HasValue("RetailUnit");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Area = 500.0,
+                            MonthlyRentSqm = 15.0,
+                            UnitCode = "A1",
+                            MonthlyMarketingFeeSqm = 1.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Area = 50.0,
+                            MonthlyRentSqm = 30.0,
+                            UnitCode = "A2",
+                            MonthlyMarketingFeeSqm = 1.0
+                        });
                 });
 
             modelBuilder.Entity("LeaseUnit", b =>
@@ -549,13 +577,17 @@ namespace RentAll.Infrastructure.Migrations
 
             modelBuilder.Entity("RentAll.Domain.Unit", b =>
                 {
-                    b.HasOne("RentAll.Domain.Center", null)
+                    b.HasOne("RentAll.Domain.Center", "Center")
                         .WithMany("Units")
-                        .HasForeignKey("CenterId");
+                        .HasForeignKey("CenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RentAll.Domain.Floor", "Floor")
                         .WithMany()
                         .HasForeignKey("FloorId");
+
+                    b.Navigation("Center");
 
                     b.Navigation("Floor");
                 });
