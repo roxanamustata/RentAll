@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RentAll.Web.Middleware;
 
 namespace RentAll.Web
 {
@@ -51,6 +52,7 @@ namespace RentAll.Web
                 app.UseHsts();
             }
 
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
@@ -79,6 +81,8 @@ namespace RentAll.Web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+           
+            app.UseAnalyticsMiddleware();
         }
     }
 }

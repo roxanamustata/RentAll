@@ -9,19 +9,19 @@ using System.Text;
 
 namespace RentAll.Infrastructure.Data
 {
-    public class RentAllDbContext:DbContext
+    public class RentAllDbContext : DbContext
     {
-        private readonly string _connectionString ="Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+        private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
             "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        public RentAllDbContext():base()
+        public RentAllDbContext() : base()
         {
-           
+
         }
 
-        public RentAllDbContext(DbContextOptions<RentAllDbContext> options):base(options)
+        public RentAllDbContext(DbContextOptions<RentAllDbContext> options) : base(options)
         {
-                
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -42,6 +42,8 @@ namespace RentAll.Infrastructure.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<User> Users { get; set; }
+
+        public DbSet<WebAnalytic> WebAnalytics { get; set; }
 
 
 
