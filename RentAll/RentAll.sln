@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Web", "RentAll.Web\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.ConsoleApp", "RentAll.ConsoleApp\RentAll.ConsoleApp.csproj", "{30B155A5-CC60-4731-9F9E-F51FDBBB165E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentAll.Tests", "RentAll.Tests\RentAll.Tests.csproj", "{0894B183-B958-4959-8085-737F49E51C3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RentAll.Tests", "RentAll.Tests\RentAll.Tests.csproj", "{0894B183-B958-4959-8085-737F49E51C3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
