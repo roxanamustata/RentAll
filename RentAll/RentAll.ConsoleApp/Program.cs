@@ -31,8 +31,8 @@ namespace RentAll.ConsoleApp
             //Console.WriteLine(center.CenterName);
 
 
-            var grossLeasableArea = centerService.CalculateGrossLeasableAreaOnCenter(2);
-            Console.WriteLine(grossLeasableArea);
+            //var grossLeasableArea = centerService.CalculateGrossLeasableAreaOnCenter(2);
+            //Console.WriteLine(grossLeasableArea);
 
             //Lease lease = centerRepository.GetValidLease(2);
             //Console.WriteLine(lease.LeaseNumber);

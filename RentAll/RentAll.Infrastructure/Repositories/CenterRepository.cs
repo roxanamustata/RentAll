@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RentAll.Domain;
 using RentAll.Domain.Interfaces;
 using RentAll.Infrastructure.Data;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RentAll.Infrastructure.Repositories
 {
@@ -32,36 +34,83 @@ namespace RentAll.Infrastructure.Repositories
             _rentAllDbContext.SaveChanges();
         }
 
+
+
+
         #region CRUD center
 
-        public List<Center> GetCenters()
+        public async Task<IEnumerable<Center>> GetCenters()
         {
-            return _rentAllDbContext.Centers.ToList();
+            try
+            {
+                return await _rentAllDbContext.Centers.Include(c=>c.Owner).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entities: {ex.Message}");
+            }
         }
-        public Center GetCenterById(int centerId)
+        public async Task<Center> GetCenterById(int centerId)
         {
-            return _rentAllDbContext.Centers.Find(centerId);
+            return await _rentAllDbContext.Centers.Include(c => c.Owner).FirstOrDefaultAsync(c => c.Id == centerId);
         }
 
-        public void InsertCenter(Center center)
+        public async Task<Center> CreateCenter(Center center)
         {
-            _rentAllDbContext.Centers.Add(center);
-            Save();
+            if (center == null)
+            {
+                throw new ArgumentNullException($"{nameof(CreateCenter)} entity must not be null");
+            }
+
+            try
+            {
+                await _rentAllDbContext.Centers.AddAsync(center);
+                await _rentAllDbContext.SaveChangesAsync();
+
+                return center;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(center)} could not be saved: {ex.Message}");
+            }
+
+
         }
+
+        public async Task UpdateCenter(Center center)
+        {
+            if (center == null)
+            {
+                throw new ArgumentNullException($"{nameof(UpdateCenter)} entity must not be null");
+            }
+
+            try
+            {
+                _rentAllDbContext.Centers.Update(center);
+                await _rentAllDbContext.SaveChangesAsync();
+               
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(center)} could not be updated: {ex.Message}");
+            }
+
+
+        }
+
 
         public void DeleteCenter(int centerId)
         {
-            var center = GetCenterById(centerId);
-            _rentAllDbContext.Centers.Remove(center);
-            Save();
-        }
-        public void UpdateCenter(Center center)
-        {
-            _rentAllDbContext.Centers.Attach(center);
-            var entry = _rentAllDbContext.Entry(center);
-            entry.State = EntityState.Modified;
+            var center = _rentAllDbContext.Centers.Find(centerId);
+       
+            
+            if (center != null)
+            {
+                _rentAllDbContext.Centers.Remove(center);
+                Save();
+            }
 
-            Save();
         }
         #endregion
 
@@ -109,10 +158,19 @@ namespace RentAll.Infrastructure.Repositories
         }
         #endregion
 
+
         #region CRUD lease
         public Lease GetLeaseById(int leaseId)
         {
             return _rentAllDbContext.Leases.Find(leaseId);
+        }
+
+        public async Task<IEnumerable<Lease>> GetLeasesByCenterId(int centerId)
+        {
+            return await _rentAllDbContext.Leases
+                        .Include(l => l.Center)
+                        .Include(l => l.Units)
+                        .Where(u => u.CenterId == centerId).ToListAsync();
         }
 
         public void InsertLease(Lease lease)
@@ -137,11 +195,11 @@ namespace RentAll.Infrastructure.Repositories
 
         #endregion
 
+
         #region CRUD category
 
 
         #endregion
-
 
 
         #region CRUD activity
@@ -150,17 +208,14 @@ namespace RentAll.Infrastructure.Repositories
         #endregion
 
 
-
         #region CRUD Floor
 
 
         #endregion
 
 
-
-
-
-        public IEnumerable<Unit> FindUnitsByLeaseId(int leaseId)
+        #region filters
+        public IQueryable<Unit> FindUnitsByLeaseId(int leaseId)
         {
             return _rentAllDbContext.Units
                 .Include(u => u.Leases)
@@ -169,7 +224,7 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public IEnumerable<Unit> FindAllUnitsInCenter(int centerId)
+        public IQueryable<Unit> FindAllUnitsInCenter(int centerId)
         {
 
             return _rentAllDbContext.Units
@@ -177,7 +232,7 @@ namespace RentAll.Infrastructure.Repositories
                         .Where(u => u.CenterId == centerId);
 
         }
-        public IEnumerable<Unit> FindAllLeasedUnitsInCenter(int centerId)
+        public IQueryable<Unit> FindAllLeasedUnitsInCenter(int centerId)
         {
 
             return _rentAllDbContext.Units
@@ -187,7 +242,7 @@ namespace RentAll.Infrastructure.Repositories
                         .Where(u => u.Leases.Any(l => l.Valid == true));
 
         }
-        public IEnumerable<Unit> FindAllUnitsInCenterOnFloor(int centerId, string floorName)
+        public IQueryable<Unit> FindAllUnitsInCenterOnFloor(int centerId, string floorName)
         {
 
             return _rentAllDbContext.Units
@@ -198,7 +253,7 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public IEnumerable<Unit> FindAllLeasedUnitsInCenterOnFloor(int centerId, string floorName)
+        public IQueryable<Unit> FindAllLeasedUnitsInCenterOnFloor(int centerId, string floorName)
         {
 
             return _rentAllDbContext.Units
@@ -211,7 +266,7 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public IEnumerable<Unit> FindAllLeasedRetailUnitsInCenterByActivity(int centerId, string activityName)
+        public IQueryable<Unit> FindAllLeasedRetailUnitsInCenterByActivity(int centerId, string activityName)
         {
             return _rentAllDbContext.Units
                         .Include(u => u.Center)
@@ -223,7 +278,7 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public IEnumerable<Unit> FindAllLeasedRetailUnitsInCenterByActivityCategory(int centerId, string categoryName)
+        public IQueryable<Unit> FindAllLeasedRetailUnitsInCenterByActivityCategory(int centerId, string categoryName)
         {
             return _rentAllDbContext.Units
                         .Include(u => u.Center)
@@ -246,7 +301,7 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public IEnumerable<Lease> GetValidLeasesOnCenter(int centerId)
+        public IQueryable<Lease> GetValidLeasesOnCenter(int centerId)
         {
             return _rentAllDbContext.Leases
                  .Include(l => l.Center)
@@ -266,7 +321,7 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public IEnumerable<Lease> FindLeasesInCenterByActivity(int centerId, string activityName)
+        public IQueryable<Lease> FindLeasesInCenterByActivity(int centerId, string activityName)
         {
             return _rentAllDbContext.Leases
                 .Include(l => l.Center)
@@ -276,7 +331,7 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public IEnumerable<Lease> FindLeasesInCenterByActivityCategory(int centerId, string categoryName)
+        public IQueryable<Lease> FindLeasesInCenterByActivityCategory(int centerId, string categoryName)
         {
             return _rentAllDbContext.Leases
                  .Include(l => l.Center)
@@ -286,7 +341,7 @@ namespace RentAll.Infrastructure.Repositories
                  .Where(l => l.Activity.Category.CategoryName == categoryName);
 
         }
-        public IEnumerable<Lease> FindValidLeasesInCenter(int centerId)
+        public IQueryable<Lease> FindValidLeasesInCenter(int centerId)
         {
             return _rentAllDbContext.Leases
                  .Include(l => l.Center)
@@ -295,6 +350,9 @@ namespace RentAll.Infrastructure.Repositories
 
 
         }
+
+        #endregion
+
 
         #endregion
 

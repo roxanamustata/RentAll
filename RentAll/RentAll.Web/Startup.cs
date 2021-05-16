@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -10,6 +11,7 @@ using RentAll.Domain.Interfaces;
 using RentAll.Infrastructure.Data;
 using RentAll.Infrastructure.Repositories;
 using RentAll.Infrastructure.Services;
+using RentAll.Web.Mappings;
 
 namespace RentAll.Web
 {
@@ -27,13 +29,20 @@ namespace RentAll.Web
         {
             services.AddControllersWithViews();
             services.AddScoped<ICenterService, CenterService>();
+            services.AddScoped<IReportsService, ReportsService>();
             services.AddScoped<ICenterRepository, CenterRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContext<RentAllDbContext>(
                     options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
 
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -79,6 +88,7 @@ namespace RentAll.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
             });
 
             app.UseSpa(spa =>

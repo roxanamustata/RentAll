@@ -171,14 +171,15 @@ namespace RentAll.Tests
             // Mock the Center Repository using Moq
 
             // Return all the centers
-            _mockCenterRepository.Setup(mr => mr.GetCenters()).Returns(centers);
+            //_mockCenterRepository.Setup(mr => mr.GetCenters()).Returns(Task<IEnumerable<Center>>.FromResult(centers));
+       
 
 
 
             // return a center by Id
             _mockCenterRepository.Setup(mr => mr.GetCenterById(
-                It.IsAny<int>())).Returns((int i) => centers.Where(
-                x => x.Id == i).Single());
+                It.IsAny<int>())).Returns((int i) => Task.FromResult(centers.Where(
+                x => x.Id == i).Single()));
 
             _mockCenterRepository.Setup(mr => mr.GetUnitById(
                 It.IsAny<int>())).Returns((int i) => units.Where(
@@ -190,43 +191,43 @@ namespace RentAll.Tests
 
 
             _mockCenterRepository.Setup(mr => mr.FindAllUnitsInCenter(
-                It.IsAny<int>())).Returns((int i) => units.Where(
+                It.IsAny<int>())).Returns((int i) => units.AsQueryable().Where(
                 x => x.Center == centers.Where(
-                x => x.Id == i).Single()).ToList());
+                x => x.Id == i).Single()));
 
             _mockCenterRepository.Setup(mr => mr.FindAllUnitsInCenterOnFloor(
-                It.IsAny<int>(), It.IsAny<string>())).Returns((int i, string s) => units
+                It.IsAny<int>(), It.IsAny<string>())).Returns((int i, string s) => units.AsQueryable()
                 .Where(x => x.Center == centers.Where(x => x.Id == i).Single())
                 .Where(x => x.Floor == floors.Where(f => f.FloorName == s).Single())
-                .ToList());
+                );
 
 
             _mockCenterRepository.Setup(mr => mr.FindAllLeasedUnitsInCenter(
-                It.IsAny<int>())).Returns((int i) => units
+                It.IsAny<int>())).Returns((int i) => units.AsQueryable()
                 .Where(x => x.Center == centers.Where(x => x.Id == i).Single())
                 .Where(x => x.Leases.Any(l => l.Valid == true))
-                .ToList());
+                );
 
 
             _mockCenterRepository.Setup(mr => mr.FindAllLeasedUnitsInCenterOnFloor(
-                It.IsAny<int>(), It.IsAny<string>())).Returns((int i, string s) => units
+                It.IsAny<int>(), It.IsAny<string>())).Returns((int i, string s) => units.AsQueryable()
                 .Where(x => x.Center == centers.Where(x => x.Id == i).Single())
                 .Where(x => x.Floor == floors.Where(f => f.FloorName == s).Single())
                 .Where(x => x.Leases.Any(l => l.Valid == true))
-                .ToList());
+                );
 
             _mockCenterRepository.Setup(mr => mr.FindUnitsByLeaseId(
-                It.IsAny<int>())).Returns((int i) => units.Where(
-                x => x.Leases.All(l => l.Id == i)).ToList());
+                It.IsAny<int>())).Returns((int i) => units.AsQueryable().Where(
+                x => x.Leases.All(l => l.Id == i)));
 
 
             _mockCenterRepository.Setup(mr => mr.FindAllLeasedRetailUnitsInCenterByActivity(
-                It.IsAny<int>(), It.IsAny<string>())).Returns((int i, string s) => units
+                It.IsAny<int>(), It.IsAny<string>())).Returns((int i, string s) => units.AsQueryable()
                 .Where(x => x.Center == centers.Where(x => x.Id == i).Single())
                 .Where(x => x.Leases.Any(l => l.Valid == true))
                 .Where(u => u.Leases.Any(l => l.Activity == activities.Where(a => a.ActivityName == s).Single()))
                 .Where(u => u.Type == UnitType.Retail)
-                .ToList());
+                );
 
         }
 
