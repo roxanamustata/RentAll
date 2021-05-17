@@ -7,12 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace RentAll.Infrastructure.Data
 {
     public class RentAllDbContext : DbContext
     {
-        private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
-            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly string _connectionString = "Data Source=RALU\\SQLEXPRESS;" +
+            "Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+            "ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=True";
 
         public RentAllDbContext() : base()
         {

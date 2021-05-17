@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentAll.Infrastructure.Data;
 
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    partial class RentAllDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210517061401_WebAnalytics5")]
+    partial class WebAnalytics5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

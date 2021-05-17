@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentAll.Infrastructure.Data;
 
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    partial class RentAllDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210516095528_WebAnalytics4")]
+    partial class WebAnalytics4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,6 +260,12 @@ namespace RentAll.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte>("ContentLength")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool>("IsRequestAuthenticated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("RequestIPAdress")
                         .HasColumnType("nvarchar(max)");
