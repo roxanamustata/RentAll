@@ -29,17 +29,9 @@ namespace RentAll.Infrastructure.Repositories
 
         #region public methods
 
-        public void Save()
-        {
-            _rentAllDbContext.SaveChanges();
-        }
-
-
-
-
         #region CRUD center
 
-        public async Task<IEnumerable<Center>> GetCenters()
+        public async Task<IEnumerable<Center>> GetCentersAsync()
         {
             try
             {
@@ -50,16 +42,16 @@ namespace RentAll.Infrastructure.Repositories
                 throw new Exception($"Couldn't retrieve entities: {ex.Message}");
             }
         }
-        public async Task<Center> GetCenterById(int centerId)
+        public async Task<Center> GetCenterByIdAsync(int centerId)
         {
             return await _rentAllDbContext.Centers.Include(c => c.Owner).FirstOrDefaultAsync(c => c.Id == centerId);
         }
 
-        public async Task<Center> CreateCenter(Center center)
+        public async Task<Center> CreateCenterAsync(Center center)
         {
             if (center == null)
             {
-                throw new ArgumentNullException($"{nameof(CreateCenter)} entity must not be null");
+                throw new ArgumentNullException($"{nameof(CreateCenterAsync)} entity must not be null");
             }
 
             try
@@ -77,11 +69,11 @@ namespace RentAll.Infrastructure.Repositories
 
         }
 
-        public async Task UpdateCenter(Center center)
+        public async Task UpdateCenterAsync(Center center)
         {
             if (center == null)
             {
-                throw new ArgumentNullException($"{nameof(UpdateCenter)} entity must not be null");
+                throw new ArgumentNullException($"{nameof(UpdateCenterAsync)} entity must not be null");
             }
 
             try
@@ -100,7 +92,7 @@ namespace RentAll.Infrastructure.Repositories
         }
 
 
-        public void DeleteCenter(int centerId)
+        public async Task DeleteCenterAsync(int centerId)
         {
             var center = _rentAllDbContext.Centers.Find(centerId);
        
@@ -108,8 +100,9 @@ namespace RentAll.Infrastructure.Repositories
             if (center != null)
             {
                 _rentAllDbContext.Centers.Remove(center);
-                Save();
+                await _rentAllDbContext.SaveChangesAsync();
             }
+
 
         }
         #endregion
@@ -212,6 +205,14 @@ namespace RentAll.Infrastructure.Repositories
 
 
         #endregion
+
+
+        public void Save()
+        {
+            _rentAllDbContext.SaveChanges();
+        }
+
+
 
 
         #region filters

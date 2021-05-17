@@ -27,30 +27,30 @@ namespace RentAll.Infrastructure.Services
 
         #region public methods
 
-        public async Task<IEnumerable<Center>> GetCenters()
+        public async Task<IEnumerable<Center>> GetCentersAsync()
         {
-           return await _centerRepository.GetCenters();
+           return await _centerRepository.GetCentersAsync();
         }
 
-        public async Task<Center> GetCenterById(int id)
+        public async Task<Center> GetCenterByIdAsync(int id)
         {
-            return await _centerRepository.GetCenterById(id);
+            return await _centerRepository.GetCenterByIdAsync(id);
         }
 
-        public async Task<Center> CreateCenter(Center center)
+        public async Task<Center> CreateCenterAsync(Center center)
         {
      
-            return await _centerRepository.CreateCenter(center);
+            return await _centerRepository.CreateCenterAsync(center);
         }
 
-        public async Task UpdateCenter(Center center)
+        public async Task UpdateCenterAsync(Center center)
         {
-            await _centerRepository.UpdateCenter(center);
+            await _centerRepository.UpdateCenterAsync(center);
         }
 
-        public void DeleteCenter(int centerId)
+        public async Task DeleteCenterAsync(int centerId)
         {
-           _centerRepository.DeleteCenter(centerId);
+          await _centerRepository.DeleteCenterAsync(centerId);
         }
 
 

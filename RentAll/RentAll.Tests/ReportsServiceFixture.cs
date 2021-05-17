@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace RentAll.Tests
 {
     [TestFixture]
-    public class CenterServiceFixture
+    public class ReportsServiceFixture
     {
         private Mock<ICenterRepository> _mockCenterRepository;
 
@@ -177,7 +177,7 @@ namespace RentAll.Tests
 
 
             // return a center by Id
-            _mockCenterRepository.Setup(mr => mr.GetCenterById(
+            _mockCenterRepository.Setup(mr => mr.GetCenterByIdAsync(
                 It.IsAny<int>())).Returns((int i) => Task.FromResult(centers.Where(
                 x => x.Id == i).Single()));
 
@@ -234,8 +234,8 @@ namespace RentAll.Tests
         [TestCase(1, 5550)]
         public void TestCalculateGrossLeasableAreaPerCenter(int id, int expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateGrossLeasableAreaOnCenter(id);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateGrossLeasableAreaOnCenter(id);
             Assert.AreEqual(expectedResult, result);
 
         }
@@ -243,8 +243,8 @@ namespace RentAll.Tests
         [TestCase(1, "Ground Floor", 550)]
         public void TestCalculateGrossLeasableAreaPerFloor(int centerId, string floorName, int expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateGrossLeasableAreaInCenterOnFloor(centerId, floorName);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateGrossLeasableAreaInCenterOnFloor(centerId, floorName);
             Assert.AreEqual(expectedResult, result);
 
         }
@@ -252,16 +252,16 @@ namespace RentAll.Tests
         [TestCase(1, 5550)]
         public void TestCalculateLeasedAreaPerCenter(int centerId, double expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateLeasedAreaOnCenter(1);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateLeasedAreaOnCenter(1);
             Assert.AreEqual(expectedResult, result);
         }
 
         [TestCase(1, 100)]
         public void TestCalculateOcupancyDegreeOnCenter(int centerId, double expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateOcupancyDegreeOnCenter(centerId);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateOcupancyDegreeOnCenter(centerId);
             Assert.AreEqual(expectedResult, result);
 
         }
@@ -270,8 +270,8 @@ namespace RentAll.Tests
         [TestCase(1, "Ground Floor", 100)]
         public void TestCalculateOcupancyDegreeInCenterOnFloor(int centerId, string floorName, double expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateOcupancyDegreeInCenterOnFloor(centerId, floorName);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateOcupancyDegreeInCenterOnFloor(centerId, floorName);
             Assert.AreEqual(expectedResult, result);
 
         }
@@ -280,16 +280,16 @@ namespace RentAll.Tests
         public void TestCalculateTotalRentOnCenter(int centerId, double expectedResult)
         {
 
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateTotalRentOnCenter(centerId);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateTotalRentOnCenter(centerId);
             Assert.AreEqual(expectedResult, result);
         }
 
         [TestCase(1, 15)]
         public void TestCalculateAverageRentPerSqmOnCenter(int centerId, double expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateAverageRentPerSqmOnCenter(centerId);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateAverageRentPerSqmOnCenter(centerId);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -297,8 +297,8 @@ namespace RentAll.Tests
         [TestCase(1, 106250)]
         public void TestCalculateTotalCostsPerLease(int leaseId, double expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateTotalCostsPerLease(leaseId);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateTotalCostsPerLease(leaseId);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -306,8 +306,8 @@ namespace RentAll.Tests
         [TestCase(1, "Apparel", 5500)]
         public void TestCalculateLeasedAreaInCenterOnActivity(int centerId, string activityName, double expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateLeasedAreaInCenterOnActivity(centerId, activityName);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateLeasedAreaInCenterOnActivity(centerId, activityName);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -315,15 +315,15 @@ namespace RentAll.Tests
         public void TestCalculateTotalRentInCenterOnActivity(int centerId, string activityName, double expectedResult)
         {
 
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateTotalRentInCenterOnActivity(centerId, activityName);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateTotalRentInCenterOnActivity(centerId, activityName);
             Assert.AreEqual(expectedResult, result);
         }
         [TestCase(1, "Apparel", 15)]
         public void TestCalculateAverageRentPerSqmInCenterOnActivity(int centerId, string activityName, double expectedResult)
         {
-            var centerService = new CenterService(_mockCenterRepository.Object);
-            double result = centerService.CalculateAverageRentPerSqmInCenterOnActivity(centerId, activityName);
+            var reportsService = new ReportsService(_mockCenterRepository.Object);
+            double result = reportsService.CalculateAverageRentPerSqmInCenterOnActivity(centerId, activityName);
             Assert.AreEqual(expectedResult, result);
         }
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RentAll.Domain;
 using RentAll.Domain.DTOs;
+using RentAll.Web.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +14,21 @@ namespace RentAll.Web.Mappings
 
         public MappingProfile()
         {
-            CreateMap<Center, CenterDto>()
-                .ForPath(dest => dest.Owner.CompanyName, source => source.MapFrom(source => source.Owner.CompanyName))
-                
+            CreateMap<Center, GetCenterDto>()
                 .ReverseMap();
+
+            CreateMap<Center, CreateCenterDto>()
+                 .ReverseMap();
+
+
+            CreateMap<Company, GetCompanyByNameDto>()
+                .ReverseMap();
+
+            CreateMap<Center, UpdateCenterDto>()
+               .ReverseMap();
 
            
 
-            CreateMap<Company, CompanyDto>();
-            CreateMap<CompanyDto, Company>();
         }
 
 

@@ -1,19 +1,20 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using RentAll.Domain;
 using RentAll.Domain.DTOs;
 using RentAll.Domain.Interfaces;
+using RentAll.Web.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace RentAll.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class CenterController : ControllerBase
     {
         private readonly ICenterService _centerService;
@@ -32,8 +33,8 @@ namespace RentAll.Web.Controllers
         {
             try
             {
-                var centers = await _centerService.GetCenters();
-                var centerDtos = _mapper.Map<IEnumerable<CenterDto>>(centers);
+                var centers = await _centerService.GetCentersAsync();
+                var centerDtos = _mapper.Map<IEnumerable<GetCenterDto>>(centers);
 
                 return Ok(centerDtos);
             }
@@ -49,8 +50,8 @@ namespace RentAll.Web.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCenterById(int id)
         {
-            var center = await _centerService.GetCenterById(id);
-            var centerDto = _mapper.Map<CenterDto>(center);
+            var center = await _centerService.GetCenterByIdAsync(id);
+            var centerDto = _mapper.Map<GetCenterDto>(center);
 
             try
             {
@@ -65,9 +66,8 @@ namespace RentAll.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateCenter(CenterDto centerDto)
+        public async Task<IActionResult> CreateCenter(CreateCenterDto centerDto)
         {
-
 
             try
             {
@@ -75,7 +75,7 @@ namespace RentAll.Web.Controllers
                     return BadRequest();
 
                 var center = _mapper.Map<Center>(centerDto);
-                var createdCenter = await _centerService.CreateCenter(center);
+                var createdCenter = await _centerService.CreateCenterAsync(center);
 
                 return CreatedAtAction(nameof(GetCenterById),
                     new { id = createdCenter.Id }, createdCenter);
@@ -88,19 +88,19 @@ namespace RentAll.Web.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateCenter(int id, CenterDto centerDto)
+        public async Task<IActionResult> UpdateCenter(int id, UpdateCenterDto centerDto)
         {
             try
             {
 
 
-                var centerToUpdate = await _centerService.GetCenterById(id);
+                var centerToUpdate = await _centerService.GetCenterByIdAsync(id);
 
                 if (centerToUpdate == null)
                     return NotFound($"Center with Id = {id} not found");
-                centerToUpdate = _mapper.Map<Center>(centerDto);
+                centerToUpdate = _mapper.Map(centerDto, centerToUpdate);
 
-                await _centerService.UpdateCenter(centerToUpdate);
+                await _centerService.UpdateCenterAsync(centerToUpdate);
                 return Ok($"Center with Id = {id} was updated");
             }
             catch (Exception)
@@ -111,19 +111,25 @@ namespace RentAll.Web.Controllers
         }
         [HttpDelete("{id:int}")]
 
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                _centerService.DeleteCenter(id);
+                await _centerService.DeleteCenterAsync(id);
+                return Ok($"Center with Id = {id} was deleted");
             }
 
             catch (Exception)
             {
-                StatusCode(StatusCodes.Status500InternalServerError,
-                     "Error deleting data");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                       "Error deleting data");
             }
         }
 
+
+
+
+
+        //[Route("{centerId}/units/{unitId}")]
     }
 }

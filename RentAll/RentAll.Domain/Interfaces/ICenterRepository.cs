@@ -12,11 +12,11 @@ namespace RentAll.Domain.Interfaces
         void Save();
        
 
-        Task<IEnumerable<Center>> GetCenters();
-        Task<Center> GetCenterById(int centerId);
-        Task<Center> CreateCenter(Center center);
-        void DeleteCenter(int centerId);
-        Task UpdateCenter(Center center);
+        Task<IEnumerable<Center>> GetCentersAsync();
+        Task<Center> GetCenterByIdAsync(int centerId);
+        Task<Center> CreateCenterAsync(Center center);
+        Task DeleteCenterAsync(int centerId);
+        Task UpdateCenterAsync(Center center);
 
 
         Unit GetUnitById(int unitId);
