@@ -259,6 +259,12 @@ namespace RentAll.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<byte?>("ContentLength")
+                        .HasColumnType("tinyint");
+
+                    b.Property<bool?>("IsRequestAuthenticated")
+                        .HasColumnType("bit");
+
                     b.Property<string>("RequestIPAdress")
                         .HasColumnType("nvarchar(max)");
 

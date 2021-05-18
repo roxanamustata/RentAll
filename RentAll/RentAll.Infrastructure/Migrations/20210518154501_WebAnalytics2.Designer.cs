@@ -10,8 +10,8 @@ using RentAll.Infrastructure.Data;
 namespace RentAll.Infrastructure.Migrations
 {
     [DbContext(typeof(RentAllDbContext))]
-    [Migration("20210516095403_WebAnalytics3")]
-    partial class WebAnalytics3
+    [Migration("20210518154501_WebAnalytics2")]
+    partial class WebAnalytics2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -261,13 +261,13 @@ namespace RentAll.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte>("ContentLength")
+                    b.Property<byte?>("ContentLength")
                         .HasColumnType("tinyint");
 
-                    b.Property<DateTime>("CreatedOn")
+                    b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsRequestAuthenticated")
+                    b.Property<bool?>("IsRequestAuthenticated")
                         .HasColumnType("bit");
 
                     b.Property<string>("RequestIPAdress")

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RentAll.Infrastructure.Migrations
 {
-    public partial class WebAnalytics4 : Migration
+    public partial class WebAnalytics3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,8 +18,7 @@ namespace RentAll.Infrastructure.Migrations
                 name: "CreatedOn",
                 table: "WebAnalytics",
                 type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                nullable: true);
         }
     }
 }
