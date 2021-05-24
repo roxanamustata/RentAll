@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace RentAll.Web.DTOs
 {
-    public class GetCompanyByNameDto
+    public class UnitDto
     {
-        public string CompanyName { get; set; }
+        public int Id { get; set; }
     }
 }

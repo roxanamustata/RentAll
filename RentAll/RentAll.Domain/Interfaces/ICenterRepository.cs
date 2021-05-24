@@ -10,7 +10,7 @@ namespace RentAll.Domain.Interfaces
     public interface ICenterRepository
     {
         void Save();
-       
+
 
         Task<IEnumerable<Center>> GetCentersAsync();
         Task<Center> GetCenterByIdAsync(int centerId);
@@ -19,18 +19,20 @@ namespace RentAll.Domain.Interfaces
         Task UpdateCenterAsync(Center center);
 
 
-        Unit GetUnitById(int unitId);
-        Unit GetUnitFromCenterByUnitCode(int centerId, string unitCode);
-        void InsertUnit(Unit unit);
-        void DeleteUnit(int unitId);
-        void UpdateUnit(Unit unit);
+        Task<IEnumerable<Unit>> GetUnitsInCenterAsync(int centerId);
+        Task<Unit> GetUnitByIdAsync(int centerId,int unitId);
+        Task<Unit> GetUnitFromCenterByUnitCodeAsync(int centerId, string unitCode);
+        Task<Unit> CreateUnitInCenterAsync(int centerId, Unit unit);
+        Task DeleteUnitAsync(int centerId, int unitId);
+        Task UpdateUnitAsync(int centerId,Unit unit);
 
 
-        Task<IEnumerable<Lease>> GetLeasesByCenterId(int centerId);
-        Lease GetLeaseById(int leaseId);
-        void InsertLease(Lease lease);
-        void DeleteLease(int leaseId);
-        void UpdateLease(Lease lease);
+        Task<IEnumerable<Lease>> GetLeasesInCenterAsync(int centerId);
+        Task<Lease> GetLeaseByIdAsync(int centerId, int leaseId);
+        Task<Lease> GetValidLeaseByUnitCodeAsync(int centerId, string unitCode);
+        Task<Lease> CreateLeaseAsync(int centerId, int unitId, Lease lease);
+        Task DeleteLeaseAsync(int centerId, int leaseId);
+        Task UpdateLeaseAsync(int centerId, Lease lease);
 
 
 

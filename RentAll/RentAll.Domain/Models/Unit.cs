@@ -25,6 +25,11 @@ namespace RentAll.Domain
         public double MonthlyMarketingFeeSqm { get; set; }
         public ICollection<Lease> Leases { get; set; }
 
+        public override string ToString()
+        {
+            return $"{UnitCode}, {Area}" ;
+        }
+
         #endregion
 
 

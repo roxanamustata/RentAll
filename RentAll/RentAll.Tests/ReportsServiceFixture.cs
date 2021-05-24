@@ -181,11 +181,11 @@ namespace RentAll.Tests
                 It.IsAny<int>())).Returns((int i) => Task.FromResult(centers.Where(
                 x => x.Id == i).Single()));
 
-            _mockCenterRepository.Setup(mr => mr.GetUnitById(
-                It.IsAny<int>())).Returns((int i) => units.Where(
-                x => x.Id == i).Single());
+            _mockCenterRepository.Setup(mr => mr.GetUnitByIdAsync(
+                It.IsAny<int>())).Returns((int i) => Task.FromResult(units.Where(
+                x => x.Id == i).Single()));
 
-            _mockCenterRepository.Setup(mr => mr.GetLeaseById(
+            _mockCenterRepository.Setup(mr => mr.GetLeaseByIdAsync(
                 It.IsAny<int>())).Returns((int i) => leases.Where(
                 x => x.Id == i).Single());
 

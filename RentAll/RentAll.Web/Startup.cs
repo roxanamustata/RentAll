@@ -28,6 +28,8 @@ namespace RentAll.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddControllers().AddNewtonsoftJson(options =>
+       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddScoped<ICenterService, CenterService>();
             services.AddScoped<IReportsService, ReportsService>();
             services.AddScoped<ICenterRepository, CenterRepository>();

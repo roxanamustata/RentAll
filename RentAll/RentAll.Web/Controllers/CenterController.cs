@@ -27,9 +27,11 @@ namespace RentAll.Web.Controllers
 
         }
 
+        #region CENTERS
+
         [HttpGet]
 
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> ListCenters()
         {
             try
             {
@@ -111,7 +113,7 @@ namespace RentAll.Web.Controllers
         }
         [HttpDelete("{id:int}")]
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteCenter(int id)
         {
             try
             {
@@ -125,11 +127,275 @@ namespace RentAll.Web.Controllers
                        "Error deleting data");
             }
         }
+        #endregion
+
+        #region UNITS
+
+        [HttpGet]
+        [Route("{id:int}/units")]
+
+        public async Task<IActionResult> ListUnitsInCenter(int id)
+        {
+            try
+            {
+                var units = await _centerService.GetUnitsInCenterAsync(id);
+                var unitDtos = _mapper.Map<IEnumerable<GetUnitDto>>(units);
+
+                return Ok(unitDtos);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
 
 
 
+        [HttpGet]
+        [Route("{id:int}/units/{unitId}")]
+        public async Task<IActionResult> GetUnitById(int id, int unitId)
+        {
+            var unit = await _centerService.GetUnitByIdAsync(id, unitId);
+
+            if (unit == null)
+                return NotFound($"Unit with Id = {unitId} not found");
 
 
-        //[Route("{centerId}/units/{unitId}")]
+            var unitDto = _mapper.Map<GetUnitDto>(unit);
+
+            try
+            {
+                return Ok(unitDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet]
+        [Route("{id:int}/units/{unitCode}/code")]
+        public async Task<IActionResult> GetUnitByCode(int id, string unitCode)
+        {
+            var unit = await _centerService.GetUnitFromCenterByUnitCodeAsync(id, unitCode);
+
+            if (unit == null)
+                return NotFound($"Unit with code = {unitCode} not found");
+
+            var unitDto = _mapper.Map<GetUnitDto>(unit);
+
+            try
+            {
+                return Ok(unitDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        [HttpPost]
+        [Route("{id:int}/units")]
+        public async Task<IActionResult> CreateUnitInCenter(int id, CreateUnitDto unitDto)
+        {
+
+            try
+            {
+                if (unitDto == null)
+                    return BadRequest();
+
+                var unit = _mapper.Map<Unit>(unitDto);
+                var createdUnit = await _centerService.CreateUnitInCenterAsync(id, unit);
+
+                return CreatedAtAction(nameof(GetUnitById),
+                    new { id = createdUnit.Id }, createdUnit);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error creating new unit record");
+            }
+        }
+
+        [HttpPut]
+        [Route("{id:int}/units/{unitId:int}")]
+        public async Task<IActionResult> UpdateUnitInCenter(int id, int unitId, UpdateUnitDto unitDto)
+        {
+            try
+            {
+                var unitToUpdate = await _centerService.GetUnitByIdAsync(id, unitId);
+
+                if (unitToUpdate == null)
+                    return NotFound($"Center with Id = {id} not found");
+                unitToUpdate = _mapper.Map(unitDto, unitToUpdate);
+
+                await _centerService.UpdateUnitAsync(id, unitToUpdate);
+                return Ok($"Unit with Id = {unitId} was updated");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating data");
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id:int}/units/{unitId:int}")]
+        public async Task<IActionResult> DeleteUnitById(int id, int unitId)
+        {
+            try
+            {
+                await _centerService.DeleteUnitAsync(id, unitId);
+                return Ok($"Unit with Id = {unitId} was deleted");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                       "Error deleting data");
+            }
+        }
+        #endregion
+
+        #region LEASES
+
+        [HttpGet]
+        [Route("{id:int}/units/leases/{leaseId}")]
+        public async Task<IActionResult> GetLeaseById(int id, int leaseId)
+        {
+            var lease = await _centerService.GetLeaseByIdAsync(id, leaseId);
+
+            if (lease == null)
+                return NotFound($"Unit with Id = {leaseId} not found");
+
+            var leaseDto = _mapper.Map<GetLeaseDto>(lease);
+
+            try
+            {
+                return Ok(leaseDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet]
+        [Route("{id:int}/units/{unitCode}/leases/valid")]
+        public async Task<IActionResult> GetValidLeaseByUnitCode(int id, string unitCode)
+        {
+            var lease = await _centerService.GetValidLeaseByUnitCodeAsync(id, unitCode);
+
+            if (lease == null)
+                return NotFound($"No valid lease was found for unit with code = {unitCode}");
+
+            var leaseDto = _mapper.Map<GetLeaseDto>(lease);
+
+            try
+            {
+                return Ok(leaseDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet]
+        [Route("{id:int}/units/leases")]
+        public async Task<IActionResult> ListLeasesInCenter(int id)
+        {
+            try
+            {
+                var leases = await _centerService.GetLeasesInCenterAsync(id);
+                var leaseDtos = _mapper.Map<IEnumerable<GetLeaseDto>>(leases);
+
+                return Ok(leaseDtos);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        [HttpPost]
+        [Route("{id:int}/units/{unitId:int}/leases")]
+        public async Task<IActionResult> CreateLeaseInCenter(int id, int unitId, CreateLeaseDto leaseDto)
+        {
+
+            try
+            {
+                if (leaseDto == null)
+                    return BadRequest();
+
+                var lease = _mapper.Map<Lease>(leaseDto);
+
+                Lease createdLease = await _centerService.CreateLeaseInCenterAsync(id, unitId, lease);
+
+                return CreatedAtAction(nameof(GetLeaseById),
+                    new { id = createdLease.Id }, createdLease);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error creating new lease record");
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id:int}/units/leases/{leaseId:int}")]
+        public async Task<IActionResult> DeleteLeaseById(int id, int leaseId)
+        {
+            try
+            {
+                await _centerService.DeleteLeaseAsync(id, leaseId);
+                return Ok($"Lease with Id = {leaseId} was deleted");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                       "Error deleting data");
+            }
+        }
+
+        [HttpPut]
+        [Route("{id:int}/units/leases/{leaseId:int}")]
+        public async Task<IActionResult> UpdateLeaseInCenter(int id, int leaseId, UpdateLeaseDto leaseDto)
+        {
+            try
+            {
+                var leaseToUpdate = await _centerService.GetLeaseByIdAsync(id, leaseId);
+
+                if (leaseToUpdate == null)
+                    return NotFound($"Lease with Id = {id} not found");
+                
+                leaseToUpdate = _mapper.Map(leaseDto, leaseToUpdate);
+
+                await _centerService.UpdateLeaseAsync(id, leaseToUpdate);
+                return Ok($"Lease with Id = {leaseId} was updated");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating data");
+            }
+        }
+
+
+        #endregion
+
+
+        #region COMPANIES
+
+        #endregion
+
+
     }
 }

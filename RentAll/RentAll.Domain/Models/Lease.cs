@@ -9,6 +9,11 @@ namespace RentAll.Domain
 {
     public class Lease
     {
+
+        public Lease()
+        {
+            Units = new List<Unit>();
+        }
         #region properties
 
         public int Id { get; set; }
@@ -73,7 +78,7 @@ namespace RentAll.Domain
 
         #endregion
 
-
+       
         #region public methods
 
         #endregion

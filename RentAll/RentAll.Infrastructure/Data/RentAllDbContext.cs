@@ -50,9 +50,16 @@ namespace RentAll.Infrastructure.Data
 
             modelBuilder.ApplyConfiguration(new LeaseConfig());
             modelBuilder.ApplyConfiguration(new CenterConfig());
-  
+
+            modelBuilder
+              .Entity<Lease>()
+              .HasMany(l => l.Units)
+              .WithMany(u => u.Leases)
+              .UsingEntity(j => j.ToTable("LeaseUnit"));
 
 
         }
+
+
     }
 }

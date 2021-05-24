@@ -20,6 +20,9 @@ namespace RentAll.Infrastructure.Data
                 .IsRequired()
                 .HasMaxLength(50);
 
+
+
+
         }
     }
 }

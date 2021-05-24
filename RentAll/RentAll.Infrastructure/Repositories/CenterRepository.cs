@@ -35,7 +35,7 @@ namespace RentAll.Infrastructure.Repositories
         {
             try
             {
-                return await _rentAllDbContext.Centers.Include(c=>c.Owner).ToListAsync();
+                return await _rentAllDbContext.Centers.Include(c => c.Owner).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -80,7 +80,6 @@ namespace RentAll.Infrastructure.Repositories
             {
                 _rentAllDbContext.Centers.Update(center);
                 await _rentAllDbContext.SaveChangesAsync();
-               
 
             }
             catch (Exception ex)
@@ -88,15 +87,14 @@ namespace RentAll.Infrastructure.Repositories
                 throw new Exception($"{nameof(center)} could not be updated: {ex.Message}");
             }
 
-
         }
 
 
         public async Task DeleteCenterAsync(int centerId)
         {
             var center = _rentAllDbContext.Centers.Find(centerId);
-       
-            
+
+
             if (center != null)
             {
                 _rentAllDbContext.Centers.Remove(center);
@@ -109,81 +107,249 @@ namespace RentAll.Infrastructure.Repositories
 
         #region CRUD unit
 
-        public Unit GetUnitById(int unitId)
+        public async Task<Unit> GetUnitByIdAsync(int centerId, int unitId)
         {
-            return _rentAllDbContext.Units.Find(unitId);
+            try
+            {
+                return await _rentAllDbContext.Units
+                .Include(u => u.Center)
+                .ThenInclude(u => u.Floors)
+                .Where(u => u.CenterId == centerId)
+                .FirstOrDefaultAsync(u => u.Id == unitId);
 
+
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve unit: {ex.Message}");
+            }
         }
-        public Unit GetUnitFromCenterByUnitCode(int centerId, string unitCode)
-        {
-            return _rentAllDbContext.Units
-                   .Include(u => u.Center)
-                   .Where(u => u.CenterId == centerId)
-                   .Where(u => u.UnitCode == unitCode)
-                   .Single();
 
+
+        public async Task<IEnumerable<Unit>> GetUnitsInCenterAsync(int centerId)
+        {
+            try
+            {
+                return await _rentAllDbContext.Units
+                    .Include(u => u.Center)
+                    .Include(u => u.Floor)
+                    .Where(u => u.CenterId == centerId)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entities: {ex.Message}");
+            }
         }
 
-        public async void InsertUnit(Unit unit)
+        public async Task<Unit> GetUnitFromCenterByUnitCodeAsync(int centerId, string unitCode)
         {
+            try
+            {
+                return await _rentAllDbContext.Units
+                       .Include(u => u.Center)
+                       .ThenInclude(u => u.Floors)
+                       .Where(u => u.CenterId == centerId)
+                       .Where(u => u.UnitCode == unitCode)
+                       .SingleAsync();
 
-            var center = await _rentAllDbContext.Centers
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entity: {ex.Message}");
+            }
+        }
+
+        public async Task<Unit> CreateUnitInCenterAsync(int centerId, Unit unit)
+        {
+            if (unit == null)
+            {
+                throw new ArgumentNullException($"{nameof(CreateUnitInCenterAsync)} entity must not be null");
+            }
+
+            try
+            {
+                var center = await _rentAllDbContext.Centers
                 .Include(c => c.Units)
                 .ThenInclude(u => u.Leases)
-                .FirstOrDefaultAsync(c => c.Id == unit.CenterId);
+                .FirstOrDefaultAsync(c => c.Id == centerId);
 
-            center.Units.Add(unit);
 
-            Save();
+                center.Units.Add(unit);
+                _rentAllDbContext.Centers.Update(center);
+
+                await _rentAllDbContext.SaveChangesAsync();
+
+                return unit;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(unit)} could not be saved: {ex.Message}");
+            }
         }
-        public void DeleteUnit(int unitId)
+
+
+        public async Task DeleteUnitAsync(int centerId, int unitId)
         {
-            var unit = GetUnitById(unitId);
-            _rentAllDbContext.Units.Remove(unit);
-            Save();
+            var unit = await _rentAllDbContext.Units
+                 .Include(u => u.Center)
+                 .Where(u => u.CenterId == centerId)
+                 .FirstOrDefaultAsync(u => u.Id == unitId);
+
+
+            if (unit != null)
+            {
+                _rentAllDbContext.Units.Remove(unit);
+                await _rentAllDbContext.SaveChangesAsync();
+            }
         }
-        public void UpdateUnit(Unit unit)
+        public async Task UpdateUnitAsync(int centerId, Unit unit)
         {
-            _rentAllDbContext.Units.Attach(unit);
-            var entry = _rentAllDbContext.Entry(unit);
-            entry.State = EntityState.Modified;
-            Save();
+            if (unit == null)
+            {
+                throw new ArgumentNullException($"{nameof(UpdateUnitAsync)} entity must not be null");
+            }
+
+            try
+            {
+                var center = await _rentAllDbContext.Centers
+                                .Include(c => c.Units)
+                                .ThenInclude(u => u.Leases)
+                                .FirstOrDefaultAsync(c => c.Id == centerId);
+
+                _rentAllDbContext.Units.Update(unit);
+                await _rentAllDbContext.SaveChangesAsync();
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(unit)} could not be updated: {ex.Message}");
+            }
         }
         #endregion
 
 
         #region CRUD lease
-        public Lease GetLeaseById(int leaseId)
+        public async Task<Lease> GetLeaseByIdAsync(int centerId, int leaseId)
         {
-            return _rentAllDbContext.Leases.Find(leaseId);
+            try
+            {
+                return await _rentAllDbContext.Leases
+                .Include(l => l.Center)
+                .Include(l => l.Units)
+                .Include(l => l.Tenant)
+                .Include(l => l.Activity)
+                .Where(l => l.CenterId == centerId)
+                .FirstOrDefaultAsync(l => l.Id == leaseId);
+
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve unit: {ex.Message}");
+            }
         }
 
-        public async Task<IEnumerable<Lease>> GetLeasesByCenterId(int centerId)
+        public async Task<Lease> GetValidLeaseByUnitCodeAsync(int centerId, string unitCode)
+        {
+            try
+            {
+                return await _rentAllDbContext.Leases
+                 .Include(l => l.Center)
+                 .ThenInclude(l => l.Units.Where(u => u.CenterId == centerId))
+                 .Include(l => l.Tenant)
+                 .Include(l => l.Activity)
+                 .Where(l => l.Valid == true)
+                 .Where(l => l.Units.Any(u => u.UnitCode == unitCode))
+                 .SingleAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entity: {ex.Message}");
+            }
+        }
+
+        public async Task<IEnumerable<Lease>> GetLeasesInCenterAsync(int centerId)
         {
             return await _rentAllDbContext.Leases
                         .Include(l => l.Center)
-                        .Include(l => l.Units)
+                        .ThenInclude(l => l.Units)
+                        .Include(l => l.Tenant)
+                        .Include(l => l.Activity)
                         .Where(u => u.CenterId == centerId).ToListAsync();
         }
 
-        public void InsertLease(Lease lease)
+        public async Task<Lease> CreateLeaseAsync(int centerId, int unitId, Lease lease)
         {
-            _rentAllDbContext.Leases.Add(lease);
-            Save();
+
+            if (lease == null)
+            {
+                throw new ArgumentNullException($"{nameof(CreateLeaseAsync)} entity must not be null");
+            }
+
+            try
+            {
+                var center = await _rentAllDbContext.Centers
+                .Include(c => c.Units)
+                .ThenInclude(u => u.Leases)
+                .FirstOrDefaultAsync(c => c.Id == centerId);
+
+                var foundUnit = center.Units.FirstOrDefault(u => u.Id == unitId);
+                foundUnit.Leases.Add(lease);
+
+                _rentAllDbContext.Centers.Update(center);
+                await _rentAllDbContext.SaveChangesAsync();
+
+                return lease;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(lease)} could not be saved: {ex.Message}");
+            }
         }
-        public void DeleteLease(int leaseId)
+        public async Task DeleteLeaseAsync(int centerId, int leaseId)
         {
-            var lease = GetLeaseById(leaseId);
-            _rentAllDbContext.Leases.Remove(lease);
-            Save();
+            var lease = await _rentAllDbContext.Leases
+                 .Include(l => l.Center)
+                 .Where(l => l.CenterId == centerId)
+                 .FirstOrDefaultAsync(l => l.Id == leaseId);
+
+
+            if (lease != null)
+            {
+                _rentAllDbContext.Leases.Remove(lease);
+                await _rentAllDbContext.SaveChangesAsync();
+            }
 
         }
-        public void UpdateLease(Lease lease)
+        public async Task UpdateLeaseAsync(int centerId, Lease lease)
         {
-            _rentAllDbContext.Leases.Attach(lease);
-            var entry = _rentAllDbContext.Entry(lease);
-            entry.State = EntityState.Modified;
-            Save();
+            if (lease == null)
+            {
+                throw new ArgumentNullException($"{nameof(UpdateLeaseAsync)} entity must not be null");
+            }
+
+            try
+            {
+                var center = await _rentAllDbContext.Centers
+                            .Include(c => c.Units)
+                            .ThenInclude(u => u.Leases)
+                            .FirstOrDefaultAsync(c => c.Id == centerId);
+                
+
+             
+                _rentAllDbContext.Leases.Update(lease);
+                await _rentAllDbContext.SaveChangesAsync();
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(lease)} could not be updated: {ex.Message}");
+            }
         }
 
         #endregion
