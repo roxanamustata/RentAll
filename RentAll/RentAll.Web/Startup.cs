@@ -52,11 +52,19 @@ namespace RentAll.Web
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddSwaggerGen(c =>
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RentAllWeb", Version = "v1" });
+            //});
+            services.AddSwaggerDocument(settings =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RentAllWeb", Version = "v1" });
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Rentall";
+                    document.Info.Description = "REST API for Rentall";
+                };
             });
-
 
         }
 
@@ -66,8 +74,10 @@ namespace RentAll.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RentAllWeb v1"));
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
+                //app.UseSwagger();
+                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RentAllWeb v1"));
             }
             else
             {
@@ -78,6 +88,8 @@ namespace RentAll.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -103,6 +115,7 @@ namespace RentAll.Web
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
         }

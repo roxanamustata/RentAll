@@ -1,4 +1,4 @@
-a.navbar-brand {
+/* a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
@@ -15,4 +15,36 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+} */
+
+.custom-toolbar{
+  display:flex;
+  /* margin-bottom: 50px; */
+  
+ /* background-color:rgba(54, 52, 52, 0.596); */
+ background-color: transparent;
+ /* padding: 0 5px; */
+ justify-content: space-between;
+  align-items: center;
+  word-break: break-all;
 }
+
+span{
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  
+}
+
+
+ button{
+color: #ffffff;
+		font-family: "Source Sans Pro", sans-serif;
+		font-weight: 300;
+		/* font-size: 0.9rem; */
+		line-height: 2;
+    margin-left: 20px;
+   
+}
+
+.fa-gem:before{content:"\f3a5"}
+

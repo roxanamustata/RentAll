@@ -1,4 +1,4 @@
-<header>
+<!-- <header>
   <nav
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
@@ -37,8 +37,41 @@
               >Fetch data</a
             >
           </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/centers']"
+              >Centers</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/leases']"
+              >Leases</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/tenants']"
+              >Tenants</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/reports']"
+              >Reports</a>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
-</header>
+</header> -->
+<!-- style="background-color:#424242" -->
+  <mat-toolbar class="custom-toolbar">
+    <div><a routerLink="/home" style="text-decoration: none; color:white"><span>RENT<span style="color:#e83e8c;">A</span>LL</span></a></div>
+    <div>
+     
+    <!-- <button mat-raised-button color="primary" routerLink="/home">HOME</button> -->
+    <button mat-raised-button color="primary" routerLink="/Center">CENTERS</button>
+    <button mat-raised-button color="primary" routerLink="/Center/units/leases">LEASES</button>
+    <button mat-raised-button color="primary" routerLink="/tenants">TENANTS</button>
+    <button mat-raised-button color="primary" routerLink="/reports">REPORTS</button>
+    <button mat-raised-button color="primary" routerLink="/signin">SIGN IN</button>
+  
+  
+  </div>
+  </mat-toolbar>
+
+

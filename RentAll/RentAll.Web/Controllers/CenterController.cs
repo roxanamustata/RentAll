@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 namespace RentAll.Web.Controllers
 {
     [ApiController]
+    [ApiExplorerSettings(GroupName ="v1")]
     [Route("[controller]")]
     public class CenterController : ControllerBase
     {
@@ -31,7 +32,7 @@ namespace RentAll.Web.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> ListCenters()
+        public async Task<ActionResult<IEnumerable<GetCenterDto>>> ListCenters()
         {
             try
             {
@@ -50,7 +51,7 @@ namespace RentAll.Web.Controllers
 
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetCenterById(int id)
+        public async Task<ActionResult<GetCenterDto>> GetCenterById(int id)
         {
             var center = await _centerService.GetCenterByIdAsync(id);
             var centerDto = _mapper.Map<GetCenterDto>(center);
@@ -68,7 +69,7 @@ namespace RentAll.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateCenter(CreateCenterDto centerDto)
+        public async Task<ActionResult<Center>> CreateCenter(CreateCenterDto centerDto)
         {
 
             try
@@ -90,7 +91,7 @@ namespace RentAll.Web.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateCenter(int id, UpdateCenterDto centerDto)
+        public async Task<ActionResult<Center>> UpdateCenter(int id, UpdateCenterDto centerDto)
         {
             try
             {
@@ -134,7 +135,7 @@ namespace RentAll.Web.Controllers
         [HttpGet]
         [Route("{id:int}/units")]
 
-        public async Task<IActionResult> ListUnitsInCenter(int id)
+        public async Task<ActionResult<IEnumerable<GetUnitDto>>> ListUnitsInCenter(int id)
         {
             try
             {
@@ -154,7 +155,7 @@ namespace RentAll.Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/units/{unitId}")]
-        public async Task<IActionResult> GetUnitById(int id, int unitId)
+        public async Task<ActionResult<GetUnitDto>> GetUnitById(int id, int unitId)
         {
             var unit = await _centerService.GetUnitByIdAsync(id, unitId);
 
@@ -177,7 +178,7 @@ namespace RentAll.Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/units/{unitCode}/code")]
-        public async Task<IActionResult> GetUnitByCode(int id, string unitCode)
+        public async Task<ActionResult<GetUnitDto>> GetUnitByCode(int id, string unitCode)
         {
             var unit = await _centerService.GetUnitFromCenterByUnitCodeAsync(id, unitCode);
 
@@ -199,7 +200,7 @@ namespace RentAll.Web.Controllers
 
         [HttpPost]
         [Route("{id:int}/units")]
-        public async Task<IActionResult> CreateUnitInCenter(int id, CreateUnitDto unitDto)
+        public async Task<ActionResult<Unit>> CreateUnitInCenter(int id, CreateUnitDto unitDto)
         {
 
             try
@@ -222,7 +223,7 @@ namespace RentAll.Web.Controllers
 
         [HttpPut]
         [Route("{id:int}/units/{unitId:int}")]
-        public async Task<IActionResult> UpdateUnitInCenter(int id, int unitId, UpdateUnitDto unitDto)
+        public async Task<ActionResult<Unit>> UpdateUnitInCenter(int id, int unitId, UpdateUnitDto unitDto)
         {
             try
             {
@@ -244,7 +245,7 @@ namespace RentAll.Web.Controllers
 
         [HttpDelete]
         [Route("{id:int}/units/{unitId:int}")]
-        public async Task<IActionResult> DeleteUnitById(int id, int unitId)
+        public async Task<ActionResult<Unit>> DeleteUnitById(int id, int unitId)
         {
             try
             {
@@ -264,7 +265,7 @@ namespace RentAll.Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/units/leases/{leaseId}")]
-        public async Task<IActionResult> GetLeaseById(int id, int leaseId)
+        public async Task<ActionResult<Lease>> GetLeaseById(int id, int leaseId)
         {
             var lease = await _centerService.GetLeaseByIdAsync(id, leaseId);
 
@@ -286,7 +287,7 @@ namespace RentAll.Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/units/{unitCode}/leases/valid")]
-        public async Task<IActionResult> GetValidLeaseByUnitCode(int id, string unitCode)
+        public async Task<ActionResult<Lease>> GetValidLeaseByUnitCode(int id, string unitCode)
         {
             var lease = await _centerService.GetValidLeaseByUnitCodeAsync(id, unitCode);
 
@@ -308,7 +309,7 @@ namespace RentAll.Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/units/leases")]
-        public async Task<IActionResult> ListLeasesInCenter(int id)
+        public async Task<ActionResult<IEnumerable<Lease>>> ListLeasesInCenter(int id)
         {
             try
             {
@@ -326,7 +327,7 @@ namespace RentAll.Web.Controllers
 
         [HttpPost]
         [Route("{id:int}/units/{unitId:int}/leases")]
-        public async Task<IActionResult> CreateLeaseInCenter(int id, int unitId, CreateLeaseDto leaseDto)
+        public async Task<ActionResult<Lease>> CreateLeaseInCenter(int id, int unitId, CreateLeaseDto leaseDto)
         {
 
             try
@@ -350,7 +351,7 @@ namespace RentAll.Web.Controllers
 
         [HttpDelete]
         [Route("{id:int}/units/leases/{leaseId:int}")]
-        public async Task<IActionResult> DeleteLeaseById(int id, int leaseId)
+        public async Task<ActionResult<Lease>> DeleteLeaseById(int id, int leaseId)
         {
             try
             {
@@ -367,7 +368,7 @@ namespace RentAll.Web.Controllers
 
         [HttpPut]
         [Route("{id:int}/units/leases/{leaseId:int}")]
-        public async Task<IActionResult> UpdateLeaseInCenter(int id, int leaseId, UpdateLeaseDto leaseDto)
+        public async Task<ActionResult<Lease>> UpdateLeaseInCenter(int id, int leaseId, UpdateLeaseDto leaseDto)
         {
             try
             {
