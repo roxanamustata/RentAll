@@ -454,7 +454,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Lease"
+              "$ref": "#/definitions/GetLeaseDto"
             }
           }
         }
@@ -551,12 +551,12 @@
         }
       }
     },
-    "/Center/{id}/units/{unitCode}/leases/valid": {
+    "/Center/{id}/units/{unitId}/leases/valid": {
       "get": {
         "tags": [
           "Center"
         ],
-        "operationId": "Center_GetValidLeaseByUnitCode",
+        "operationId": "Center_GetValidLeaseByUnitId",
         "produces": [
           "text/plain",
           "application/json",
@@ -572,10 +572,11 @@
             "x-nullable": false
           },
           {
-            "type": "string",
-            "name": "unitCode",
+            "type": "integer",
+            "name": "unitId",
             "in": "path",
             "required": true,
+            "format": "int32",
             "x-nullable": false
           }
         ],
@@ -584,7 +585,7 @@
             "x-nullable": false,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Lease"
+              "$ref": "#/definitions/GetLeaseDto"
             }
           }
         }
@@ -618,7 +619,32 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Lease"
+                "$ref": "#/definitions/GetLeaseDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Center/leases": {
+      "get": {
+        "tags": [
+          "Center"
+        ],
+        "operationId": "Center_ListAllLeases",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetLeaseDto"
               }
             }
           }
@@ -688,7 +714,8 @@
         "id",
         "centerName",
         "owner",
-        "parkingCapacity"
+        "parkingCapacity",
+        "description"
       ],
       "properties": {
         "id": {
@@ -704,6 +731,9 @@
         "parkingCapacity": {
           "type": "integer",
           "format": "int32"
+        },
+        "description": {
+          "type": "string"
         }
       }
     },
@@ -716,7 +746,8 @@
         "owner",
         "floors",
         "parkingCapacity",
-        "units"
+        "units",
+        "description"
       ],
       "properties": {
         "id": {
@@ -748,6 +779,9 @@
           "items": {
             "$ref": "#/definitions/Unit"
           }
+        },
+        "description": {
+          "type": "string"
         }
       }
     },
@@ -1372,6 +1406,55 @@
         "monthlyMarketingFeeSqm": {
           "type": "number",
           "format": "double"
+        }
+      }
+    },
+    "GetLeaseDto": {
+      "type": "object",
+      "required": [
+        "leaseNumber",
+        "tenant",
+        "units",
+        "signingDate",
+        "startDate",
+        "termInMonths",
+        "center",
+        "valid",
+        "activity"
+      ],
+      "properties": {
+        "leaseNumber": {
+          "type": "string"
+        },
+        "tenant": {
+          "type": "string"
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "signingDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "termInMonths": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "center": {
+          "type": "string"
+        },
+        "valid": {
+          "type": "string"
+        },
+        "activity": {
+          "type": "string"
         }
       }
     },

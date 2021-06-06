@@ -24,7 +24,7 @@ export class UnitsDataSource implements DataSource<GetUnitDto> {
       this.loadingSubject.complete();
     }
   
-    loadLessons(id: number) {
+    loadUnits(id: number) {
       
       this.loadingSubject.next(true);
 

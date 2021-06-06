@@ -17,6 +17,8 @@ namespace RentAll.Domain
         public int ParkingCapacity { get; set; }
         public ICollection<Unit> Units { get; set; }
 
+        public string Description { get; set; }
+
         #endregion
 
 

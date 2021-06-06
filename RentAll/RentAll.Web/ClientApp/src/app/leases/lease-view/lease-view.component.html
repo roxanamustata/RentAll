@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Valid Lease</h2>
+<mat-dialog-content class="mat-typography">
+  <h3>Lease Number</h3>
+  <p>{{lease.leaseNumber}}</p>
+
+  <h3>Tenant</h3>
+  <p>{{lease.tenant}}</p>
+
+  <h3>Start Date</h3>
+  <p>{{lease.startDate}}</p>
+
+  
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Create lease</button>
+</mat-dialog-actions>

@@ -31,6 +31,8 @@ import { UnitComponent } from './centers/unit/unit.component';
 import { LeaseComponent } from './leases/lease/lease.component';
 import { TenantComponent } from './tenants/tenant/tenant.component';
 import { ReportComponent } from './reports/report/report.component';
+import { LeaseViewComponent } from './leases/lease-view/lease-view.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 
@@ -46,7 +48,8 @@ import { ReportComponent } from './reports/report/report.component';
     LeaseComponent,
     TenantComponent,
     ReportComponent,
-    UnitComponent
+    UnitComponent,
+    LeaseViewComponent
    
     
   ],
@@ -66,6 +69,7 @@ import { ReportComponent } from './reports/report/report.component';
     MatPaginatorModule, 
     MatProgressSpinnerModule, 
     MatSortModule,
+    MatDialogModule,
 
     RouterModule.forRoot([
 
@@ -77,6 +81,8 @@ import { ReportComponent } from './reports/report/report.component';
       {path: 'rentall/tenants', component: TenantComponent},
       {path: 'rentall/reports', component: ReportComponent},
       {path: 'rentall/Center/:id/units', component: UnitComponent},
+      {path: 'rentall/Center/:id/units/leases', component: LeaseComponent},
+      {path: 'rentall/Center/{id}/units/{{unit.id}}/leases/valid', component: LeaseViewComponent},
     ]),
     BrowserAnimationsModule,
   

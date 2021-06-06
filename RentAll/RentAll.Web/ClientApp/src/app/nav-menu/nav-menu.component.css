@@ -27,6 +27,10 @@ html {
  justify-content: space-between;
   align-items: center;
   word-break: break-all;
+  margin: 0;
+  border: 0;
+  
+padding-bottom: 0;
 }
 
 span{

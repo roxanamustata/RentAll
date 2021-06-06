@@ -252,7 +252,7 @@ namespace RentAll.Infrastructure.Repositories
             }
         }
 
-        public async Task<Lease> GetValidLeaseByUnitCodeAsync(int centerId, string unitCode)
+        public async Task<Lease> GetValidLeaseByUnitIdAsync(int centerId, int unitId)
         {
             try
             {
@@ -262,7 +262,7 @@ namespace RentAll.Infrastructure.Repositories
                  .Include(l => l.Tenant)
                  .Include(l => l.Activity)
                  .Where(l => l.Valid == true)
-                 .Where(l => l.Units.Any(u => u.UnitCode == unitCode))
+                 .Where(l => l.Units.Any(u => u.Id == unitId))
                  .SingleAsync();
 
             }
@@ -280,6 +280,15 @@ namespace RentAll.Infrastructure.Repositories
                         .Include(l => l.Tenant)
                         .Include(l => l.Activity)
                         .Where(u => u.CenterId == centerId).ToListAsync();
+        }
+        public async Task<IEnumerable<Lease>> GetAllLeasesAsync()
+        {
+            return await _rentAllDbContext.Leases
+                        .Include(l => l.Center)
+                        .Include(l => l.Tenant)
+                        .Include(l => l.Activity)
+
+                .ToListAsync();
         }
 
         public async Task<Lease> CreateLeaseAsync(int centerId, int unitId, Lease lease)
@@ -338,9 +347,9 @@ namespace RentAll.Infrastructure.Repositories
                             .Include(c => c.Units)
                             .ThenInclude(u => u.Leases)
                             .FirstOrDefaultAsync(c => c.Id == centerId);
-                
 
-             
+
+
                 _rentAllDbContext.Leases.Update(lease);
                 await _rentAllDbContext.SaveChangesAsync();
 

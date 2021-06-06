@@ -9,7 +9,7 @@
       <mat-card-title >{{center.centerName}}</mat-card-title>
       <mat-card-subtitle>{{center.owner}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://media-cdn.tripadvisor.com/media/photo-s/0b/19/9a/17/iulius-mall-timisoara.jpg" alt="Photo of a Iulius Mall Timisoara">
+    <img mat-card-image src="{{center.description}}" alt="Photo of {{center.centerName}}">
     <mat-card-content>
       <p>
         
@@ -19,7 +19,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" routerLink="/rentall/Center/{{center.id}}/units">UNITS</button>
-      <button mat-raised-button color="accent" routerLink="/rentall/Center/units/leases">LEASES</button>
+      <button mat-raised-button color="accent" routerLink="/rentall/Center/{{center.id}}/units/leases">LEASES</button>
     </mat-card-actions>
   </mat-card>
 

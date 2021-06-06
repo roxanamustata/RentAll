@@ -23,8 +23,11 @@ namespace RentAll.Domain.Interfaces
 
 
         Task<IEnumerable<Lease>> GetLeasesInCenterAsync(int centerId);
+        Task<IEnumerable<Lease>> GetAllLeasesAsync();
+
+
         Task<Lease> GetLeaseByIdAsync(int centerId, int leaseId);
-        Task<Lease> GetValidLeaseByUnitCodeAsync(int centerId, string unitCode);
+        Task<Lease> GetValidLeaseByUnitIdAsync(int centerId, int unitId);
         Task<Lease> CreateLeaseInCenterAsync(int centerId,int unitId,Lease lease);
         Task DeleteLeaseAsync(int centerId, int leaseId);
         Task UpdateLeaseAsync(int centerId,Lease lease);

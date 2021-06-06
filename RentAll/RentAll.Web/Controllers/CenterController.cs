@@ -263,14 +263,16 @@ namespace RentAll.Web.Controllers
 
         #region LEASES
 
+
+
         [HttpGet]
         [Route("{id:int}/units/leases/{leaseId}")]
-        public async Task<ActionResult<Lease>> GetLeaseById(int id, int leaseId)
+        public async Task<ActionResult<GetLeaseDto>> GetLeaseById(int id, int leaseId)
         {
             var lease = await _centerService.GetLeaseByIdAsync(id, leaseId);
 
             if (lease == null)
-                return NotFound($"Unit with Id = {leaseId} not found");
+                return NotFound($"Lease with Id = {leaseId} not found");
 
             var leaseDto = _mapper.Map<GetLeaseDto>(lease);
 
@@ -286,13 +288,13 @@ namespace RentAll.Web.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}/units/{unitCode}/leases/valid")]
-        public async Task<ActionResult<Lease>> GetValidLeaseByUnitCode(int id, string unitCode)
+        [Route("{id:int}/units/{unitId}/leases/valid")]
+        public async Task<ActionResult<GetLeaseDto>> GetValidLeaseByUnitId(int id, int unitId)
         {
-            var lease = await _centerService.GetValidLeaseByUnitCodeAsync(id, unitCode);
+            var lease = await _centerService.GetValidLeaseByUnitIdAsync(id, unitId);
 
             if (lease == null)
-                return NotFound($"No valid lease was found for unit with code = {unitCode}");
+                return NotFound($"No valid lease was found for unit with code = {unitId}");
 
             var leaseDto = _mapper.Map<GetLeaseDto>(lease);
 
@@ -306,14 +308,31 @@ namespace RentAll.Web.Controllers
                     "Error retrieving data from the database");
             }
         }
-
         [HttpGet]
         [Route("{id:int}/units/leases")]
-        public async Task<ActionResult<IEnumerable<Lease>>> ListLeasesInCenter(int id)
+        public async Task<ActionResult<IEnumerable<GetLeaseDto>>> ListLeasesInCenter(int id)
         {
             try
             {
                 var leases = await _centerService.GetLeasesInCenterAsync(id);
+                var leaseDtos = _mapper.Map<IEnumerable<GetLeaseDto>>(leases);
+
+                return Ok(leaseDtos);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet]
+        [Route("leases")]
+        public async Task<ActionResult<IEnumerable<GetLeaseDto>>> ListAllLeases()
+        {
+            try
+            {
+                var leases = await _centerService.GetAllLeasesAsync();
                 var leaseDtos = _mapper.Map<IEnumerable<GetLeaseDto>>(leases);
 
                 return Ok(leaseDtos);

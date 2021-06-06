@@ -609,7 +609,7 @@ export class CenterClient {
         return _observableOf<GetUnitDto>(<any>null);
     }
 
-    getLeaseById(id: number, leaseId: number): Observable<Lease> {
+    getLeaseById(id: number, leaseId: number): Observable<GetLeaseDto> {
         let url_ = this.baseUrl + "/Center/{id}/units/leases/{leaseId}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -635,14 +635,14 @@ export class CenterClient {
                 try {
                     return this.processGetLeaseById(<any>response_);
                 } catch (e) {
-                    return <Observable<Lease>><any>_observableThrow(e);
+                    return <Observable<GetLeaseDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Lease>><any>_observableThrow(response_);
+                return <Observable<GetLeaseDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetLeaseById(response: HttpResponseBase): Observable<Lease> {
+    protected processGetLeaseById(response: HttpResponseBase): Observable<GetLeaseDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -652,7 +652,7 @@ export class CenterClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <Lease>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <GetLeaseDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -660,7 +660,7 @@ export class CenterClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Lease>(<any>null);
+        return _observableOf<GetLeaseDto>(<any>null);
     }
 
     deleteLeaseById(id: number, leaseId: number): Observable<Lease> {
@@ -775,14 +775,14 @@ export class CenterClient {
         return _observableOf<Lease>(<any>null);
     }
 
-    getValidLeaseByUnitCode(id: number, unitCode: string): Observable<Lease> {
-        let url_ = this.baseUrl + "/Center/{id}/units/{unitCode}/leases/valid";
+    getValidLeaseByUnitId(id: number, unitId: number): Observable<GetLeaseDto> {
+        let url_ = this.baseUrl + "/Center/{id}/units/{unitId}/leases/valid";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (unitCode === undefined || unitCode === null)
-            throw new Error("The parameter 'unitCode' must be defined.");
-        url_ = url_.replace("{unitCode}", encodeURIComponent("" + unitCode));
+        if (unitId === undefined || unitId === null)
+            throw new Error("The parameter 'unitId' must be defined.");
+        url_ = url_.replace("{unitId}", encodeURIComponent("" + unitId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -795,20 +795,20 @@ export class CenterClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetValidLeaseByUnitCode(response_);
+            return this.processGetValidLeaseByUnitId(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetValidLeaseByUnitCode(<any>response_);
+                    return this.processGetValidLeaseByUnitId(<any>response_);
                 } catch (e) {
-                    return <Observable<Lease>><any>_observableThrow(e);
+                    return <Observable<GetLeaseDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Lease>><any>_observableThrow(response_);
+                return <Observable<GetLeaseDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetValidLeaseByUnitCode(response: HttpResponseBase): Observable<Lease> {
+    protected processGetValidLeaseByUnitId(response: HttpResponseBase): Observable<GetLeaseDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -818,7 +818,7 @@ export class CenterClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <Lease>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <GetLeaseDto>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -826,10 +826,10 @@ export class CenterClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Lease>(<any>null);
+        return _observableOf<GetLeaseDto>(<any>null);
     }
 
-    listLeasesInCenter(id: number): Observable<Lease[]> {
+    listLeasesInCenter(id: number): Observable<GetLeaseDto[]> {
         let url_ = this.baseUrl + "/Center/{id}/units/leases";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -852,14 +852,14 @@ export class CenterClient {
                 try {
                     return this.processListLeasesInCenter(<any>response_);
                 } catch (e) {
-                    return <Observable<Lease[]>><any>_observableThrow(e);
+                    return <Observable<GetLeaseDto[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<Lease[]>><any>_observableThrow(response_);
+                return <Observable<GetLeaseDto[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processListLeasesInCenter(response: HttpResponseBase): Observable<Lease[]> {
+    protected processListLeasesInCenter(response: HttpResponseBase): Observable<GetLeaseDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -869,7 +869,7 @@ export class CenterClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : <Lease[]>JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = _responseText === "" ? null : <GetLeaseDto[]>JSON.parse(_responseText, this.jsonParseReviver);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -877,7 +877,55 @@ export class CenterClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<Lease[]>(<any>null);
+        return _observableOf<GetLeaseDto[]>(<any>null);
+    }
+
+    listAllLeases(): Observable<GetLeaseDto[]> {
+        let url_ = this.baseUrl + "/Center/leases";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListAllLeases(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListAllLeases(<any>response_);
+                } catch (e) {
+                    return <Observable<GetLeaseDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetLeaseDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processListAllLeases(response: HttpResponseBase): Observable<GetLeaseDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GetLeaseDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetLeaseDto[]>(<any>null);
     }
 
     createLeaseInCenter(id: number, unitId: number, leaseDto: CreateLeaseDto): Observable<Lease> {
@@ -944,6 +992,7 @@ export interface GetCenterDto {
     centerName: string;
     owner: string;
     parkingCapacity: number;
+    description: string;
 }
 
 export interface Center {
@@ -954,6 +1003,7 @@ export interface Center {
     floors: Floor[];
     parkingCapacity: number;
     units: Unit[];
+    description: string;
 }
 
 export interface Company {
@@ -1113,6 +1163,18 @@ export interface UpdateUnitDto {
     monthlyRentSqm: number;
     monthlyMaintenanceCostSqm: number;
     monthlyMarketingFeeSqm: number;
+}
+
+export interface GetLeaseDto {
+    leaseNumber: string;
+    tenant: string;
+    units: string[];
+    signingDate: Date;
+    startDate: Date;
+    termInMonths: number;
+    center: string;
+    valid: string;
+    activity: string;
 }
 
 export interface CreateLeaseDto {
