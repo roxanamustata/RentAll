@@ -14,13 +14,11 @@ import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
-import {MatTableModule} from '@angular/material/table';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
+  MatSortModule, MatTableModule } from "@angular/material";
 
 
-import {CentersModule} from './centers/centers.module';
-import {HomeModule} from './home/home.module';
-import {LeasesModule} from './leases/leases.module';
+
 
 
 import { AppComponent } from './app.component';
@@ -65,17 +63,20 @@ import { ReportComponent } from './reports/report/report.component';
     MatSelectModule,
     MatTableModule,
     MatInputModule,
-  
-    // CentersModule,
+    MatPaginatorModule, 
+    MatProgressSpinnerModule, 
+    MatSortModule,
+
     RouterModule.forRoot([
-      { path: 'home', component: HomeComponent, pathMatch: 'full' },
-      // { path: 'counter', component: CounterComponent },
-      // { path: 'fetch-data', component: FetchDataComponent },
-      {path: 'Center', component: CenterComponent},
-      {path: 'Center/units/leases', component: LeaseComponent},
-      {path: 'tenants', component: TenantComponent},
-      {path: 'reports', component: ReportComponent},
-      {path: 'Center/:id/units', component: UnitComponent},
+
+      { path: '',   redirectTo: 'rentall/home', pathMatch: 'full' },
+      { path: 'rentall',   redirectTo: 'rentall/home', pathMatch: 'full' },
+      { path: 'rentall/home', component: HomeComponent },
+      {path: 'rentall/Center', component: CenterComponent},
+      {path: 'rentall/Center/units/leases', component: LeaseComponent},
+      {path: 'rentall/tenants', component: TenantComponent},
+      {path: 'rentall/reports', component: ReportComponent},
+      {path: 'rentall/Center/:id/units', component: UnitComponent},
     ]),
     BrowserAnimationsModule,
   
