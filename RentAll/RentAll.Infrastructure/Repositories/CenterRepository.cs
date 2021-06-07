@@ -272,6 +272,25 @@ namespace RentAll.Infrastructure.Repositories
             }
         }
 
+        public async Task<Lease> GetValidLeaseByUnitIdAsync(int unitId)
+        {
+            try
+            {
+                return await _rentAllDbContext.Leases
+                 .Include(l => l.Center)
+                 .Include(l => l.Tenant)
+                 .Include(l => l.Activity)
+                 .Where(l => l.Valid == true)
+                 .Where(l => l.Units.Any(u => u.Id == unitId))
+                 .SingleAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entity: {ex.Message}");
+            }
+        }
+
         public async Task<IEnumerable<Lease>> GetLeasesInCenterAsync(int centerId)
         {
             return await _rentAllDbContext.Leases

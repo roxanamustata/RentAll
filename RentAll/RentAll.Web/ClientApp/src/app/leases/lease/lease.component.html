@@ -62,7 +62,21 @@
       lease.center
     }}</mat-cell>
   </ng-container>
-
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-cell class="actions-cell" *matCellDef="let lease">
+      <button
+        mat-stroked-button color="accent"
+        routerLink="/rentall/Center/{{lease.center.id}}/units/leases/{{lease.id}}">
+        Edit
+      </button>
+      <button
+        mat-stroked-button color="accent"
+        (click)="deleteLease(lease.id)">
+        Delete
+      </button>
+    </mat-cell>
+  </ng-container>
   <!-- <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell class="actions-cell" *matCellDef="let unit">

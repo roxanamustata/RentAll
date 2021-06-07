@@ -14,8 +14,10 @@ import { LeasesDataSource } from './leases.datasource';
 export class LeaseComponent implements OnInit {
   dataSource: LeasesDataSource;
   center: GetCenterDto;
-  displayedColumns = ["leaseNumber", "tenant", "signingDate", "startDate",  "termInMonths", "valid","activity", "center"];
+  displayedColumns = ["leaseNumber", "tenant", "signingDate", "startDate",  "termInMonths", 
+  "valid","activity", "center", "actions"];
    id: number;
+  //  leaseId:number;
 
 
   constructor(
@@ -46,6 +48,16 @@ export class LeaseComponent implements OnInit {
     console.log('Row clicked: ', row);
 }
 
+refreshPage() {
+  window.location.reload();
+}
 
+deleteLease(leaseId){  
+  this.id = parseInt(this.route.snapshot.paramMap.get("id"));
+  // this.leaseId=leaseId;
+  this.centerClient.deleteLeaseById(this.id,leaseId).subscribe() ;
+  this.refreshPage(); 
+  
+  }
 
 }

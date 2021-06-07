@@ -1,6 +1,6 @@
 <app-nav-menu></app-nav-menu>
 
-<h3  class="mat-subheading-2" style="color:gainsboro">Units in {{center.centerName}}</h3>
+<h3  class="mat-subheading-2" style="color:gainsboro">Units in {{center.centerName | uppercase}}</h3>
 <mat-table class="units-table mat-elevation-z8" [dataSource]="dataSource">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
@@ -61,7 +61,7 @@
     <mat-cell class="actions-cell" *matCellDef="let unit">
       <button
         mat-stroked-button color="accent"
-        routerLink="/rentall/Center/{id}/units/{{ unit.id }}">
+        routerLink="/rentall/Center/{{unit.center.id}}/units/{{ unit.id }}">
         Edit
       </button>
       <button mat-raised-button color="primary" (click)="openDialog(unit.id)">Lease</button>

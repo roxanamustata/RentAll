@@ -775,11 +775,62 @@ export class CenterClient {
         return _observableOf<Lease>(<any>null);
     }
 
-    getValidLeaseByUnitId(id: number, unitId: number): Observable<GetLeaseDto> {
+    getValidLeaseByCenterAndUnitId(id: number, unitId: number): Observable<GetLeaseDto> {
         let url_ = this.baseUrl + "/Center/{id}/units/{unitId}/leases/valid";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (unitId === undefined || unitId === null)
+            throw new Error("The parameter 'unitId' must be defined.");
+        url_ = url_.replace("{unitId}", encodeURIComponent("" + unitId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetValidLeaseByCenterAndUnitId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetValidLeaseByCenterAndUnitId(<any>response_);
+                } catch (e) {
+                    return <Observable<GetLeaseDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetLeaseDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetValidLeaseByCenterAndUnitId(response: HttpResponseBase): Observable<GetLeaseDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GetLeaseDto>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetLeaseDto>(<any>null);
+    }
+
+    getValidLeaseByUnitId(unitId: number): Observable<GetLeaseDto> {
+        let url_ = this.baseUrl + "/Center/units/{unitId}/leases/valid";
         if (unitId === undefined || unitId === null)
             throw new Error("The parameter 'unitId' must be defined.");
         url_ = url_.replace("{unitId}", encodeURIComponent("" + unitId));
@@ -1166,6 +1217,7 @@ export interface UpdateUnitDto {
 }
 
 export interface GetLeaseDto {
+    id: number;
     leaseNumber: string;
     tenant: string;
     units: string[];

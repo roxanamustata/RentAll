@@ -83,6 +83,7 @@ import {MatDialogModule} from '@angular/material/dialog';
       {path: 'rentall/Center/:id/units', component: UnitComponent},
       {path: 'rentall/Center/:id/units/leases', component: LeaseComponent},
       {path: 'rentall/Center/{id}/units/{{unit.id}}/leases/valid', component: LeaseViewComponent},
+      // {path: 'rentall/Center/{{lease.center.id}}/units/leases/{{lease.id}}', component: LeaseEditComponent}
     ]),
     BrowserAnimationsModule,
   

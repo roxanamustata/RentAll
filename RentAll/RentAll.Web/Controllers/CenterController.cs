@@ -289,7 +289,7 @@ namespace RentAll.Web.Controllers
 
         [HttpGet]
         [Route("{id:int}/units/{unitId}/leases/valid")]
-        public async Task<ActionResult<GetLeaseDto>> GetValidLeaseByUnitId(int id, int unitId)
+        public async Task<ActionResult<GetLeaseDto>> GetValidLeaseByCenterAndUnitId(int id, int unitId)
         {
             var lease = await _centerService.GetValidLeaseByUnitIdAsync(id, unitId);
 
@@ -308,6 +308,30 @@ namespace RentAll.Web.Controllers
                     "Error retrieving data from the database");
             }
         }
+
+        [HttpGet]
+        [Route("units/{unitId}/leases/valid")]
+        public async Task<ActionResult<GetLeaseDto>> GetValidLeaseByUnitId(int unitId)
+        {
+            var lease = await _centerService.GetValidLeaseByUnitIdAsync(unitId);
+
+            if (lease == null)
+                return NotFound($"No valid lease was found for unit with code = {unitId}");
+
+            var leaseDto = _mapper.Map<GetLeaseDto>(lease);
+
+            try
+            {
+                return Ok(leaseDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+
         [HttpGet]
         [Route("{id:int}/units/leases")]
         public async Task<ActionResult<IEnumerable<GetLeaseDto>>> ListLeasesInCenter(int id)
@@ -387,7 +411,7 @@ namespace RentAll.Web.Controllers
 
         [HttpPut]
         [Route("{id:int}/units/leases/{leaseId:int}")]
-        public async Task<ActionResult<Lease>> UpdateLeaseInCenter(int id, int leaseId, UpdateLeaseDto leaseDto)
+        public async Task<ActionResult< Lease>> UpdateLeaseInCenter(int id, int leaseId, UpdateLeaseDto leaseDto)
         {
             try
             {

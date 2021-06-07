@@ -556,7 +556,7 @@
         "tags": [
           "Center"
         ],
-        "operationId": "Center_GetValidLeaseByUnitId",
+        "operationId": "Center_GetValidLeaseByCenterAndUnitId",
         "produces": [
           "text/plain",
           "application/json",
@@ -571,6 +571,38 @@
             "format": "int32",
             "x-nullable": false
           },
+          {
+            "type": "integer",
+            "name": "unitId",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetLeaseDto"
+            }
+          }
+        }
+      }
+    },
+    "/Center/units/{unitId}/leases/valid": {
+      "get": {
+        "tags": [
+          "Center"
+        ],
+        "operationId": "Center_GetValidLeaseByUnitId",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
           {
             "type": "integer",
             "name": "unitId",
@@ -1412,6 +1444,7 @@
     "GetLeaseDto": {
       "type": "object",
       "required": [
+        "id",
         "leaseNumber",
         "tenant",
         "units",
@@ -1423,6 +1456,10 @@
         "activity"
       ],
       "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
         "leaseNumber": {
           "type": "string"
         },

@@ -100,6 +100,11 @@ namespace RentAll.Infrastructure.Services
             return await _centerRepository.GetValidLeaseByUnitIdAsync(centerId, unitId);
         }
 
+        public async Task<Lease> GetValidLeaseByUnitIdAsync(int unitId)
+        {
+            return await _centerRepository.GetValidLeaseByUnitIdAsync(unitId);
+        }
+
         public async Task<IEnumerable<Lease>> GetLeasesInCenterAsync(int centerId)
         {
             return await _centerRepository.GetLeasesInCenterAsync(centerId);

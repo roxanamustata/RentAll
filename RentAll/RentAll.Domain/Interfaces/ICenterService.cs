@@ -28,6 +28,7 @@ namespace RentAll.Domain.Interfaces
 
         Task<Lease> GetLeaseByIdAsync(int centerId, int leaseId);
         Task<Lease> GetValidLeaseByUnitIdAsync(int centerId, int unitId);
+        Task<Lease> GetValidLeaseByUnitIdAsync(int unitId);
         Task<Lease> CreateLeaseInCenterAsync(int centerId,int unitId,Lease lease);
         Task DeleteLeaseAsync(int centerId, int leaseId);
         Task UpdateLeaseAsync(int centerId,Lease lease);

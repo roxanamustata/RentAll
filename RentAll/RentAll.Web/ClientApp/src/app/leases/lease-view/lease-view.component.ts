@@ -23,7 +23,7 @@ export class LeaseViewComponent implements OnInit {
     this.unitId = parseInt(this.route.snapshot.paramMap.get("unitId"));
 
     this.centerClient
-      .getValidLeaseByUnitId(this.id, this.unitId)
+      .getValidLeaseByUnitId( this.unitId)
       .subscribe((data) => (this.lease = data));
   }
 }

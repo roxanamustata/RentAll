@@ -7,6 +7,7 @@ namespace RentAll.Web.DTOs
 {
     public class GetLeaseDto
     {
+       public int Id { get; set; }
         public string LeaseNumber { get; set; }
         public string Tenant { get; set; }
         public string[] Units { get; set; }
