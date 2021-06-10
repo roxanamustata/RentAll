@@ -134,6 +134,7 @@ namespace RentAll.Infrastructure.Repositories
                 return await _rentAllDbContext.Units
                     .Include(u => u.Center)
                     .Include(u => u.Floor)
+                    .Include(u => u.Leases)
                     .Where(u => u.CenterId == centerId)
                     .ToListAsync();
             }

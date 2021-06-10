@@ -1104,7 +1104,8 @@
         "monthlyRentSqm",
         "monthlyMaintenanceCostSqm",
         "monthlyMarketingFeeSqm",
-        "leases"
+        "leases",
+        "validLease"
       ],
       "properties": {
         "id": {
@@ -1152,6 +1153,9 @@
           "items": {
             "$ref": "#/definitions/Lease"
           }
+        },
+        "validLease": {
+          "$ref": "#/definitions/Lease"
         }
       }
     },

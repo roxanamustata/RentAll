@@ -1136,6 +1136,7 @@ export interface Unit {
     monthlyMaintenanceCostSqm: number;
     monthlyMarketingFeeSqm: number;
     leases: Lease[];
+    validLease: Lease;
 }
 
 export enum UnitType {

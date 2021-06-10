@@ -58,7 +58,15 @@ namespace RentAll.Infrastructure.Services
 
         public async Task<IEnumerable<Unit>> GetUnitsInCenterAsync(int centerId)
         {
-            return await _centerRepository.GetUnitsInCenterAsync(centerId);
+            var items = await _centerRepository
+                              .GetUnitsInCenterAsync(centerId);
+
+            foreach (var item in items)
+            {
+                item.ValidLease = item.Leases.FirstOrDefault(i => i.Valid == true);
+                
+            }
+            return items;
         }
 
         public async Task<Unit> GetUnitByIdAsync(int centerId, int unitId)

@@ -27,6 +27,7 @@ export class UnitComponent implements OnInit {
     "monthlyRentSqm",
     "monthlyMaintenanceCostSqm",
     "monthlyMarketingFeeSqm",
+    "leaseNumber",
     "actions",
   ];
   id: number;
@@ -47,35 +48,26 @@ export class UnitComponent implements OnInit {
     this.centerClient
       .getCenterById(this.id)
       .subscribe((data) => (this.center = data));
+
+
     this.dataSource = new UnitsDataSource(this.centerClient);
 
     this.dataSource.loadUnits(this.id);
   }
 
   openDialog(unitId: number): void {
-      
-    this.centerClient
-      .getValidLeaseByUnitId(unitId)
-      .subscribe((data) => {
-          this.lease = data;
-          const dialogRef = this.dialog.open(LeaseViewComponent, {
-            width: "250px",
-            data: this.lease,
-          });
-          dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
-      
-          });
-        
-        });
+    this.centerClient.getValidLeaseByUnitId(unitId).subscribe((data) => {
+      this.lease = data;
+      const dialogRef = this.dialog.open(LeaseViewComponent, {
+        width: "250px",
+        data: this.lease,
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    });
 
-    
-
-   
     // dialogRef.close();
-    
-
-
   }
 
   //   openDialog(unitId: number) {
