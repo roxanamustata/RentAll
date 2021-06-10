@@ -1331,7 +1331,9 @@
         "floor",
         "monthlyRentSqm",
         "monthlyMaintenanceCostSqm",
-        "monthlyMarketingFeeSqm"
+        "monthlyMarketingFeeSqm",
+        "leases",
+        "validLease"
       ],
       "properties": {
         "id": {
@@ -1365,6 +1367,69 @@
         "monthlyMarketingFeeSqm": {
           "type": "number",
           "format": "double"
+        },
+        "leases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetLeaseDto"
+          }
+        },
+        "validLease": {
+          "$ref": "#/definitions/GetLeaseDto"
+        }
+      }
+    },
+    "GetLeaseDto": {
+      "type": "object",
+      "required": [
+        "id",
+        "leaseNumber",
+        "tenant",
+        "units",
+        "signingDate",
+        "startDate",
+        "termInMonths",
+        "center",
+        "valid",
+        "activity"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "leaseNumber": {
+          "type": "string"
+        },
+        "tenant": {
+          "type": "string"
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetUnitDto"
+          }
+        },
+        "signingDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "termInMonths": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "center": {
+          "type": "string"
+        },
+        "valid": {
+          "type": "string"
+        },
+        "activity": {
+          "type": "string"
         }
       }
     },
@@ -1438,60 +1503,6 @@
         "monthlyMarketingFeeSqm": {
           "type": "number",
           "format": "double"
-        }
-      }
-    },
-    "GetLeaseDto": {
-      "type": "object",
-      "required": [
-        "id",
-        "leaseNumber",
-        "tenant",
-        "units",
-        "signingDate",
-        "startDate",
-        "termInMonths",
-        "center",
-        "valid",
-        "activity"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "leaseNumber": {
-          "type": "string"
-        },
-        "tenant": {
-          "type": "string"
-        },
-        "units": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "signingDate": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "startDate": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "termInMonths": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "center": {
-          "type": "string"
-        },
-        "valid": {
-          "type": "string"
-        },
-        "activity": {
-          "type": "string"
         }
       }
     },

@@ -4,6 +4,13 @@ namespace RentAll.Domain
 {
     public class Company
     {
+        public Company()
+        {
+            ContactPersons = new List<Person>();
+            Leases = new List<Lease>();
+
+
+        }
         #region properties
 
         public int Id { get; private set; }

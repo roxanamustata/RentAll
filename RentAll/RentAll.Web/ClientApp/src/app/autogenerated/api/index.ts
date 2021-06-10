@@ -1196,6 +1196,21 @@ export interface GetUnitDto {
     monthlyRentSqm: number;
     monthlyMaintenanceCostSqm: number;
     monthlyMarketingFeeSqm: number;
+    leases: GetLeaseDto[];
+    validLease: GetLeaseDto;
+}
+
+export interface GetLeaseDto {
+    id: number;
+    leaseNumber: string;
+    tenant: string;
+    units: GetUnitDto[];
+    signingDate: Date;
+    startDate: Date;
+    termInMonths: number;
+    center: string;
+    valid: string;
+    activity: string;
 }
 
 export interface CreateUnitDto {
@@ -1214,19 +1229,6 @@ export interface UpdateUnitDto {
     monthlyRentSqm: number;
     monthlyMaintenanceCostSqm: number;
     monthlyMarketingFeeSqm: number;
-}
-
-export interface GetLeaseDto {
-    id: number;
-    leaseNumber: string;
-    tenant: string;
-    units: string[];
-    signingDate: Date;
-    startDate: Date;
-    termInMonths: number;
-    center: string;
-    valid: string;
-    activity: string;
 }
 
 export interface CreateLeaseDto {

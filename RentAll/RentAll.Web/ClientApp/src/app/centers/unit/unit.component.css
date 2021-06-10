@@ -1,4 +1,4 @@
-table {
+mat-table {
   width: 100%;
   
 }
@@ -8,3 +8,17 @@ table {
   width: 100%;
   color: white;
 }
+
+.mat-column-actions {
+  /* flex: 0 0 20%; */
+  
+ 
+  
+}
+
+#actionsHeader{
+ text-align: center;
+
+}
+
+

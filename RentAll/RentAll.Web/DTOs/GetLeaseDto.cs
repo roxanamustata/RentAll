@@ -10,7 +10,7 @@ namespace RentAll.Web.DTOs
        public int Id { get; set; }
         public string LeaseNumber { get; set; }
         public string Tenant { get; set; }
-        public string[] Units { get; set; }
+        public ICollection<GetUnitDto> Units { get; set; }
 
 
         public DateTime SigningDate { get; set; }

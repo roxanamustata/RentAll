@@ -7,6 +7,11 @@ namespace RentAll.Domain
 {
     public class Center
     {
+
+        public Center()
+        {
+            Units = new List<Unit>();
+        }
         #region properties
 
         public int Id { get; set; }

@@ -6,6 +6,11 @@ namespace RentAll.Domain
 {
     public class Unit
     {
+        public Unit()
+        {
+            Leases = new List<Lease>();
+        }
+
 
         #region properties
 
@@ -25,10 +30,12 @@ namespace RentAll.Domain
         public double MonthlyMarketingFeeSqm { get; set; }
         public ICollection<Lease> Leases { get; set; }
 
-        public override string ToString()
-        {
-            return $"{UnitCode}, {Area}" ;
-        }
+       
+
+        //public override string ToString()
+        //{
+        //    return $"{UnitCode}, {Area}" ;
+        //}
 
         #endregion
 

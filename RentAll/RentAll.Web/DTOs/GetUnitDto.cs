@@ -20,5 +20,9 @@ namespace RentAll.Web.DTOs
         public double MonthlyMaintenanceCostSqm { get; set; }
         public double MonthlyMarketingFeeSqm { get; set; }
 
+        public ICollection<GetLeaseDto> Leases { get; set; }
+       
+
+
     }
 }

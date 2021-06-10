@@ -1,15 +1,15 @@
-<h2 mat-dialog-title>Valid Lease</h2>
-<mat-dialog-content class="mat-typography">
-  <h3>Lease Number</h3>
-  <p>{{lease.leaseNumber}}</p>
-
-  <h3>Tenant</h3>
-  <p>{{lease.tenant}}</p>
-
-  <h3>Start Date</h3>
-  <p>{{lease.startDate}}</p>
-
-  
+<h2 mat-dialog-title >Current Lease</h2>
+<mat-dialog-content class="mat-typography" >
+ 
+  <mat-list dense>
+    <mat-list-item> Lease Number: {{data?.leaseNumber}}</mat-list-item>
+    <mat-list-item> Start Date: {{data?.leaseNumber}} </mat-list-item>
+    <mat-list-item> Term: {{data?.termInMonths}} months </mat-list-item>
+    <mat-list-item> Tenant: {{data?.tenant}} </mat-list-item>
+    <mat-list-item> Activity: {{data?.activity}} </mat-list-item>
+  </mat-list>
+ 
+    
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>

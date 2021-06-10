@@ -30,6 +30,8 @@ namespace RentAll.Web.Mappings
                 .ForMember(dest => dest.Type, map => map.MapFrom(src => Enum.GetName(src.Type)))
                 .ForMember(dest => dest.Center, map => map.MapFrom(src => src.Center.CenterName))
                 .ForMember(dest => dest.Floor, map => map.MapFrom(src => src.Floor.FloorName))
+                .ForMember(dest => dest.Leases, map => map.MapFrom(src => src.Leases))
+               .ForMember(dest => dest.ValidLease, map => map.MapFrom(src => src.Leases.FirstOrDefault(l => l.Valid == true)))
 
                .ReverseMap();
 
@@ -55,8 +57,10 @@ namespace RentAll.Web.Mappings
                 //.ForMember(dest => dest.UnitDtos, map => map.MapFrom(src => src.Units))
               .ReverseMap();
 
-            CreateMap<Unit, UnitDto>()
-                .ReverseMap();
+            //CreateMap<Unit, UnitDto>()
+                //.ReverseMap();
+
+           
 
             CreateMap<Lease, UpdateLeaseDto>()
              

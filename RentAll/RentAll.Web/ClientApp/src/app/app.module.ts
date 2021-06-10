@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 
+
 import { RouterModule } from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 
@@ -16,7 +17,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
   MatSortModule, MatTableModule } from "@angular/material";
-
+  import {MatListModule} from '@angular/material/list';
 
 
 
@@ -32,7 +33,8 @@ import { LeaseComponent } from './leases/lease/lease.component';
 import { TenantComponent } from './tenants/tenant/tenant.component';
 import { ReportComponent } from './reports/report/report.component';
 import { LeaseViewComponent } from './leases/lease-view/lease-view.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
+import { LeaseEditorComponent } from './leases/lease-editor/lease-editor.component';
 
 
 
@@ -49,7 +51,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     TenantComponent,
     ReportComponent,
     UnitComponent,
-    LeaseViewComponent
+    LeaseViewComponent,
+    LeaseEditorComponent
    
     
   ],
@@ -70,6 +73,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatProgressSpinnerModule, 
     MatSortModule,
     MatDialogModule,
+    MatListModule,
 
     RouterModule.forRoot([
 
@@ -82,15 +86,23 @@ import {MatDialogModule} from '@angular/material/dialog';
       {path: 'rentall/reports', component: ReportComponent},
       {path: 'rentall/Center/:id/units', component: UnitComponent},
       {path: 'rentall/Center/:id/units/leases', component: LeaseComponent},
-      {path: 'rentall/Center/{id}/units/{{unit.id}}/leases/valid', component: LeaseViewComponent},
+      {path: 'rentall/Center/:id/units/:unitId/leases/valid', component: LeaseViewComponent},
+      {path: 'rentall/Center/:id/units/:unitId/leases', component: LeaseEditorComponent},
       // {path: 'rentall/Center/{{lease.center.id}}/units/leases/{{lease.id}}', component: LeaseEditComponent}
     ]),
     BrowserAnimationsModule,
   
   ],
   providers: [
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} },
     
             
+    ],
+
+
+    entryComponents: [
+      LeaseViewComponent
     ],
   bootstrap: [AppComponent]
 })
