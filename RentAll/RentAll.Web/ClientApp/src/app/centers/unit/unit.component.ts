@@ -28,7 +28,8 @@ export class UnitComponent implements OnInit {
     "monthlyMaintenanceCostSqm",
     "monthlyMarketingFeeSqm",
     "leaseNumber",
-    "actions",
+    "actions"
+    // "lease"
   ];
   id: number;
   unitId: number;

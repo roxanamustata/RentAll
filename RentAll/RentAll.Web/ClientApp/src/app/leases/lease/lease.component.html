@@ -67,12 +67,12 @@
     <mat-cell class="actions-cell" *matCellDef="let lease">
       <button
         mat-stroked-button color="accent"
-        routerLink="/rentall/Center/{{lease.center.id}}/units/leases/{{lease.id}}">
+        routerLink="/rentall/Center/{{lease.centerId}}/units/leases/{{lease.id}}">
         Edit
       </button>
       <button
         mat-stroked-button color="accent"
-        (click)="deleteLease(lease.id)">
+        (click)="deleteLease(lease.centerId,lease.id)">
         Delete
       </button>
     </mat-cell>

@@ -52,10 +52,10 @@ refreshPage() {
   window.location.reload();
 }
 
-deleteLease(leaseId){  
-  this.id = parseInt(this.route.snapshot.paramMap.get("id"));
+deleteLease(centerId:number,leaseId:number){  
+  // this.id = parseInt(this.route.snapshot.paramMap.get("id"));
   // this.leaseId=leaseId;
-  this.centerClient.deleteLeaseById(this.id,leaseId).subscribe() ;
+  this.centerClient.deleteLeaseById(centerId,leaseId).subscribe() ;
   this.refreshPage(); 
   
   }

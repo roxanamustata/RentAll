@@ -1,37 +1,86 @@
-<p>Create new lease</p>
-<p>
-    <mat-form-field appearance="fill">
-      <mat-label>Lease Number</mat-label>
-      <input matInput placeholder="Placeholder">
-      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      <mat-hint>Hint</mat-hint>
-    </mat-form-field>
-  </p>
+<section style="padding-top: 30px;"  class="create-new-lease">
+  <h3 style="color: gainsboro; padding-bottom: 20px">Create new lease:</h3>
 
-  <div class="example-container">
-    <mat-form-field hintLabel="activity" appearance="fill">
-      <mat-label>Tenant</mat-label>
-      <input matInput #input maxlength="50" placeholder="Detail activity">
-      <mat-hint align="end">{{input.value?.length || 0}}/50</mat-hint>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>Select me</mat-label>
-      <mat-select>
-        <mat-option value="option">Activity</mat-option>
-      </mat-select>
-      <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
-    </mat-form-field>
-  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="sub-entry">
 
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Center:</mat-label>
+          <input matInput type="text" formControlName="centerId" />
+        </mat-form-field>
+      </p>
+      
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Lease Number:</mat-label>
+          <input matInput type="text" formControlName="leaseNumber" />
+        </mat-form-field>
+      </p>
 
-  <!-- public string LeaseNumber { get; set; }
-  public int TenantId { get; set; }
-   public int UserId { get; set; }
-    public DateTime SigningDate { get; set; }
-  public DateTime StartDate { get; set; }
-  public int TermInMonths { get; set; }
-  public DateTime EndDate { get; set; }
-  public int CenterId { get; set; }
-    public bool Valid { get; set; }
-  public int ActivityId { get; set; } -->
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Tenant:</mat-label>
+          <input matInput type="text" formControlName="tenantId" />
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Activity:</mat-label>
+          <input matInput type="text" formControlName="activityId" />
+        </mat-form-field>
+      </p>
+    </div>
+    <div class="sub-entry">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Signing Date:</mat-label>
+          <input matInput type="date" formControlName="signingDate" />
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Start Date:</mat-label>
+          <input matInput type="date" formControlName="startDate" />
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Term in months:</mat-label>
+          <input matInput type="number" formControlName="termInMonths" />
+        </mat-form-field>
+      </p>
+      
+      
+    </div>
+    <div class="sub-entry">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>End Date:</mat-label>
+          <input matInput type="date" formControlName="endDate" />
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Valid:</mat-label>
+          <input matInput type="text" formControlName="valid" />
+        </mat-form-field>
+      </p>
+
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>User:</mat-label>
+          <input matInput type="text" formControlName="userId" />
+        </mat-form-field>
+      </p>
+    </div>
+    <div>
+      <p>
+        <button mat-raised-button type="submit" [disabled]="!form.valid">Submit</button>
+        <button mat-raised-button mat-form-close type="button">Cancel</button>
+        
+      </p>
+    </div>
+  </form>
+</section>

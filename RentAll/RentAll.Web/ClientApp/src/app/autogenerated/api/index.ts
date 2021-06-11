@@ -1209,6 +1209,7 @@ export interface GetLeaseDto {
     signingDate: Date;
     startDate: Date;
     termInMonths: number;
+    centerId: number;
     center: string;
     valid: string;
     activity: string;
@@ -1241,7 +1242,7 @@ export interface CreateLeaseDto {
     termInMonths: number;
     endDate: Date;
     centerId: number;
-    valid: boolean;
+    valid: string;
     activityId: number;
 }
 

@@ -17,6 +17,7 @@ namespace RentAll.Web.DTOs
         public DateTime StartDate { get; set; }
         public int TermInMonths { get; set; }
 
+        public int CenterId { get; set; }
         public string Center { get; set; }
 
         public string Valid { get; set; }

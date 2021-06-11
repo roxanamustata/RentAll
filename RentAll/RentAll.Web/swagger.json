@@ -1393,6 +1393,7 @@
         "signingDate",
         "startDate",
         "termInMonths",
+        "centerId",
         "center",
         "valid",
         "activity"
@@ -1423,6 +1424,10 @@
           "format": "date-time"
         },
         "termInMonths": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "centerId": {
           "type": "integer",
           "format": "int32"
         },
@@ -1557,7 +1562,7 @@
           "format": "int32"
         },
         "valid": {
-          "type": "boolean"
+          "type": "string"
         },
         "activityId": {
           "type": "integer",

@@ -10,11 +10,17 @@ mat-table {
 }
 
 .mat-column-actions {
-  /* flex: 0 0 20%; */
+  flex: 0 0 20%;
   
- 
   
 }
+/* .mat-column-lease {
+  flex: 0 0 15%;
+  
+  
+} */
+
+
 
 #actionsHeader{
  text-align: center;

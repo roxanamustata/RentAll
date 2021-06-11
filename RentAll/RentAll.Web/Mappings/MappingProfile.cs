@@ -43,6 +43,7 @@ namespace RentAll.Web.Mappings
 
             CreateMap<Lease, GetLeaseDto>()
                 .ForMember(dest => dest.Center, map => map.MapFrom(src => src.Center.CenterName))
+                .ForMember(dest => dest.CenterId, map => map.MapFrom(src => src.Center.Id))
                 .ForMember(dest => dest.Tenant, map => map.MapFrom(src => src.Tenant.CompanyName))
                 .ForMember(dest => dest.Activity, map => map.MapFrom(src => src.Activity.ActivityName))
                 .ForMember(dest => dest.Valid, map => map.MapFrom(src => src.Valid == true ? "valid" : "not valid"))
@@ -53,8 +54,9 @@ namespace RentAll.Web.Mappings
            
     
 
-            CreateMap<Lease, CreateLeaseDto>()
+            CreateMap<CreateLeaseDto,Lease>()
                 //.ForMember(dest => dest.UnitDtos, map => map.MapFrom(src => src.Units))
+                .ForMember(dest => dest.Valid, map => map.MapFrom(src => src.Valid == "valid" ? true : false))
               .ReverseMap();
 
             //CreateMap<Unit, UnitDto>()
