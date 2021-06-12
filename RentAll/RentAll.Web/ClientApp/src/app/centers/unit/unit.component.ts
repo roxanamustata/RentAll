@@ -28,7 +28,7 @@ export class UnitComponent implements OnInit {
     "monthlyMaintenanceCostSqm",
     "monthlyMarketingFeeSqm",
     "leaseNumber",
-    "actions"
+    "actions",
     // "lease"
   ];
   id: number;
@@ -50,7 +50,6 @@ export class UnitComponent implements OnInit {
       .getCenterById(this.id)
       .subscribe((data) => (this.center = data));
 
-
     this.dataSource = new UnitsDataSource(this.centerClient);
 
     this.dataSource.loadUnits(this.id);
@@ -67,30 +66,16 @@ export class UnitComponent implements OnInit {
         console.log(`Dialog result: ${result}`);
       });
     });
-
-    // dialogRef.close();
   }
 
-  //   openDialog(unitId: number) {
-  //     // this.unitId = id;
-  //     this.centerClient.getUnitById(this.id, unitId).subscribe((data) => {
-  //       this.unit = data;
-  //       const dialogRef = this.dialog.open(LeaseViewComponent, {
-  //         data: {
-  //             height: '400px',
-  //             width: '600px',
-  //           unit: this.unit,
+  deleteUnit(centerId: number, unitId: number) {
+    this.centerClient.deleteUnitById(centerId, unitId).subscribe();
+    this.refreshPage();
+  }
 
-  //         },
-  //       });
-
-  //       dialogRef.afterClosed().subscribe((data) => {
-  //         console.log(`Dialog result: ${data}`);
-  //       });
-
-  //       dialogRef.close('Pizza!');
-  //     });
-  //   }
+  refreshPage() {
+    window.location.reload();
+  }
 
   onRowClicked(row) {
     console.log("Row clicked: ", row);

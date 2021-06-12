@@ -79,7 +79,7 @@
       <button
         mat-stroked-button
         color="accent"
-        routerLink="/rentall/Center/{{center.id }}/units/{{ unit.id }}">
+        (click)="deleteUnit(center.id,unit.id)">
       <mat-icon>delete</mat-icon>
       </button>
       

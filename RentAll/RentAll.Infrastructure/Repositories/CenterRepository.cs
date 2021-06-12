@@ -211,6 +211,8 @@ namespace RentAll.Infrastructure.Repositories
             var unit = await _rentAllDbContext.Units
                  .Include(u => u.Center)
                  .Where(u => u.CenterId == centerId)
+                 .Include(u=>u.Leases)
+                 
                  .FirstOrDefaultAsync(u => u.Id == unitId);
 
 
