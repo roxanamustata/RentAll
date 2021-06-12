@@ -68,6 +68,31 @@
         }
       }
     },
+    "/Center/activities": {
+      "get": {
+        "tags": [
+          "Center"
+        ],
+        "operationId": "Center_ListActivities",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetActivityDto"
+              }
+            }
+          }
+        }
+      }
+    },
     "/Center/{id}": {
       "get": {
         "tags": [
@@ -737,6 +762,31 @@
           }
         }
       }
+    },
+    "/Company": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "Company_ListCompanies",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetCompanyDto"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -765,6 +815,22 @@
           "format": "int32"
         },
         "description": {
+          "type": "string"
+        }
+      }
+    },
+    "GetActivityDto": {
+      "type": "object",
+      "required": [
+        "id",
+        "activityName"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activityName": {
           "type": "string"
         }
       }
@@ -1393,6 +1459,7 @@
         "signingDate",
         "startDate",
         "termInMonths",
+        "endDate",
         "centerId",
         "center",
         "valid",
@@ -1426,6 +1493,10 @@
         "termInMonths": {
           "type": "integer",
           "format": "int32"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
         },
         "centerId": {
           "type": "integer",
@@ -1603,6 +1674,22 @@
         "activityId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "GetCompanyDto": {
+      "type": "object",
+      "required": [
+        "id",
+        "companyName"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "companyName": {
+          "type": "string"
         }
       }
     }

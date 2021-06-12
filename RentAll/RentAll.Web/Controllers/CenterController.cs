@@ -31,7 +31,6 @@ namespace RentAll.Web.Controllers
         #region CENTERS
 
         [HttpGet]
-
         public async Task<ActionResult<IEnumerable<GetCenterDto>>> ListCenters()
         {
             try
@@ -48,7 +47,23 @@ namespace RentAll.Web.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("activities")]
+        public async Task<ActionResult<IEnumerable<GetActivityDto>>> ListActivities()
+        {
+            try
+            {
+                var activities = await _centerService.GetActivitiesAsync();
+                var activityDtos = _mapper.Map<IEnumerable<GetActivityDto>>(activities);
 
+                return Ok(activityDtos);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<GetCenterDto>> GetCenterById(int id)

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RentAll.Domain;
 using RentAll.Domain.Interfaces;
+using RentAll.Domain.Models;
 using RentAll.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,20 @@ namespace RentAll.Infrastructure.Repositories
                 throw new Exception($"Couldn't retrieve entities: {ex.Message}");
             }
         }
+
+        public async Task<IEnumerable<Activity>> GetActivitiesAsync()
+        {
+            try
+            {
+                return await _rentAllDbContext.Activities.Include(a => a.Category).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entities: {ex.Message}");
+            }
+        }
+
+
         public async Task<Center> GetCenterByIdAsync(int centerId)
         {
             return await _rentAllDbContext.Centers.Include(c => c.Owner).FirstOrDefaultAsync(c => c.Id == centerId);

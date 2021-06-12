@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RentAll.Domain;
 using RentAll.Domain.Interfaces;
-
+using RentAll.Domain.Models;
 using RentAll.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -31,6 +31,12 @@ namespace RentAll.Infrastructure.Services
         {
             return await _centerRepository.GetCentersAsync();
         }
+
+        public async Task<IEnumerable<Activity>> GetActivitiesAsync()
+        {
+            return await _centerRepository.GetActivitiesAsync();
+        }
+
 
         public async Task<Center> GetCenterByIdAsync(int id)
         {

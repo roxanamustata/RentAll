@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RentAll.Domain;
 using RentAll.Domain.DTOs;
+using RentAll.Domain.Models;
 using RentAll.Web.Controllers;
 using RentAll.Web.DTOs;
 using System;
@@ -56,7 +57,7 @@ namespace RentAll.Web.Mappings
 
             CreateMap<CreateLeaseDto,Lease>()
                 //.ForMember(dest => dest.UnitDtos, map => map.MapFrom(src => src.Units))
-                .ForMember(dest => dest.Valid, map => map.MapFrom(src => src.Valid == "valid" ? true : false))
+                .ForMember(dest => dest.Valid, map => map.MapFrom(src => src.Valid == "valid" ? 1 : 0))
               .ReverseMap();
 
             //CreateMap<Unit, UnitDto>()
@@ -67,6 +68,15 @@ namespace RentAll.Web.Mappings
             CreateMap<Lease, UpdateLeaseDto>()
              
               .ReverseMap();
+
+
+            CreateMap<Activity, GetActivityDto>()
+
+             .ReverseMap();
+
+
+            CreateMap<Company, GetCompanyDto>()
+                .ReverseMap();
         }
 
 

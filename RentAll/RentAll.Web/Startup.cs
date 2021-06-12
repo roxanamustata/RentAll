@@ -32,6 +32,7 @@ namespace RentAll.Web
        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddScoped<ICenterService, CenterService>();
             services.AddScoped<IReportsService, ReportsService>();
+            services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<ICenterRepository, CenterRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
