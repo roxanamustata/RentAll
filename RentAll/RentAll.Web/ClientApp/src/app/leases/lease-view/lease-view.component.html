@@ -3,8 +3,9 @@
  
   <mat-list dense>
     <mat-list-item> Lease Number: {{data?.leaseNumber}}</mat-list-item>
-    <mat-list-item> Start Date: {{data?.leaseNumber}} </mat-list-item>
+    <mat-list-item> Start Date: {{data?.startDate| date:"dd-MMM-yy"}} </mat-list-item>
     <mat-list-item> Term: {{data?.termInMonths}} months </mat-list-item>
+    <mat-list-item>End Date: {{data?.endDate| date:"dd-MMM-yy"}} </mat-list-item>
     <mat-list-item> Tenant: {{data?.tenant}} </mat-list-item>
     <mat-list-item> Activity: {{data?.activity}} </mat-list-item>
   </mat-list>
@@ -13,5 +14,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Create lease</button>
+  <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Create lease</button> -->
 </mat-dialog-actions>

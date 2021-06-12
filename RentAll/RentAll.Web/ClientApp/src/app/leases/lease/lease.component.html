@@ -1,5 +1,7 @@
 <app-nav-menu></app-nav-menu>
-
+<!-- <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+  <mat-icon>add</mat-icon>
+</button> -->
 
 <mat-table class="leases-table mat-elevation-z8" [dataSource]="dataSource">
   <!-- <ng-container matColumnDef="id">
@@ -67,13 +69,14 @@
     <mat-cell class="actions-cell" *matCellDef="let lease">
       <button
         mat-stroked-button color="accent"
-        routerLink="/rentall/Center/{{lease.center.id}}/units/leases/{{lease.id}}">
-        Edit
+        routerLink="/rentall/Center/{{lease.centerId}}/units/leases/{{lease.id}}">
+        <mat-icon>edit</mat-icon>
       </button>
       <button
-        mat-stroked-button color="accent"
-        (click)="deleteLease(lease.id)">
-        Delete
+      mat-stroked-button
+      color="accent"
+        (click)="deleteLease(lease.centerId,lease.id)">
+        <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
   </ng-container>

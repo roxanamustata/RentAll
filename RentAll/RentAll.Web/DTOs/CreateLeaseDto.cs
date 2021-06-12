@@ -22,9 +22,9 @@ namespace RentAll.Web.DTOs
         public DateTime EndDate { get; set; }
 
         public int CenterId { get; set; }
-        
 
-        public bool Valid { get; set; }
+
+        public string Valid { get; set; }
         public int ActivityId { get; set; }
        
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RentAll.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace RentAll.Domain.Interfaces
     public interface ICenterService
     {
         Task<IEnumerable<Center>> GetCentersAsync();
+        Task<IEnumerable<Activity>> GetActivitiesAsync();
         Task<Center> GetCenterByIdAsync(int id);
         Task<Center> CreateCenterAsync(Center center);
         Task UpdateCenterAsync(Center center);

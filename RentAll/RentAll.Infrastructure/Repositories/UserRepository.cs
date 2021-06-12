@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RentAll.Infrastructure.Repositories
 {
@@ -21,62 +22,85 @@ namespace RentAll.Infrastructure.Repositories
         {
             _rentAllDbContext = rentAllDbContext;
         }
-
-
         #endregion
 
 
         #region public methods
 
-        #region CRUD user
-        public List<User> GetUsers()
-        {
-            return _rentAllDbContext.Users.ToList();
-        }
-        public User GetUserById(int userId)
-        {
-            return _rentAllDbContext.Users.Find(userId);
-        }
 
+       
 
-        public void InsertUser(User user)
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            _rentAllDbContext.Users.Add(user);
-            Save();
+            try
+            {
+                return await _rentAllDbContext.Users.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entities: {ex.Message}");
+            }
         }
 
-
-
-        public void UpdateUser(User user)
+        public async Task<User> GetUserByIdAsync(int userId)
         {
-            _rentAllDbContext.Users.Attach(user);
-            var entry = _rentAllDbContext.Entry(user);
-            entry.State = EntityState.Modified;
-
-            Save();
+            return await _rentAllDbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public void DeleteUser(int userId)
+        public async Task<User> CreateUserAsync(User user)
         {
-            var user = GetUserById(userId);
-            _rentAllDbContext.Users.Remove(user);
-            Save();
+            if (user == null)
+            {
+                throw new ArgumentNullException($"{nameof(CreateUserAsync)} entity must not be null");
+            }
+
+            try
+            {
+                await _rentAllDbContext.Users.AddAsync(user);
+                await _rentAllDbContext.SaveChangesAsync();
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(user)} could not be saved: {ex.Message}");
+            }
+
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException($"{nameof(UpdateUserAsync)} entity must not be null");
+            }
+
+            try
+            {
+                _rentAllDbContext.Users.Update(user);
+                await _rentAllDbContext.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(user)} could not be updated: {ex.Message}");
+            }
+        }
+
+        public async Task DeleteUserAsync(int userId)
+        {
+            var user = _rentAllDbContext.Users.Find(userId);
+
+
+            if (user != null)
+            {
+                _rentAllDbContext.Users.Remove(user);
+                await _rentAllDbContext.SaveChangesAsync();
+            }
         }
 
         #endregion
 
-        #region CRUD role
-
-
-
-
-        #endregion
-
-        public void Save()
-        {
-            _rentAllDbContext.SaveChanges();
-        }
-
-        #endregion
+      
     }
 }

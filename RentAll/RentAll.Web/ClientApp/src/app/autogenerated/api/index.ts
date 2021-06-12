@@ -127,6 +127,54 @@ export class CenterClient {
         return _observableOf<Center>(<any>null);
     }
 
+    listActivities(): Observable<GetActivityDto[]> {
+        let url_ = this.baseUrl + "/Center/activities";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListActivities(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListActivities(<any>response_);
+                } catch (e) {
+                    return <Observable<GetActivityDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetActivityDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processListActivities(response: HttpResponseBase): Observable<GetActivityDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GetActivityDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetActivityDto[]>(<any>null);
+    }
+
     getCenterById(id: number): Observable<GetCenterDto> {
         let url_ = this.baseUrl + "/Center/{id}";
         if (id === undefined || id === null)
@@ -1038,12 +1086,141 @@ export class CenterClient {
     }
 }
 
+@Injectable({
+    providedIn: 'root'
+})
+export class CompanyClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    listCompanies(): Observable<GetCompanyDto[]> {
+        let url_ = this.baseUrl + "/Company";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListCompanies(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListCompanies(<any>response_);
+                } catch (e) {
+                    return <Observable<GetCompanyDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetCompanyDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processListCompanies(response: HttpResponseBase): Observable<GetCompanyDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GetCompanyDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetCompanyDto[]>(<any>null);
+    }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class UserClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    listUsers(): Observable<GetUserDto[]> {
+        let url_ = this.baseUrl + "/User";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            withCredentials: true,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processListUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processListUsers(<any>response_);
+                } catch (e) {
+                    return <Observable<GetUserDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetUserDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processListUsers(response: HttpResponseBase): Observable<GetUserDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : <GetUserDto[]>JSON.parse(_responseText, this.jsonParseReviver);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetUserDto[]>(<any>null);
+    }
+}
+
 export interface GetCenterDto {
     id: number;
     centerName: string;
     owner: string;
     parkingCapacity: number;
     description: string;
+}
+
+export interface GetActivityDto {
+    id: number;
+    activityName: string;
 }
 
 export interface Center {
@@ -1136,6 +1313,7 @@ export interface Unit {
     monthlyMaintenanceCostSqm: number;
     monthlyMarketingFeeSqm: number;
     leases: Lease[];
+    validLease: Lease;
 }
 
 export enum UnitType {
@@ -1208,6 +1386,8 @@ export interface GetLeaseDto {
     signingDate: Date;
     startDate: Date;
     termInMonths: number;
+    endDate: Date;
+    centerId: number;
     center: string;
     valid: string;
     activity: string;
@@ -1240,7 +1420,7 @@ export interface CreateLeaseDto {
     termInMonths: number;
     endDate: Date;
     centerId: number;
-    valid: boolean;
+    valid: string;
     activityId: number;
 }
 
@@ -1251,6 +1431,16 @@ export interface UpdateLeaseDto {
     endDate: Date;
     valid: boolean;
     activityId: number;
+}
+
+export interface GetCompanyDto {
+    id: number;
+    companyName: string;
+}
+
+export interface GetUserDto {
+    id: number;
+    username: string;
 }
 
 export interface FileResponse {

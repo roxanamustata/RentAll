@@ -18,7 +18,8 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
   MatSortModule, MatTableModule } from "@angular/material";
   import {MatListModule} from '@angular/material/list';
-
+  import {ReactiveFormsModule} from "@angular/forms";
+  
 
 
 
@@ -74,6 +75,11 @@ import { LeaseEditorComponent } from './leases/lease-editor/lease-editor.compone
     MatSortModule,
     MatDialogModule,
     MatListModule,
+    ReactiveFormsModule,
+    
+
+
+
 
     RouterModule.forRoot([
 

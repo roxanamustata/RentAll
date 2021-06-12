@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RentAll.Domain
 {
@@ -29,8 +29,10 @@ namespace RentAll.Domain
         public double MonthlyMaintenanceCostSqm { get; set; }
         public double MonthlyMarketingFeeSqm { get; set; }
         public ICollection<Lease> Leases { get; set; }
-
-       
+        
+        
+        [NotMapped]
+       public Lease ValidLease { get; set; }
 
         //public override string ToString()
         //{

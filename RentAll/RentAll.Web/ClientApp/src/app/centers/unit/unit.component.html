@@ -58,32 +58,54 @@
     }}</mat-cell>
   </ng-container>
 
-  <!-- <ng-container matColumnDef="leaseNumber">
+  <ng-container matColumnDef="leaseNumber">
     <mat-header-cell *matHeaderCellDef>Lease Number</mat-header-cell>
-    <mat-cell class="leaseNumber-cell" *matCellDef="let lease">{{
-      lease.leaseNumber
+    <mat-cell class="leaseNumber-cell" *matCellDef="let unit">{{
+      unit.validLease != null ? unit.validLease.leaseNumber : ""
     }}</mat-cell>
-  </ng-container> -->
-
+  </ng-container>
 
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef id="actionsHeader"
-      >Actions</mat-header-cell
-    >
+      >Actions</mat-header-cell>
     <mat-cell class="actions-cell" *matCellDef="let unit">
       <button
         mat-stroked-button
         color="accent"
-        routerLink="/rentall/Center/{{ unit.center.id }}/units/{{ unit.id }}"
-      >Edit</button>
-
-      <button mat-raised-button color="primary" (click)="openDialog(unit.id)">
-       Lease
+        routerLink="/rentall/Center/{{ center.id }}/units/{{ unit.id }}">
+      <mat-icon>edit</mat-icon>
       </button>
-     
+
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="deleteUnit(center.id,unit.id)">
+      <mat-icon>delete</mat-icon>
+      </button>
+      
+      <button *ngIf="unit.validLease != null" mat-raised-button color="primary" (click)="openDialog(unit.id)">
+       View
+      </button>
+
+       <button *ngIf="unit.validLease === null" routerLink="/rentall/Center/{{center.id }}/units/{{ unit.id }}/leases"
+       mat-raised-button color="primary"> Create</button>
+
     </mat-cell>
   </ng-container>
+
+
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+  <!-- <ng-container matColumnDef="lease">
+    <mat-header-cell *matHeaderCellDef id="leaseHeader"
+      >Lease</mat-header-cell
+    >
+    <mat-cell class="lease-cell" *matCellDef="let unit">
+      <button mat-raised-button color="primary" (click)="openDialog(unit.id)">
+        {{ unit.validLease != null ? "Edit" : "Create" }}
+      </button>
+    </mat-cell>
+  </ng-container> -->
 
   <mat-row
     *matRowDef="let row; columns: displayedColumns"

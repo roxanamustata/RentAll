@@ -22,6 +22,7 @@ namespace RentAll.Web.DTOs
 
         public ICollection<GetLeaseDto> Leases { get; set; }
        
+        public GetLeaseDto ValidLease { get; set; }
 
 
     }

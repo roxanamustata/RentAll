@@ -68,6 +68,31 @@
         }
       }
     },
+    "/Center/activities": {
+      "get": {
+        "tags": [
+          "Center"
+        ],
+        "operationId": "Center_ListActivities",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetActivityDto"
+              }
+            }
+          }
+        }
+      }
+    },
     "/Center/{id}": {
       "get": {
         "tags": [
@@ -737,6 +762,56 @@
           }
         }
       }
+    },
+    "/Company": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "Company_ListCompanies",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetCompanyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_ListUsers",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetUserDto"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -765,6 +840,22 @@
           "format": "int32"
         },
         "description": {
+          "type": "string"
+        }
+      }
+    },
+    "GetActivityDto": {
+      "type": "object",
+      "required": [
+        "id",
+        "activityName"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activityName": {
           "type": "string"
         }
       }
@@ -1104,7 +1195,8 @@
         "monthlyRentSqm",
         "monthlyMaintenanceCostSqm",
         "monthlyMarketingFeeSqm",
-        "leases"
+        "leases",
+        "validLease"
       ],
       "properties": {
         "id": {
@@ -1152,6 +1244,9 @@
           "items": {
             "$ref": "#/definitions/Lease"
           }
+        },
+        "validLease": {
+          "$ref": "#/definitions/Lease"
         }
       }
     },
@@ -1389,6 +1484,8 @@
         "signingDate",
         "startDate",
         "termInMonths",
+        "endDate",
+        "centerId",
         "center",
         "valid",
         "activity"
@@ -1419,6 +1516,14 @@
           "format": "date-time"
         },
         "termInMonths": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "centerId": {
           "type": "integer",
           "format": "int32"
         },
@@ -1553,7 +1658,7 @@
           "format": "int32"
         },
         "valid": {
-          "type": "boolean"
+          "type": "string"
         },
         "activityId": {
           "type": "integer",
@@ -1594,6 +1699,38 @@
         "activityId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "GetCompanyDto": {
+      "type": "object",
+      "required": [
+        "id",
+        "companyName"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "companyName": {
+          "type": "string"
+        }
+      }
+    },
+    "GetUserDto": {
+      "type": "object",
+      "required": [
+        "id",
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
+          "type": "string"
         }
       }
     }

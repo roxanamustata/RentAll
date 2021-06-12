@@ -27,7 +27,9 @@ export class UnitComponent implements OnInit {
     "monthlyRentSqm",
     "monthlyMaintenanceCostSqm",
     "monthlyMarketingFeeSqm",
+    "leaseNumber",
     "actions",
+    // "lease"
   ];
   id: number;
   unitId: number;
@@ -47,57 +49,33 @@ export class UnitComponent implements OnInit {
     this.centerClient
       .getCenterById(this.id)
       .subscribe((data) => (this.center = data));
+
     this.dataSource = new UnitsDataSource(this.centerClient);
 
     this.dataSource.loadUnits(this.id);
   }
 
   openDialog(unitId: number): void {
-      
-    this.centerClient
-      .getValidLeaseByUnitId(unitId)
-      .subscribe((data) => {
-          this.lease = data;
-          const dialogRef = this.dialog.open(LeaseViewComponent, {
-            width: "250px",
-            data: this.lease,
-          });
-          dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
-      
-          });
-        
-        });
-
-    
-
-   
-    // dialogRef.close();
-    
-
-
+    this.centerClient.getValidLeaseByUnitId(unitId).subscribe((data) => {
+      this.lease = data;
+      const dialogRef = this.dialog.open(LeaseViewComponent, {
+        width: "250px",
+        data: this.lease,
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(`Dialog result: ${result}`);
+      });
+    });
   }
 
-  //   openDialog(unitId: number) {
-  //     // this.unitId = id;
-  //     this.centerClient.getUnitById(this.id, unitId).subscribe((data) => {
-  //       this.unit = data;
-  //       const dialogRef = this.dialog.open(LeaseViewComponent, {
-  //         data: {
-  //             height: '400px',
-  //             width: '600px',
-  //           unit: this.unit,
+  deleteUnit(centerId: number, unitId: number) {
+    this.centerClient.deleteUnitById(centerId, unitId).subscribe();
+    this.refreshPage();
+  }
 
-  //         },
-  //       });
-
-  //       dialogRef.afterClosed().subscribe((data) => {
-  //         console.log(`Dialog result: ${data}`);
-  //       });
-
-  //       dialogRef.close('Pizza!');
-  //     });
-  //   }
+  refreshPage() {
+    window.location.reload();
+  }
 
   onRowClicked(row) {
     console.log("Row clicked: ", row);

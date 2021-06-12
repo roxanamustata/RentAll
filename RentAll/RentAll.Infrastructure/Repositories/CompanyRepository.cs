@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RentAll.Infrastructure.Repositories
 {
@@ -28,36 +29,73 @@ namespace RentAll.Infrastructure.Repositories
 
         #region CRUD company
 
-        public List<Company> GetCompanies()
+        public async Task<IEnumerable<Company>> GetCompaniesAsync()
         {
-            return _rentAllDbContext.Companies.ToList();
+            try
+            {
+                return await _rentAllDbContext.Companies.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Couldn't retrieve entities: {ex.Message}");
+            }
         }
 
-        public Company GetCompanyById(int companyId)
+        public async Task<Company> GetCompanyByIdAsync(int companyId)
         {
-            return _rentAllDbContext.Companies.Find(companyId);
+            return await _rentAllDbContext.Companies.FirstOrDefaultAsync(c => c.Id == companyId);
         }
 
-        public void InsertCompany(Company company)
+        public async Task<Company> CreateCompanyAsync(Company company)
         {
-            _rentAllDbContext.Companies.Add(company);
-            Save();
+            if (company == null)
+            {
+                throw new ArgumentNullException($"{nameof(CreateCompanyAsync)} entity must not be null");
+            }
+
+            try
+            {
+                await _rentAllDbContext.Companies.AddAsync(company);
+                await _rentAllDbContext.SaveChangesAsync();
+
+                return company;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(company)} could not be saved: {ex.Message}");
+            }
+
         }
 
-        public void UpdateCompany(Company company)
+        public async Task UpdateCompanyAsync(Company company)
         {
-            _rentAllDbContext.Companies.Attach(company);
-            var entry = _rentAllDbContext.Entry(company);
-            entry.State = EntityState.Modified;
+            if (company == null)
+            {
+                throw new ArgumentNullException($"{nameof(UpdateCompanyAsync)} entity must not be null");
+            }
 
-            Save();
+            try
+            {
+                _rentAllDbContext.Companies.Update(company);
+                await _rentAllDbContext.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{nameof(company)} could not be updated: {ex.Message}");
+            }
         }
 
-        public void DeleteCompany(int companyId)
+        public async Task DeleteCompanyAsync(int companyId)
         {
-            var company = GetCompanyById(companyId);
-            _rentAllDbContext.Companies.Remove(company);
-            Save();
+            var company = _rentAllDbContext.Companies.Find(companyId);
+
+
+            if (company != null)
+            {
+                _rentAllDbContext.Companies.Remove(company);
+                await _rentAllDbContext.SaveChangesAsync();
+            }
         }
 
         #endregion
@@ -75,11 +113,7 @@ namespace RentAll.Infrastructure.Repositories
 
 
 
-        public void Save()
-        {
-            _rentAllDbContext.SaveChanges();
-        }
-
+       
         #endregion
     }
 }
