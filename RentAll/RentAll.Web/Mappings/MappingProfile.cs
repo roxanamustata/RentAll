@@ -77,6 +77,9 @@ namespace RentAll.Web.Mappings
 
             CreateMap<Company, GetCompanyDto>()
                 .ReverseMap();
+
+            CreateMap<User, GetUserDto>()
+                .ReverseMap();
         }
 
 

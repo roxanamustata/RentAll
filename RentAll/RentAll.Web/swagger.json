@@ -787,6 +787,31 @@
           }
         }
       }
+    },
+    "/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "User_ListUsers",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetUserDto"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1689,6 +1714,22 @@
           "format": "int32"
         },
         "companyName": {
+          "type": "string"
+        }
+      }
+    },
+    "GetUserDto": {
+      "type": "object",
+      "required": [
+        "id",
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
           "type": "string"
         }
       }
