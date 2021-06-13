@@ -11,3 +11,7 @@
   input{
     color: white;
   }
+
+  .divider{
+    border-bottom: 1px solid black;
+  }

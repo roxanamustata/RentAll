@@ -1,12 +1,11 @@
-div{
+/* div{
     display: flex;
-}
+} */
 
 .example-card {
-    max-width: 300px;
-   margin: 50px 0 0 50px;
-   float: left;
-
+  width: 400px;
+  margin: 50px 50px ;
+  float: left;
   }
   
   .example-header-image {

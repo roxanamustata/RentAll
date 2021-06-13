@@ -966,7 +966,8 @@
         "streetNumber",
         "building",
         "floor",
-        "apartment"
+        "apartment",
+        "completeAddress"
       ],
       "properties": {
         "id": {
@@ -999,6 +1000,9 @@
         "apartment": {
           "type": "integer",
           "format": "int32"
+        },
+        "completeAddress": {
+          "type": "string"
         }
       }
     },
@@ -1706,7 +1710,11 @@
       "type": "object",
       "required": [
         "id",
-        "companyName"
+        "companyName",
+        "fiscalCode",
+        "fiscalAttribute",
+        "recomNumber",
+        "address"
       ],
       "properties": {
         "id": {
@@ -1714,6 +1722,19 @@
           "format": "int32"
         },
         "companyName": {
+          "type": "string"
+        },
+        "fiscalCode": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fiscalAttribute": {
+          "type": "string"
+        },
+        "recomNumber": {
+          "type": "string"
+        },
+        "address": {
           "type": "string"
         }
       }

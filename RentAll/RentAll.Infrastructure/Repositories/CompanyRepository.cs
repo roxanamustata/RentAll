@@ -33,7 +33,9 @@ namespace RentAll.Infrastructure.Repositories
         {
             try
             {
-                return await _rentAllDbContext.Companies.ToListAsync();
+                return await _rentAllDbContext.Companies
+                    .Include(c=>c.Address)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
