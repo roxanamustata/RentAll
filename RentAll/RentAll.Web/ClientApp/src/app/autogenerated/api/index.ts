@@ -1255,6 +1255,7 @@ export interface Address {
     building: string;
     floor: number;
     apartment: number;
+    completeAddress: string;
 }
 
 export interface Person {
@@ -1436,6 +1437,10 @@ export interface UpdateLeaseDto {
 export interface GetCompanyDto {
     id: number;
     companyName: string;
+    fiscalCode: number;
+    fiscalAttribute: string;
+    recomNumber: string;
+    address: string;
 }
 
 export interface GetUserDto {

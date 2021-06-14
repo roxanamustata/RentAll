@@ -1,65 +1,64 @@
 <app-nav-menu></app-nav-menu>
-<!-- <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
-  <mat-icon>add</mat-icon>
-</button> -->
 
-<mat-table class="leases-table mat-elevation-z8" [dataSource]="dataSource">
-  <!-- <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-    <mat-cell *matCellDef="let lease">{{ lease.id }}</mat-cell>
-  </ng-container> -->
+<!-- <mat-tab-group mat-align-tabs="start">
+  <mat-tab label="{{ center?.centerName | uppercase }} Leases"> -->
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="" (keyup)="applyFilter($event)" />
+    </mat-form-field>
 
-  <ng-container matColumnDef="leaseNumber">
-    <mat-header-cell *matHeaderCellDef>Lease Number</mat-header-cell>
+    <mat-table class="leases-table mat-elevation-z8" [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="leaseNumber">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Lease Number</mat-header-cell>
     <mat-cell class="leaseNumber-cell" *matCellDef="let lease">{{
       lease.leaseNumber
     }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="tenant">
-    <mat-header-cell *matHeaderCellDef>Tenant</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Tenant</mat-header-cell>
     <mat-cell class="tenant-cell" *matCellDef="let lease">{{
       lease.tenant
     }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="signingDate">
-    <mat-header-cell *matHeaderCellDef>Signing Date</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Signing Date</mat-header-cell>
     <mat-cell class="signingDate-cell" *matCellDef="let lease">{{
       lease.signingDate | date:"dd-MMM-yy"
     }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="startDate">
-    <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</mat-header-cell>
     <mat-cell class="startDate-cell" *matCellDef="let lease">{{
       lease.startDate | date:"dd-MMM-yy"
     }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="termInMonths">
-    <mat-header-cell *matHeaderCellDef>Term In Months</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Term In Months</mat-header-cell>
     <mat-cell class="termInMonths-cell" *matCellDef="let lease">{{
       lease.termInMonths
     }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="valid">
-    <mat-header-cell *matHeaderCellDef>Valid</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Valid</mat-header-cell>
     <mat-cell class="valid-cell" *matCellDef="let lease">{{
       lease.valid
     }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="activity">
-    <mat-header-cell *matHeaderCellDef>Activity</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Activity</mat-header-cell>
     <mat-cell class="activity-cell" *matCellDef="let lease">{{
       lease.activity
     }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="center">
-    <mat-header-cell *matHeaderCellDef>Center</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Center</mat-header-cell>
     <mat-cell class="center-cell" *matCellDef="let lease">{{
       lease.center
     }}</mat-cell>
@@ -67,36 +66,27 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell class="actions-cell" *matCellDef="let lease">
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
       <button
         mat-stroked-button color="accent"
         routerLink="/rentall/Center/{{lease.centerId}}/units/leases/{{lease.id}}">
         <mat-icon>edit</mat-icon>
+        <span>Edit</span>
       </button>
       <button
       mat-stroked-button
       color="accent"
         (click)="deleteLease(lease.centerId,lease.id)">
         <mat-icon>delete</mat-icon>
+        <span>Delete</span>
       </button>
+    </mat-menu>
     </mat-cell>
   </ng-container>
-  <!-- <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-    <mat-cell class="actions-cell" *matCellDef="let unit">
-      <button
-        mat-stroked-button
-        color="accent"
-        routerLink="/rentall/Center/{id}/units/{{ unit.id }}">
-        Edit
-      </button>
-      <button
-        mat-stroked-button
-        color="accent"
-        routerLink="/rentall/Center/{id}/units/{{ unit.id }}/leases/valid">
-        Lease
-      </button>
-    </mat-cell>
-  </ng-container> -->
+  
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
   <mat-row
@@ -104,3 +94,16 @@
     (click)="onRowClicked(row)"
   ></mat-row>
 </mat-table>
+<mat-paginator
+      [length]="leases?.length"
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+    >
+    </mat-paginator>
+
+<!-- </mat-tab> -->
+
+<!-- <mat-tab label="{{ center?.centerName | uppercase }} Units">
+  <app-unit></app-unit>
+</mat-tab> -->
+<!-- </mat-tab-group> -->

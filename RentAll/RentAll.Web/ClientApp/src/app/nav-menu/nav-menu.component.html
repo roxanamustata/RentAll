@@ -1,74 +1,13 @@
-<!-- <header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">RentAll.Web</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/centers']"
-              >Centers</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/leases']"
-              >Leases</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/tenants']"
-              >Tenants</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/reports']"
-              >Reports</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header> -->
-<!-- style="background-color:#424242" -->
+
   <mat-toolbar class="custom-toolbar">
     <div><a routerLink="/rentall" style="text-decoration: none; color:white"><span>RENT<span style="color:#e83e8c;">A</span>LL</span></a></div>
     <div>
-     
-    <!-- <button mat-raised-button color="primary" routerLink="/home">HOME</button> -->
-    <button mat-raised-button color="primary" routerLink="/rentall/Center">CENTERS</button>
-    <button mat-raised-button color="primary" routerLink="/rentall/Center/units/leases">LEASES</button>
-    <button mat-raised-button color="primary" routerLink="/rentall/tenants">TENANTS</button>
-    <button mat-raised-button color="primary" routerLink="/rentall/reports">REPORTS</button>
-    <button mat-raised-button color="primary" routerLink="/rentall/signin">SIGN IN</button>
+    
+    <button mat-raised-button color="primary" routerLinkActive="mat-accent" routerLink="/rentall/Center">CENTERS</button>
+    <button mat-raised-button color="primary" routerLinkActive="mat-accent" routerLink="/rentall/Center/units/leases">LEASES</button>
+    <button mat-raised-button color="primary" routerLinkActive="mat-accent" routerLink="/rentall/tenants">TENANTS</button>
+    <button mat-raised-button color="primary" routerLinkActive="mat-accent" routerLink="/rentall/reports">REPORTS</button>
+    <!-- <button mat-raised-button color="primary" routerLinkActive="mat-accent" routerLink="/rentall/signin">SIGN IN</button> -->
   
   
   </div>

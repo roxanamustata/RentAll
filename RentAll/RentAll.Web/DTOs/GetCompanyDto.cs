@@ -9,5 +9,11 @@ namespace RentAll.Web.DTOs
     {
         public int Id { get; private set; }
         public string CompanyName { get; set; }
+
+        public int FiscalCode { get; set; }
+        public string FiscalAttribute { get; set; }
+        public string RecomNumber { get; set; }
+
+        public string Address { get; set; }
     }
 }

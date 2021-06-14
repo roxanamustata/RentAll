@@ -77,6 +77,9 @@ this.centerClient.createLeaseInCenter(this.id, this.unitId, this.lease)
 
 }
 
-
+cancelCreate() {
+  // Simply navigate back to reminders view
+  this.router.navigate([`/rentall/Center/${this.id}/units`], { relativeTo: this.route }); // Go up to parent route     
+}
 
 }

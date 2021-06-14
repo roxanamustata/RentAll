@@ -112,7 +112,8 @@
         <button mat-raised-button type="submit" [disabled]="!form.valid">
           Submit
         </button>
-        <button mat-raised-button mat-form-close type="button">Cancel</button>
+        <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+        <button mat-raised-button (click)="cancelCreate()">Cancel</button>
       </p>
     </div>
   </form>
