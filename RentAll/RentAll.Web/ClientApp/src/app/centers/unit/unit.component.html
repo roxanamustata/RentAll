@@ -3,51 +3,57 @@
 <!-- <h3 class="mat-subheading-2" style="color: gainsboro">
   {{ center?.centerName | uppercase }}
 </h3> -->
+
+
 <mat-tab-group mat-align-tabs="start">
   <mat-tab label="{{ center?.centerName | uppercase }} Units">
-    <mat-table class="units-table mat-elevation-z8" [dataSource]="dataSource">
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="" (keyup)="applyFilter($event)" />
+    </mat-form-field>
+    <mat-table class="units-table mat-elevation-z8" [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
         <mat-cell *matCellDef="let unit">{{ unit.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="unitCode">
-        <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
         <mat-cell class="unitCode-cell" *matCellDef="let unit">{{
           unit.unitCode
         }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="area">
-        <mat-header-cell *matHeaderCellDef>Area</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Area</mat-header-cell>
         <mat-cell class="area-cell" *matCellDef="let unit">{{
           unit.area
         }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="floor">
-        <mat-header-cell *matHeaderCellDef>Floor</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Floor</mat-header-cell>
         <mat-cell class="floor-cell" *matCellDef="let unit">{{
           unit.floor
         }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="type">
-        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
         <mat-cell class="type-cell" *matCellDef="let unit">{{
           unit.type
         }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="monthlyRentSqm">
-        <mat-header-cell *matHeaderCellDef>Rent</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Rent</mat-header-cell>
         <mat-cell class="monthlyRentSqm-cell" *matCellDef="let unit">{{
           unit.monthlyRentSqm | currency: "EUR":true
         }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="monthlyMaintenanceCostSqm">
-        <mat-header-cell *matHeaderCellDef>CAM</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>CAM</mat-header-cell>
         <mat-cell
           class="monthlyMaintenanceCostSqm-cell"
           *matCellDef="let unit"
@@ -56,14 +62,14 @@
       </ng-container>
 
       <ng-container matColumnDef="monthlyMarketingFeeSqm">
-        <mat-header-cell *matHeaderCellDef>Marketing</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Marketing</mat-header-cell>
         <mat-cell class="monthlyMarketingFeeSqm-cell" *matCellDef="let unit">{{
           unit.monthlyMarketingFeeSqm | currency: "EUR":true
         }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="leaseNumber">
-        <mat-header-cell *matHeaderCellDef>Lease Number</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Lease Number</mat-header-cell>
         <mat-cell class="leaseNumber-cell" *matCellDef="let unit">{{
           unit.validLease != null ? unit.validLease.leaseNumber : ""
         }}</mat-cell>
@@ -71,10 +77,25 @@
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef id="actionsHeader"
-          >Actions</mat-header-cell
-        >
+          >Actions</mat-header-cell>
         <mat-cell class="actions-cell" *matCellDef="let unit">
-          <button
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/rentall/Center/{{ center.id }}/units/{{ unit.id }}">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="deleteUnit(center.id, unit.id)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+            
+          </mat-menu> 
+        </mat-cell>
+      </ng-container>  
+          <!-- <button
             mat-stroked-button
             color="accent"
             routerLink="/rentall/Center/{{ center.id }}/units/{{ unit.id }}"
@@ -88,8 +109,13 @@
             (click)="deleteUnit(center.id, unit.id)"
           >
             <mat-icon>delete</mat-icon>
-          </button>
+          </button> -->
 
+
+          <ng-container matColumnDef="lease">
+            <mat-header-cell *matHeaderCellDef id="leaseHeader"
+              >Lease Details</mat-header-cell>
+            <mat-cell class="lease-cell" *matCellDef="let unit">
           <button
             *ngIf="unit.validLease != null"
             mat-raised-button
@@ -112,6 +138,10 @@
         </mat-cell>
       </ng-container>
 
+
+
+
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
       <mat-row
@@ -119,6 +149,12 @@
         (click)="onRowClicked(row)"
       ></mat-row>
     </mat-table>
+    <mat-paginator
+      [length]="units?.length"
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+    >
+    </mat-paginator>
   </mat-tab>
 
   <mat-tab label="{{ center?.centerName | uppercase }} Leases">
