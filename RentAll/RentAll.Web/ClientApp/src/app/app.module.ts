@@ -12,6 +12,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
+import {MatTabsModule} from '@angular/material/tabs';
 
 import {
   MatInputModule,
@@ -77,6 +78,8 @@ import { LeaseEditorComponent } from "./leases/lease-editor/lease-editor.compone
     MatListModule,
     ReactiveFormsModule,
     MatMenuModule,
+    MatTabsModule,
+    
 
     RouterModule.forRoot([
       { path: "", redirectTo: "rentall/home", pathMatch: "full" },

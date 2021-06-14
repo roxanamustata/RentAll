@@ -1,117 +1,128 @@
 <app-nav-menu></app-nav-menu>
 
+<!-- <h3 class="mat-subheading-2" style="color: gainsboro">
+  {{ center?.centerName | uppercase }}
+</h3> -->
+<mat-tab-group mat-align-tabs="start">
+  <mat-tab label="{{ center?.centerName | uppercase }} Units">
+    <mat-table class="units-table mat-elevation-z8" [dataSource]="dataSource">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let unit">{{ unit.id }}</mat-cell>
+      </ng-container>
 
-<h3 class="mat-subheading-2" style="color: gainsboro">
-  Units in {{ center?.centerName | uppercase }}
-</h3>
-<mat-table class="units-table mat-elevation-z8" [dataSource]="dataSource">
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-    <mat-cell *matCellDef="let unit">{{ unit.id }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="unitCode">
+        <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+        <mat-cell class="unitCode-cell" *matCellDef="let unit">{{
+          unit.unitCode
+        }}</mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="unitCode">
-    <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
-    <mat-cell class="unitCode-cell" *matCellDef="let unit">{{
-      unit.unitCode
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="area">
+        <mat-header-cell *matHeaderCellDef>Area</mat-header-cell>
+        <mat-cell class="area-cell" *matCellDef="let unit">{{
+          unit.area
+        }}</mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="area">
-    <mat-header-cell *matHeaderCellDef>Area</mat-header-cell>
-    <mat-cell class="area-cell" *matCellDef="let unit">{{
-      unit.area
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="floor">
+        <mat-header-cell *matHeaderCellDef>Floor</mat-header-cell>
+        <mat-cell class="floor-cell" *matCellDef="let unit">{{
+          unit.floor
+        }}</mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="floor">
-    <mat-header-cell *matHeaderCellDef>Floor</mat-header-cell>
-    <mat-cell class="floor-cell" *matCellDef="let unit">{{
-      unit.floor
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+        <mat-cell class="type-cell" *matCellDef="let unit">{{
+          unit.type
+        }}</mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="type">
-    <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
-    <mat-cell class="type-cell" *matCellDef="let unit">{{
-      unit.type
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="monthlyRentSqm">
+        <mat-header-cell *matHeaderCellDef>Rent</mat-header-cell>
+        <mat-cell class="monthlyRentSqm-cell" *matCellDef="let unit">{{
+          unit.monthlyRentSqm | currency: "EUR":true
+        }}</mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="monthlyRentSqm">
-    <mat-header-cell *matHeaderCellDef>Rent</mat-header-cell>
-    <mat-cell class="monthlyRentSqm-cell" *matCellDef="let unit">{{
-      unit.monthlyRentSqm | currency: "EUR":true
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="monthlyMaintenanceCostSqm">
+        <mat-header-cell *matHeaderCellDef>CAM</mat-header-cell>
+        <mat-cell
+          class="monthlyMaintenanceCostSqm-cell"
+          *matCellDef="let unit"
+          >{{ unit.monthlyMaintenanceCostSqm | currency: "EUR":true }}</mat-cell
+        >
+      </ng-container>
 
-  <ng-container matColumnDef="monthlyMaintenanceCostSqm">
-    <mat-header-cell *matHeaderCellDef>CAM</mat-header-cell>
-    <mat-cell class="monthlyMaintenanceCostSqm-cell" *matCellDef="let unit">{{
-      unit.monthlyMaintenanceCostSqm | currency: "EUR":true
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="monthlyMarketingFeeSqm">
+        <mat-header-cell *matHeaderCellDef>Marketing</mat-header-cell>
+        <mat-cell class="monthlyMarketingFeeSqm-cell" *matCellDef="let unit">{{
+          unit.monthlyMarketingFeeSqm | currency: "EUR":true
+        }}</mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="monthlyMarketingFeeSqm">
-    <mat-header-cell *matHeaderCellDef>Marketing</mat-header-cell>
-    <mat-cell class="monthlyMarketingFeeSqm-cell" *matCellDef="let unit">{{
-      unit.monthlyMarketingFeeSqm | currency: "EUR":true
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="leaseNumber">
+        <mat-header-cell *matHeaderCellDef>Lease Number</mat-header-cell>
+        <mat-cell class="leaseNumber-cell" *matCellDef="let unit">{{
+          unit.validLease != null ? unit.validLease.leaseNumber : ""
+        }}</mat-cell>
+      </ng-container>
 
-  <ng-container matColumnDef="leaseNumber">
-    <mat-header-cell *matHeaderCellDef>Lease Number</mat-header-cell>
-    <mat-cell class="leaseNumber-cell" *matCellDef="let unit">{{
-      unit.validLease != null ? unit.validLease.leaseNumber : ""
-    }}</mat-cell>
-  </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef id="actionsHeader"
+          >Actions</mat-header-cell
+        >
+        <mat-cell class="actions-cell" *matCellDef="let unit">
+          <button
+            mat-stroked-button
+            color="accent"
+            routerLink="/rentall/Center/{{ center.id }}/units/{{ unit.id }}"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
 
-  <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef id="actionsHeader"
-      >Actions</mat-header-cell>
-    <mat-cell class="actions-cell" *matCellDef="let unit">
-      <button
-        mat-stroked-button
-        color="accent"
-        routerLink="/rentall/Center/{{ center.id }}/units/{{ unit.id }}">
-      <mat-icon>edit</mat-icon>
-      </button>
+          <button
+            mat-stroked-button
+            color="accent"
+            (click)="deleteUnit(center.id, unit.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
 
-      <button
-        mat-stroked-button
-        color="accent"
-        (click)="deleteUnit(center.id,unit.id)">
-      <mat-icon>delete</mat-icon>
-      </button>
-      
-      <button *ngIf="unit.validLease != null" mat-raised-button color="primary" (click)="openDialog(unit.id)">
-       View
-      </button>
+          <button
+            *ngIf="unit.validLease != null"
+            mat-raised-button
+            color="primary"
+            (click)="openDialog(unit.id)"
+          >
+            View
+          </button>
 
-       <button *ngIf="unit.validLease === null" routerLink="/rentall/Center/{{center.id }}/units/{{ unit.id }}/leases"
-       mat-raised-button color="primary"> Create</button>
+          <button
+            *ngIf="unit.validLease === null"
+            routerLink="/rentall/Center/{{ center.id }}/units/{{
+              unit.id
+            }}/leases"
+            mat-raised-button
+            color="primary"
+          >
+            Create
+          </button>
+        </mat-cell>
+      </ng-container>
 
-    </mat-cell>
-  </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="onRowClicked(row)"
+      ></mat-row>
+    </mat-table>
+  </mat-tab>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-  <!-- <ng-container matColumnDef="lease">
-    <mat-header-cell *matHeaderCellDef id="leaseHeader"
-      >Lease</mat-header-cell
-    >
-    <mat-cell class="lease-cell" *matCellDef="let unit">
-      <button mat-raised-button color="primary" (click)="openDialog(unit.id)">
-        {{ unit.validLease != null ? "Edit" : "Create" }}
-      </button>
-    </mat-cell>
-  </ng-container> -->
-
-  <mat-row
-    *matRowDef="let row; columns: displayedColumns"
-    (click)="onRowClicked(row)"
-  ></mat-row>
-</mat-table>
-
+  <mat-tab label="{{ center?.centerName | uppercase }} Leases">
+    <app-lease></app-lease>
+  </mat-tab>
+</mat-tab-group>
 <!-- routerLink="/rentall/Center/{id}/units/{{ unit.id }}/leases/valid" -->
