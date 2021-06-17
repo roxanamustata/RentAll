@@ -122,6 +122,30 @@ namespace RentAll.Infrastructure.Services
 
         }
 
+
+        //public Dictionary<string, double> GetCenterSummary(int centerId)
+        //{
+        //    var results = new Dictionary<string, double>();
+        //    var leasableArea = "Leasable Area";
+        //    var leasedArea = "Leased Area";
+        //    var ocuppancyDegree = "Occupancy Degree";
+        //    var averageRentOnCenter = "Average Rent";
+        //    results.Add(leasableArea, CalculateGrossLeasableAreaOnCenter(centerId));
+        //    results.Add(leasedArea, CalculateLeasedAreaOnCenter(centerId));
+        //    results.Add(ocuppancyDegree, CalculateOcupancyDegreeOnCenter(centerId));
+        //    results.Add(averageRentOnCenter, CalculateAverageRentPerSqmOnCenter(centerId));
+
+
+        //    return results;
+
+
+        //}
+
+
+
+
+
+
         #endregion
     }
 }

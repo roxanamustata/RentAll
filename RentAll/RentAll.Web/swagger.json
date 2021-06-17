@@ -763,6 +763,38 @@
         }
       }
     },
+    "/Center/{id}/report": {
+      "get": {
+        "tags": [
+          "Center"
+        ],
+        "operationId": "Center_GetCenterSummary",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CenterReportDto"
+            }
+          }
+        }
+      }
+    },
     "/Company": {
       "get": {
         "tags": [
@@ -1703,6 +1735,38 @@
         "activityId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "CenterReportDto": {
+      "type": "object",
+      "required": [
+        "leasableArea",
+        "leasedArea",
+        "occupancyDegree",
+        "averageRent",
+        "totalRentIncome"
+      ],
+      "properties": {
+        "leasableArea": {
+          "type": "number",
+          "format": "double"
+        },
+        "leasedArea": {
+          "type": "number",
+          "format": "double"
+        },
+        "occupancyDegree": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageRent": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncome": {
+          "type": "number",
+          "format": "double"
         }
       }
     },

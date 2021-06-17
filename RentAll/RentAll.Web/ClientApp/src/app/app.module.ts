@@ -12,7 +12,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from "@angular/material/tabs";
 
 import {
   MatInputModule,
@@ -35,7 +35,9 @@ import { UnitComponent } from "./centers/unit/unit.component";
 import { LeaseComponent } from "./leases/lease/lease.component";
 import { TenantComponent } from "./tenants/tenant/tenant.component";
 import { ReportComponent } from "./reports/report/report.component";
+
 import { LeaseViewComponent } from "./leases/lease-view/lease-view.component";
+
 import {
   MatDialogModule,
   MatDialogRef,
@@ -43,6 +45,7 @@ import {
   MAT_DIALOG_DEFAULT_OPTIONS,
 } from "@angular/material/dialog";
 import { LeaseEditorComponent } from "./leases/lease-editor/lease-editor.component";
+import { CenterReportComponent } from "./reports/center-report/center-report.component";
 
 @NgModule({
   declarations: [
@@ -57,6 +60,7 @@ import { LeaseEditorComponent } from "./leases/lease-editor/lease-editor.compone
     UnitComponent,
     LeaseViewComponent,
     LeaseEditorComponent,
+    CenterReportComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -79,7 +83,6 @@ import { LeaseEditorComponent } from "./leases/lease-editor/lease-editor.compone
     ReactiveFormsModule,
     MatMenuModule,
     MatTabsModule,
-    
 
     RouterModule.forRoot([
       { path: "", redirectTo: "rentall/home", pathMatch: "full" },
@@ -99,7 +102,10 @@ import { LeaseEditorComponent } from "./leases/lease-editor/lease-editor.compone
         path: "rentall/Center/:id/units/:unitId/leases",
         component: LeaseEditorComponent,
       },
-      // {path: 'rentall/Center/{{lease.center.id}}/units/leases/{{lease.id}}', component: LeaseEditComponent}
+      {
+        path: "rentall/Center/:id/report",
+        component: CenterReportComponent,
+      },
     ]),
     BrowserAnimationsModule,
   ],
@@ -108,7 +114,7 @@ import { LeaseEditorComponent } from "./leases/lease-editor/lease-editor.compone
     { provide: MatDialogRef, useValue: {} },
   ],
 
-  entryComponents: [LeaseViewComponent],
+  entryComponents: [LeaseViewComponent, CenterReportComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

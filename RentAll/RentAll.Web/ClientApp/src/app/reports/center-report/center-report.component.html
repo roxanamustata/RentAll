@@ -1,0 +1,18 @@
+<h2 mat-dialog-title >Center report</h2>
+<mat-dialog-content class="mat-typography" >
+ 
+  <mat-list dense>
+    <mat-list-item> Leasable Area: {{data.leasableArea}}</mat-list-item>
+    <mat-list-item> Leased Area: {{data.leasedArea}}</mat-list-item>
+    <mat-list-item> Ocuppancy Degree: {{data.occupancyDegree}}%</mat-list-item>
+    <mat-list-item> Average Rent: {{data.averageRent | currency: "EUR":true}}</mat-list-item>
+    <mat-list-item> Total Rent Income: {{data.totatRentIncome | currency: "EUR":true}}</mat-list-item>
+
+  </mat-list>
+ 
+    
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Create lease</button> -->
+</mat-dialog-actions>

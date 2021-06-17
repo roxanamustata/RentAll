@@ -19,11 +19,13 @@ namespace RentAll.Web.Controllers
     public class CenterController : ControllerBase
     {
         private readonly ICenterService _centerService;
+        private readonly IReportsService _reportsService;
         private readonly IMapper _mapper;
 
-        public CenterController(ICenterService centerService, IMapper mapper)
+        public CenterController(ICenterService centerService, IReportsService reportsService, IMapper mapper)
         {
             _centerService = centerService;
+            _reportsService = reportsService;
             _mapper = mapper;
 
         }
@@ -445,6 +447,33 @@ namespace RentAll.Web.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error updating data");
             }
+        }
+
+
+        //[HttpGet]
+        //[Route("{id:int}/report")]
+        //public ActionResult<Dictionary<string, double>> GetCenterSummary(int id)
+        //{
+        //    var results = _reportsService.GetCenterSummary(id);
+        //    return results;
+        //}
+
+
+
+
+        [HttpGet]
+        [Route("{id:int}/report")]
+        public ActionResult<CenterReportDto> GetCenterSummary(int id)
+        {
+            var centerReportDto = new CenterReportDto
+            {
+                LeasableArea = _reportsService.CalculateGrossLeasableAreaOnCenter(id),
+                LeasedArea = _reportsService.CalculateLeasedAreaOnCenter(id),
+                OccupancyDegree = _reportsService.CalculateOcupancyDegreeOnCenter(id),
+                AverageRent = _reportsService.CalculateAverageRentPerSqmOnCenter(id),
+                TotalRentIncome = _reportsService.CalculateTotalRentOnCenter(id)
+            };
+            return centerReportDto;
         }
 
 

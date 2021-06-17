@@ -1,2 +1,126 @@
 <app-nav-menu></app-nav-menu>
-<p>report works!</p>
+<section style="padding-top: 30px" class="create-new-lease">
+    <h5 style="color: gainsboro; padding-bottom: 20px">Choose center and press generate</h5>
+  
+    <form [formGroup]="form" (ngSubmit)="openDialog(2)">
+     
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Center:</mat-label>
+            <mat-select formControlName="centerId" id="center">
+              <!-- <mat-option [value]="selectedCenter$.id" >{{selectedCenter$.centerName}}</mat-option> -->
+              <mat-option
+                *ngFor="let option of centerOptions$ | async"
+                [value]="option.id" 
+              >
+                {{ option.centerName }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </p>
+  
+        <!-- <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Lease Number:</mat-label>
+            <input matInput type="text" formControlName="leaseNumber" />
+          </mat-form-field>
+        </p>
+  
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Tenant:</mat-label>
+            <mat-select formControlName="tenantId" id="tenant">
+              <mat-option value="" disabled selected>select an option</mat-option>
+              <mat-option
+                *ngFor="let option of tenantOptions$ | async"
+                [value]="option.id"
+              >
+                {{ option.companyName }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Activity:</mat-label>
+            <mat-select formControlName="activityId" id="activity">
+              <mat-option value="" disabled selected>select an option</mat-option>
+              <mat-option
+                *ngFor="let option of activityOptions$ | async"
+                [value]="option.id"
+              >
+                {{ option.activityName }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </p>
+      </div>
+      <div class="sub-entry">
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Signing Date:</mat-label>
+            <input matInput type="date" formControlName="signingDate" />
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Start Date:</mat-label>
+            <input matInput type="date" formControlName="startDate" />
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Term in months:</mat-label>
+            <input matInput type="number" formControlName="termInMonths" />
+          </mat-form-field>
+        </p>
+      </div>
+      <div class="sub-entry">
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>End Date:</mat-label>
+            <input matInput type="date" formControlName="endDate" />
+          </mat-form-field>
+        </p>
+  
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Lease status:</mat-label>
+            <mat-select formControlName="valid" id="valid">
+              <mat-option value="" disabled selected>select an option</mat-option>
+              <mat-option value="valid">valid</mat-option>
+              <mat-option value="notValid">not valid</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>User:</mat-label>
+            <mat-select formControlName="userId" id="user">
+              <mat-option value="" disabled selected>select an option</mat-option>
+              <mat-option
+                *ngFor="let option of userOptions$ | async"
+                [value]="option.id"
+              >
+                {{ option.username }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </p>
+      </div> -->
+      <div>
+        <p>
+          <button mat-raised-button (click)="openDialog(option.id)" [disabled]="!form.valid">
+            
+            Generate
+          </button>
+          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+          <!-- <button mat-raised-button (click)="cancelCreate()">Cancel</button> -->
+        </p>
+      </div>
+    </form>
+  </section>
+  
+
+         
+        
