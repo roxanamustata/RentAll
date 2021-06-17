@@ -13,6 +13,8 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
 import { MatTabsModule } from "@angular/material/tabs";
+import { NgApexchartsModule } from "ng-apexcharts";
+
 
 import {
   MatInputModule,
@@ -61,6 +63,7 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
     LeaseViewComponent,
     LeaseEditorComponent,
     CenterReportComponent,
+
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
@@ -83,6 +86,7 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
     ReactiveFormsModule,
     MatMenuModule,
     MatTabsModule,
+    NgApexchartsModule,
 
     RouterModule.forRoot([
       { path: "", redirectTo: "rentall/home", pathMatch: "full" },
@@ -117,4 +121,4 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
   entryComponents: [LeaseViewComponent, CenterReportComponent],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

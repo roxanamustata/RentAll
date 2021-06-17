@@ -86,8 +86,12 @@ namespace RentAll.Web.Mappings
             //CreateMap<Address, GetAddressDto>()
             //    .ForMember(dest => dest.CompleteAddress, map => map.MapFrom(src => $"{src.City}, {src.StreetName}"))
             //    .ReverseMap();
-                
-                
+
+
+            CreateMap<Report, CenterReportDto>()
+
+             .ReverseMap();
+
         }
 
 

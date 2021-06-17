@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RentAll.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,8 +26,9 @@ namespace RentAll.Domain.Interfaces
         double CalculateTotalRentInCenterOnActivityCategory(int centerId, string categoryName);
         double CalculateAverageRentPerSqmInCenterOnActivityCategory(int centerId, string categoryName);
 
-        //Dictionary<string, double> GetCenterSummary(int centerId);
-        
-    
+        Report GetCenterSummary(int centerId);
+
+
+
     }
 }
