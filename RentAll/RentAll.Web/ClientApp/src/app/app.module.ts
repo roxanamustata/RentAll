@@ -93,7 +93,7 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
       { path: "rentall", redirectTo: "rentall/home", pathMatch: "full" },
       { path: "rentall/home", component: HomeComponent },
       { path: "rentall/Center", component: CenterComponent },
-      { path: "rentall/Center/units/leases", component: LeaseComponent },
+      { path: "rentall/leases", component: LeaseComponent },
       { path: "rentall/tenants", component: TenantComponent },
       { path: "rentall/reports", component: ReportComponent },
       { path: "rentall/Center/:id/units", component: UnitComponent },

@@ -71,8 +71,8 @@ export class LeaseEditorComponent implements OnInit {
     this.centerClient.createLeaseInCenter(this.id, this.unitId, this.lease)
       .subscribe(() => {
 
-        this.router.navigate([`/rentall/Center/${this.id}/units/leases`]);
       });
+      this.router.navigate([`/rentall/Center/${this.id}/units/leases`]);
 
 
 
