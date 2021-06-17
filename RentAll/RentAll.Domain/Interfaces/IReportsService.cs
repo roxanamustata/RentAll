@@ -24,5 +24,9 @@ namespace RentAll.Domain.Interfaces
         double CalculateLeasedAreaInCenterOnActivityCategory(int centerId, string categoryName);
         double CalculateTotalRentInCenterOnActivityCategory(int centerId, string categoryName);
         double CalculateAverageRentPerSqmInCenterOnActivityCategory(int centerId, string categoryName);
+
+        //Dictionary<string, double> GetCenterSummary(int centerId);
+        
+    
     }
 }
