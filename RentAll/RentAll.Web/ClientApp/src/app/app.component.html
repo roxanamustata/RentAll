@@ -1,6 +1,6 @@
 <body>
   <div class="container">
-    <app-nav-menu></app-nav-menu>
+    <app-nav-menu *ngIf="router.url != '/rentall/home'"></app-nav-menu>
     <router-outlet></router-outlet>
   </div>
 </body>

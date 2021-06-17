@@ -19,6 +19,8 @@ const GEM_ICON = `
 })
 export class HomeComponent implements OnInit {
 
+  
+
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     // Note that we provide the icon here as a string literal here due to a limitation in
     // Stackblitz. If you want to provide the icon from a URL, you can use:
