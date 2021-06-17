@@ -11,7 +11,7 @@ namespace RentAll.Infrastructure.Data
 {
     public class RentAllDbContext:DbContext
     {
-        private readonly string _connectionString ="Data Source=RALU\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
+        private readonly string _connectionString = "Data Source=DESKTOP-T0H828M\\SQLEXPRESS;Initial Catalog=RentAllDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;" +
             "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public RentAllDbContext():base()

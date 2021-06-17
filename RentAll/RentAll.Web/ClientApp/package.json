@@ -37,7 +37,7 @@
     "popper.js": "^1.16.0",
     "rxjs": "^6.5.3",
     "zone.js": "0.9.1",
-    "@ag-grid-community/core":"25.3.0"
+    "@ag-grid-community/core": "25.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.26",

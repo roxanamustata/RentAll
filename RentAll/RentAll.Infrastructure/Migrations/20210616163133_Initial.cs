@@ -21,6 +21,19 @@ namespace RentAll.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -55,23 +68,27 @@ namespace RentAll.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "RoleUser",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    RolesId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_RoleUser", x => new { x.RolesId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_Roles_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_RoleUser_Roles_RolesId",
+                        column: x => x.RolesId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleUser_Users_UsersId",
+                        column: x => x.UsersId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -99,13 +116,13 @@ namespace RentAll.Infrastructure.Migrations
                         column: x => x.ActivityId,
                         principalTable: "Activities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Leases_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,7 +150,8 @@ namespace RentAll.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CenterName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    ParkingCapacity = table.Column<int>(type: "int", nullable: false)
+                    ParkingCapacity = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -264,11 +282,11 @@ namespace RentAll.Infrastructure.Migrations
                     UnitCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Area = table.Column<double>(type: "float", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    FloorId = table.Column<int>(type: "int", nullable: true),
+                    CenterId = table.Column<int>(type: "int", nullable: false),
+                    FloorId = table.Column<int>(type: "int", nullable: false),
                     MonthlyRentSqm = table.Column<double>(type: "float", nullable: false),
                     MonthlyMaintenanceCostSqm = table.Column<double>(type: "float", nullable: false),
-                    MonthlyMarketingFeeSqm = table.Column<double>(type: "float", nullable: false),
-                    CenterId = table.Column<int>(type: "int", nullable: true)
+                    MonthlyMarketingFeeSqm = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -292,11 +310,11 @@ namespace RentAll.Infrastructure.Migrations
                 columns: table => new
                 {
                     LeasesId = table.Column<int>(type: "int", nullable: false),
-                    PremisesId = table.Column<int>(type: "int", nullable: false)
+                    UnitsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LeaseUnit", x => new { x.LeasesId, x.PremisesId });
+                    table.PrimaryKey("PK_LeaseUnit", x => new { x.LeasesId, x.UnitsId });
                     table.ForeignKey(
                         name: "FK_LeaseUnit_Leases_LeasesId",
                         column: x => x.LeasesId,
@@ -304,8 +322,8 @@ namespace RentAll.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LeaseUnit_Units_PremisesId",
-                        column: x => x.PremisesId,
+                        name: "FK_LeaseUnit_Units_UnitsId",
+                        column: x => x.UnitsId,
                         principalTable: "Units",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -347,6 +365,11 @@ namespace RentAll.Infrastructure.Migrations
                 column: "ActivityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Leases_CenterId",
+                table: "Leases",
+                column: "CenterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Leases_TenantId",
                 table: "Leases",
                 column: "TenantId");
@@ -357,9 +380,9 @@ namespace RentAll.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaseUnit_PremisesId",
+                name: "IX_LeaseUnit_UnitsId",
                 table: "LeaseUnit",
-                column: "PremisesId");
+                column: "UnitsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Persons_CompanyId",
@@ -372,9 +395,9 @@ namespace RentAll.Infrastructure.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_UserId",
-                table: "Roles",
-                column: "UserId");
+                name: "IX_RoleUser_UsersId",
+                table: "RoleUser",
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Units_CenterId",
@@ -387,12 +410,20 @@ namespace RentAll.Infrastructure.Migrations
                 column: "FloorId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Leases_Centers_CenterId",
+                table: "Leases",
+                column: "CenterId",
+                principalTable: "Centers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Leases_Companies_TenantId",
                 table: "Leases",
                 column: "TenantId",
                 principalTable: "Companies",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Companies_Addresses_AddressId",
@@ -419,13 +450,16 @@ namespace RentAll.Infrastructure.Migrations
                 name: "Phones");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "RoleUser");
 
             migrationBuilder.DropTable(
                 name: "Leases");
 
             migrationBuilder.DropTable(
                 name: "Units");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Activities");
