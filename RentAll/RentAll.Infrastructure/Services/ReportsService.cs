@@ -1,4 +1,5 @@
 ﻿using RentAll.Domain.Interfaces;
+using RentAll.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -123,23 +124,19 @@ namespace RentAll.Infrastructure.Services
         }
 
 
-        //public Dictionary<string, double> GetCenterSummary(int centerId)
-        //{
-        //    var results = new Dictionary<string, double>();
-        //    var leasableArea = "Leasable Area";
-        //    var leasedArea = "Leased Area";
-        //    var ocuppancyDegree = "Occupancy Degree";
-        //    var averageRentOnCenter = "Average Rent";
-        //    results.Add(leasableArea, CalculateGrossLeasableAreaOnCenter(centerId));
-        //    results.Add(leasedArea, CalculateLeasedAreaOnCenter(centerId));
-        //    results.Add(ocuppancyDegree, CalculateOcupancyDegreeOnCenter(centerId));
-        //    results.Add(averageRentOnCenter, CalculateAverageRentPerSqmOnCenter(centerId));
+        public Report GetCenterSummary (int centerId)
+        {
+            var centerReport= new Report
+            {
+                LeasableArea = CalculateGrossLeasableAreaOnCenter(centerId),
+                LeasedArea = CalculateLeasedAreaOnCenter(centerId),
+                OccupancyDegree = CalculateOcupancyDegreeOnCenter(centerId),
+                AverageRent =CalculateAverageRentPerSqmOnCenter(centerId),
+                TotalRentIncome = CalculateTotalRentOnCenter(centerId)
+            };
+            return centerReport;
 
-
-        //    return results;
-
-
-        //}
+        }
 
 
 

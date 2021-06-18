@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 
@@ -8,5 +9,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
- 
+  router: Router;
+
+  constructor(private _router: Router) {
+
+    this.router = _router;
+  }
+
 }

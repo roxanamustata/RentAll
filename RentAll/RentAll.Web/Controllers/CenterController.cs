@@ -450,29 +450,14 @@ namespace RentAll.Web.Controllers
         }
 
 
-        //[HttpGet]
-        //[Route("{id:int}/report")]
-        //public ActionResult<Dictionary<string, double>> GetCenterSummary(int id)
-        //{
-        //    var results = _reportsService.GetCenterSummary(id);
-        //    return results;
-        //}
-
-
-
 
         [HttpGet]
         [Route("{id:int}/report")]
         public ActionResult<CenterReportDto> GetCenterSummary(int id)
         {
-            var centerReportDto = new CenterReportDto
-            {
-                LeasableArea = _reportsService.CalculateGrossLeasableAreaOnCenter(id),
-                LeasedArea = _reportsService.CalculateLeasedAreaOnCenter(id),
-                OccupancyDegree = _reportsService.CalculateOcupancyDegreeOnCenter(id),
-                AverageRent = _reportsService.CalculateAverageRentPerSqmOnCenter(id),
-                TotalRentIncome = _reportsService.CalculateTotalRentOnCenter(id)
-            };
+            var centerReport = _reportsService.GetCenterSummary(id);
+            var centerReportDto = _mapper.Map<CenterReportDto>(centerReport);
+
             return centerReportDto;
         }
 

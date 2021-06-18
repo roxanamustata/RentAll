@@ -2,14 +2,31 @@
     display: flex;
 } */
 
-.example-card {
-  width: 400px;
-  margin: 50px 50px ;
+/* .example-card {
+  width: 300px;
+  margin: 50px 0 0 50px ;
   float: left;
-  }
+  } */
   
   .example-header-image {
     background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYkFh0GB145np0GiRFz4oxGY_c8GnxUDMy3g&usqp=CAU');
     background-size: cover;
+    
   }
+  .example-card{
+    margin-bottom: 20px;
+    width: 350px;
   
+ }
+
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+   
+    
+  }
+ 
+ 
+ 
+
