@@ -1587,6 +1587,10 @@ export interface CenterReportDto {
     occupancyDegree: number;
     averageRent: number;
     totalRentIncome: number;
+    totalRentIncomeOnNonFood: number;
+    totalRentIncomeOnFood: number;
+    totalRentIncomeOnEntertainment: number;
+    totalRentIncomeOnServices: number;
 }
 
 export interface GetCompanyDto {

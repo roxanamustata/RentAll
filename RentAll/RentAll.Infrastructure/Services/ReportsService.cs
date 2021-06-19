@@ -124,15 +124,21 @@ namespace RentAll.Infrastructure.Services
         }
 
 
-        public Report GetCenterSummary (int centerId)
+        public Report GetCenterSummary(int centerId)
         {
-            var centerReport= new Report
+            var centerReport = new Report
             {
                 LeasableArea = CalculateGrossLeasableAreaOnCenter(centerId),
                 LeasedArea = CalculateLeasedAreaOnCenter(centerId),
                 OccupancyDegree = CalculateOcupancyDegreeOnCenter(centerId),
-                AverageRent =CalculateAverageRentPerSqmOnCenter(centerId),
-                TotalRentIncome = CalculateTotalRentOnCenter(centerId)
+                AverageRent = CalculateAverageRentPerSqmOnCenter(centerId),
+                TotalRentIncome = CalculateTotalRentOnCenter(centerId),
+                TotalRentIncomeOnNonFood = CalculateTotalRentInCenterOnActivityCategory(centerId, "Non Food"),
+                TotalRentIncomeOnFood = CalculateTotalRentInCenterOnActivityCategory(centerId, "Food"),
+                TotalRentIncomeOnEntertainment = CalculateTotalRentInCenterOnActivityCategory(centerId, "Entertainment"),
+                TotalRentIncomeOnServices = CalculateTotalRentInCenterOnActivityCategory(centerId, "Services"),
+
+
             };
             return centerReport;
 

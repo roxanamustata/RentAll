@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace RentAll.Web.Controllers
 {
     [ApiController]
-    [ApiExplorerSettings(GroupName ="v1")]
+    [ApiExplorerSettings(GroupName = "v1")]
     [Route("[controller]")]
     public class CenterController : ControllerBase
     {
@@ -399,8 +399,7 @@ namespace RentAll.Web.Controllers
 
                 Lease createdLease = await _centerService.CreateLeaseInCenterAsync(id, unitId, lease);
 
-                return CreatedAtAction(nameof(GetLeaseById),
-                    new { id = createdLease.Id }, createdLease);
+                return Ok(createdLease);
             }
             catch (Exception)
             {
@@ -428,7 +427,7 @@ namespace RentAll.Web.Controllers
 
         [HttpPut]
         [Route("{id:int}/units/leases/{leaseId:int}")]
-        public async Task<ActionResult< Lease>> UpdateLeaseInCenter(int id, int leaseId, CreateLeaseDto leaseDto)
+        public async Task<ActionResult<Lease>> UpdateLeaseInCenter(int id, int leaseId, CreateLeaseDto leaseDto)
         {
             try
             {
@@ -436,7 +435,7 @@ namespace RentAll.Web.Controllers
 
                 if (leaseToUpdate == null)
                     return NotFound($"Lease with Id = {id} not found");
-                
+
                 leaseToUpdate = _mapper.Map(leaseDto, leaseToUpdate);
 
                 await _centerService.UpdateLeaseAsync(id, leaseToUpdate);

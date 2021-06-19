@@ -13,5 +13,10 @@ namespace RentAll.Web.DTOs
         public double OccupancyDegree { get; set;}
         public double AverageRent { get; set;}
         public double TotalRentIncome { get; set; }
+
+        public double TotalRentIncomeOnNonFood { get; set; }
+        public double TotalRentIncomeOnFood { get; set; }
+        public double TotalRentIncomeOnEntertainment { get; set; }
+        public double TotalRentIncomeOnServices { get; set; }
     }
 }

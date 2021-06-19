@@ -1785,7 +1785,11 @@
         "leasedArea",
         "occupancyDegree",
         "averageRent",
-        "totalRentIncome"
+        "totalRentIncome",
+        "totalRentIncomeOnNonFood",
+        "totalRentIncomeOnFood",
+        "totalRentIncomeOnEntertainment",
+        "totalRentIncomeOnServices"
       ],
       "properties": {
         "leasableArea": {
@@ -1805,6 +1809,22 @@
           "format": "double"
         },
         "totalRentIncome": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnNonFood": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnFood": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnEntertainment": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnServices": {
           "type": "number",
           "format": "double"
         }

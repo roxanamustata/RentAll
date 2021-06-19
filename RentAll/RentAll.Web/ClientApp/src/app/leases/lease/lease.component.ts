@@ -43,9 +43,11 @@ export class LeaseComponent implements OnInit {
     private readonly centerClient: CenterClient,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
+
+
     if (this.route.snapshot.paramMap.get("id") != null) {
       this.id = parseInt(this.route.snapshot.paramMap.get("id"));
 
@@ -53,8 +55,7 @@ export class LeaseComponent implements OnInit {
         .getCenterById(this.id)
         .subscribe((data) => (this.center = data));
 
-      // this.dataSource = new LeasesDataSource(this.centerClient);
-      // this.dataSource.loadLeasesInCenter(this.id);
+
 
       this.centerClient.listLeasesInCenter(this.id).subscribe((result) => {
         this.leases = result;
@@ -63,8 +64,7 @@ export class LeaseComponent implements OnInit {
         this.dataSource.sort = this.sort;
       });
     } else {
-      // this.dataSource = new LeasesDataSource(this.centerClient);
-      // this.dataSource.loadLeases();
+
 
       this.centerClient.listAllLeases().subscribe((result) => {
         this.leases = result;
@@ -84,8 +84,6 @@ export class LeaseComponent implements OnInit {
   }
 
   deleteLease(centerId: number, leaseId: number) {
-    // this.id = parseInt(this.route.snapshot.paramMap.get("id"));
-    // this.leaseId=leaseId;
     this.centerClient.deleteLeaseById(centerId, leaseId).subscribe();
     this.refreshPage();
   }
