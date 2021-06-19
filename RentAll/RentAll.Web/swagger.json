@@ -850,6 +850,31 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "Company_DeleteCompany",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "format": "int32",
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "type": "file"
+            }
+          }
+        }
       }
     },
     "/User": {
@@ -1670,12 +1695,16 @@
     "UpdateUnitDto": {
       "type": "object",
       "required": [
+        "unitCode",
         "area",
         "monthlyRentSqm",
         "monthlyMaintenanceCostSqm",
         "monthlyMarketingFeeSqm"
       ],
       "properties": {
+        "unitCode": {
+          "type": "string"
+        },
         "area": {
           "type": "number",
           "format": "double"

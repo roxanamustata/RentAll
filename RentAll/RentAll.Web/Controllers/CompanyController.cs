@@ -63,5 +63,22 @@ namespace RentAll.Web.Controllers
             }
         }
 
+
+        [HttpDelete("{id:int}")]
+
+        public async Task<IActionResult> DeleteCompany(int id)
+        {
+            try
+            {
+                await _companyService.DeleteCompanyAsync(id);
+                return Ok($"Company with Id = {id} was deleted");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                       "Error deleting data");
+            }
+        }
     }
 }

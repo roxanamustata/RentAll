@@ -30,4 +30,15 @@ export class TenantComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
     this.paginator.firstPage();
   }
+
+  refreshPage() {
+    window.location.reload();
+  }
+  deleteCompany(tenantId: number) {
+    // this.id = parseInt(this.route.snapshot.paramMap.get("id"));
+    // this.leaseId=leaseId;
+    this.tenantClient.deleteCompany(tenantId).subscribe();
+    this.refreshPage();
+  }
+
 }
