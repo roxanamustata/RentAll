@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { CenterComponent } from './center/center.component';
 import { UnitComponent } from './unit/unit.component';
 import { RouterModule } from '@angular/router';
+import { UnitEditorComponent } from './unit-editor/unit-editor.component';
 
 
 @NgModule({
-  declarations: [CenterComponent, UnitComponent],
+  declarations: [CenterComponent, UnitComponent, UnitEditorComponent],
   exports:[
     CenterComponent
   ],

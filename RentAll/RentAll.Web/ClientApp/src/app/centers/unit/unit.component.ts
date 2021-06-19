@@ -86,8 +86,17 @@ export class UnitComponent implements OnInit {
   }
 
   deleteUnit(centerId: number, unitId: number) {
+ if (this.centerClient.getValidLeaseByUnitId(unitId)!=null){
+    
     this.centerClient.deleteUnitById(centerId, unitId).subscribe();
     this.refreshPage();
+
+
+ } else{
+
+window.alert("Unit has a valid lease, can not be deleted!")
+
+ }
   }
 
   refreshPage() {
