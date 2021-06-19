@@ -107,6 +107,10 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
         component: LeaseEditorComponent,
       },
       {
+        path: "rentall/Center/:id/units/leases/:leaseId",
+        component: LeaseEditorComponent,
+      },
+      {
         path: "rentall/Center/:id/report",
         component: CenterReportComponent,
       },

@@ -27,6 +27,7 @@ export class LeaseComponent implements OnInit {
     "signingDate",
     "startDate",
     "termInMonths",
+    "endDate",
     "valid",
     "activity",
     "center",

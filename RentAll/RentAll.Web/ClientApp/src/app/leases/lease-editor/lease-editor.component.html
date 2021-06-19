@@ -1,16 +1,16 @@
 <section style="padding-top: 30px" class="create-new-lease">
-  <h3 style="color: gainsboro; padding-bottom: 20px">Create new lease:</h3>
+  <h3 style="color: gainsboro; padding-bottom: 20px">Create / edit lease:</h3>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="sub-entry">
       <p>
         <mat-form-field appearance="fill">
           <mat-label>Center:</mat-label>
-          <mat-select formControlName="centerId" id="center">
-            <mat-option [value]="selectedCenter$.id" >{{selectedCenter$.centerName}}</mat-option>
+          <mat-select formControlName="centerId">
+            <mat-option [value]="selectedCenter$?.id" >{{selectedCenter$?.centerName}}</mat-option>
             <mat-option
               *ngFor="let option of centerOptions$ | async"
-              [value]="option.id" disabled selected
+              [value]="option?.id" disabled selected
             >
               {{ option.centerName }}</mat-option
             >
@@ -28,7 +28,7 @@
       <p>
         <mat-form-field appearance="fill">
           <mat-label>Tenant:</mat-label>
-          <mat-select formControlName="tenantId" id="tenant">
+          <mat-select formControlName="tenantId">
             <mat-option value="" disabled selected>select an option</mat-option>
             <mat-option
               *ngFor="let option of tenantOptions$ | async"

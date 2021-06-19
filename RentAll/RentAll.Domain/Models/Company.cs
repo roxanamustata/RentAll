@@ -23,5 +23,8 @@ namespace RentAll.Domain
         public ICollection<Lease> Leases { get; set; }
 
         #endregion
+
+
+
     }
 }

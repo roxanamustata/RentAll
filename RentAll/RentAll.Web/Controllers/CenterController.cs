@@ -428,7 +428,7 @@ namespace RentAll.Web.Controllers
 
         [HttpPut]
         [Route("{id:int}/units/leases/{leaseId:int}")]
-        public async Task<ActionResult< Lease>> UpdateLeaseInCenter(int id, int leaseId, UpdateLeaseDto leaseDto)
+        public async Task<ActionResult< Lease>> UpdateLeaseInCenter(int id, int leaseId, CreateLeaseDto leaseDto)
         {
             try
             {

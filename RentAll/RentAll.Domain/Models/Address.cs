@@ -25,17 +25,22 @@ namespace RentAll.Domain
         public int Floor { get; set; }
         public int Apartment { get; set; }
 
-
-        [NotMapped]
-        public string CompleteAddress {
-            get { return $"{City}, {StreetNumber} {StreetName} st., building {Building}, apt. {Apartment}"; }
+        public override string ToString()
+        {
+            return $"{City}, {StreetNumber} {StreetName} st., building {Building}, apt. {Apartment}";
         }
+
+
+        //[NotMapped]
+        //public string CompleteAddress {
+        //    get { return $"{City}, {StreetNumber} {StreetName} st., building {Building}, apt. {Apartment}"; }
+        //}
 
 
         #endregion
 
         #region public methods
-        
+
 
 
 

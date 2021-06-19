@@ -22,6 +22,7 @@ namespace RentAll.Domain
         public Company Tenant { get; set; }
         public ICollection<Unit> Units { get; set; }
         public int UserId { get; set; }
+  
         public User LeasingManager { get; set; }
         public DateTime SigningDate { get; set; }
         public DateTime StartDate { get; set; }
