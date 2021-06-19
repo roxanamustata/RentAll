@@ -45,5 +45,40 @@ namespace RentAll.Web.Controllers
             }
         }
 
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<GetCompanyDto>> GetCompanyById(int id)
+        {
+            var company = await _companyService.GetCompanyByIdAsync(id);
+            var companyDto = _mapper.Map<GetCompanyDto>(company);
+
+            try
+            {
+                return Ok(companyDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+
+        [HttpDelete("{id:int}")]
+
+        public async Task<IActionResult> DeleteCompany(int id)
+        {
+            try
+            {
+                await _companyService.DeleteCompanyAsync(id);
+                return Ok($"Company with Id = {id} was deleted");
+            }
+
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                       "Error deleting data");
+            }
+        }
     }
 }

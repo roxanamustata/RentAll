@@ -43,6 +43,13 @@
     }}</mat-cell>
   </ng-container>
 
+  <ng-container matColumnDef="endDate">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>End Date</mat-header-cell>
+    <mat-cell class="endDate-cell" *matCellDef="let lease">{{
+      lease.endDate | date:"dd-MMM-yy"
+    }}</mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="valid">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Valid</mat-header-cell>
     <mat-cell class="valid-cell" *matCellDef="let lease">{{

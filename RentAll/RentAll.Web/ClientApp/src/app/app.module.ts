@@ -23,6 +23,7 @@ import {
   MatProgressSpinnerModule,
   MatSortModule,
   MatTableModule,
+  
 } from "@angular/material";
 import { MatListModule } from "@angular/material/list";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -48,6 +49,7 @@ import {
 } from "@angular/material/dialog";
 import { LeaseEditorComponent } from "./leases/lease-editor/lease-editor.component";
 import { CenterReportComponent } from "./reports/center-report/center-report.component";
+import { UnitEditorComponent } from "./centers/unit-editor/unit-editor.component";
 
 @NgModule({
   declarations: [
@@ -60,6 +62,7 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
     TenantComponent,
     ReportComponent,
     UnitComponent,
+    UnitEditorComponent,
     LeaseViewComponent,
     LeaseEditorComponent,
     CenterReportComponent,
@@ -87,6 +90,7 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
     MatMenuModule,
     MatTabsModule,
     NgApexchartsModule,
+   
 
     RouterModule.forRoot([
       { path: "", redirectTo: "rentall/home", pathMatch: "full" },
@@ -96,8 +100,13 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
       { path: "rentall/leases", component: LeaseComponent },
       { path: "rentall/tenants", component: TenantComponent },
       { path: "rentall/reports", component: ReportComponent },
+      {
+        path: "rentall/Center/:id/report",
+        component: CenterReportComponent,
+      },
       { path: "rentall/Center/:id/units", component: UnitComponent },
       { path: "rentall/Center/:id/units/leases", component: LeaseComponent },
+      { path: "rentall/Center/:id/units/:unitId", component: UnitEditorComponent },
       {
         path: "rentall/Center/:id/units/:unitId/leases/valid",
         component: LeaseViewComponent,
@@ -107,9 +116,10 @@ import { CenterReportComponent } from "./reports/center-report/center-report.com
         component: LeaseEditorComponent,
       },
       {
-        path: "rentall/Center/:id/report",
-        component: CenterReportComponent,
+        path: "rentall/Center/:id/units/leases/:leaseId",
+        component: LeaseEditorComponent,
       },
+      
     ]),
     BrowserAnimationsModule,
   ],

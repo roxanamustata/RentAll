@@ -48,26 +48,24 @@ namespace RentAll.Web.Mappings
                 .ForMember(dest => dest.Tenant, map => map.MapFrom(src => src.Tenant.CompanyName))
                 .ForMember(dest => dest.Activity, map => map.MapFrom(src => src.Activity.ActivityName))
                 .ForMember(dest => dest.Valid, map => map.MapFrom(src => src.Valid == true ? "valid" : "not valid"))
-                .ForMember(dest=>dest.Units, map=>map.MapFrom(src=>src.Units))
+                .ForMember(dest => dest.Units, map => map.MapFrom(src => src.Units))
+                .ForMember(dest => dest.LeasingManager, map => map.MapFrom(src => src.LeasingManager.Username))
                 .ReverseMap();
 
             //CreateMap<Unit, int>().ConvertUsing(src => src.Id);
-           
-    
 
-            CreateMap<CreateLeaseDto,Lease>()
+
+
+            CreateMap<CreateLeaseDto, Lease>()
                 //.ForMember(dest => dest.UnitDtos, map => map.MapFrom(src => src.Units))
                 .ForMember(dest => dest.Valid, map => map.MapFrom(src => src.Valid == "valid" ? 1 : 0))
-              .ReverseMap();
+                              .ReverseMap();
 
             //CreateMap<Unit, UnitDto>()
-                //.ReverseMap();
+            //.ReverseMap();
 
-           
 
-            CreateMap<Lease, UpdateLeaseDto>()
-             
-              .ReverseMap();
+
 
 
             CreateMap<Activity, GetActivityDto>()
@@ -76,7 +74,7 @@ namespace RentAll.Web.Mappings
 
 
             CreateMap<Company, GetCompanyDto>()
-                .ForMember(dest => dest.Address, map => map.MapFrom(src => src.Address.City))
+                .ForMember(dest => dest.Address, map => map.MapFrom(src => src.Address.ToString()))
 
                 .ReverseMap();
 

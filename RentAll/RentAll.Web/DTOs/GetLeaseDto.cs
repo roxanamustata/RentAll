@@ -9,6 +9,8 @@ namespace RentAll.Web.DTOs
     {
        public int Id { get; set; }
         public string LeaseNumber { get; set; }
+
+        public int TenantId { get; set; }
         public string Tenant { get; set; }
         public ICollection<GetUnitDto> Units { get; set; }
 
@@ -21,7 +23,12 @@ namespace RentAll.Web.DTOs
         public string Center { get; set; }
 
         public string Valid { get; set; }
+
+        public int ActivityId { get; set; }
         public string Activity { get; set; }
+
+        public int UserId { get; set; }
+        public string LeasingManager { get; set; }
 
     }
 }

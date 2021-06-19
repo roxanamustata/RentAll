@@ -129,6 +129,7 @@ namespace RentAll.Infrastructure.Repositories
                 return await _rentAllDbContext.Units
                 .Include(u => u.Center)
                 .ThenInclude(u => u.Floors)
+                .Include(u=>u.Leases)
                 .Where(u => u.CenterId == centerId)
                 .FirstOrDefaultAsync(u => u.Id == unitId);
 
@@ -259,6 +260,7 @@ namespace RentAll.Infrastructure.Repositories
                 .Include(l => l.Units)
                 .Include(l => l.Tenant)
                 .Include(l => l.Activity)
+                .Include(l=>l.LeasingManager)
                 .Where(l => l.CenterId == centerId)
                 .FirstOrDefaultAsync(l => l.Id == leaseId);
 
@@ -324,6 +326,7 @@ namespace RentAll.Infrastructure.Repositories
                         .Include(l => l.Center)
                         .Include(l => l.Tenant)
                         .Include(l => l.Activity)
+                        .Include(l=>l.LeasingManager)
 
                 .ToListAsync();
         }
@@ -382,7 +385,12 @@ namespace RentAll.Infrastructure.Repositories
             {
                 var center = await _rentAllDbContext.Centers
                             .Include(c => c.Units)
+                            
                             .ThenInclude(u => u.Leases)
+                            .ThenInclude(l=>l.Activity)
+
+
+                           
                             .FirstOrDefaultAsync(c => c.Id == centerId);
 
 
