@@ -57,7 +57,7 @@
       </mat-header-cell>
     <mat-cell class="chart-cell" *matCellDef="let report">  
       <div style="text-align:center">
-        <apx-chart
+        <apx-chart *ngIf="report.chartOptions.series"
           [series]="report.chartOptions.series"
           [chart]="report.chartOptions.chart"
           [xaxis]="report.chartOptions.xaxis"
