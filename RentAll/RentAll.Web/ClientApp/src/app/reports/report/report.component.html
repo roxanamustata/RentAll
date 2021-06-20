@@ -33,14 +33,14 @@
   <ng-container matColumnDef="occupancyDegree">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Ocuppancy Degree</mat-header-cell>
     <mat-cell class="occupancyDegree-cell" *matCellDef="let report">{{
-      report.occupancyDegree 
+      report.occupancyDegree===0 ?"-": (report.occupancyDegree | currency :'EUR')
       }} %</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="averageRent">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Average Rent</mat-header-cell>
     <mat-cell class="averageRent-cell" *matCellDef="let report">{{
-      report.averageRent | currency:'EUR'
+      report.averageRent===0 ? "-": (report.averageRent | currency :'EUR')
       }}</mat-cell>
   </ng-container>
 
@@ -54,120 +54,16 @@
   <ng-container matColumnDef="chart">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
       Rent on Categories
-      </mat-header-cell>
-    <mat-cell class="chart-cell" *matCellDef="let report">  
+    </mat-header-cell>
+    <mat-cell class="chart-cell" *matCellDef="let report">
       <div style="text-align:center">
-        <apx-chart *ngIf="report.chartOptions.series"
-          [series]="report.chartOptions.series"
-          [chart]="report.chartOptions.chart"
-          [xaxis]="report.chartOptions.xaxis"
-          [title]="report.chartOptions.title"
-        ></apx-chart>
-      </div> 
-
-
+        <apx-chart *ngIf="!isEmpty(report.chartOptions.series)" [series]="report.chartOptions.series"
+          [chart]="report.chartOptions.chart" [labels]="report.chartOptions.labels" [xaxis]="report.chartOptions.xaxis"
+          [title]="report.chartOptions.title"></apx-chart>
+      </div>
     </mat-cell>
   </ng-container>
 
-
-
-
-  <!-- <ng-container matColumnDef="type">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Type</mat-header-cell
-        >
-        <mat-cell class="type-cell" *matCellDef="let unit">{{
-          unit.type
-        }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="monthlyRentSqm">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Rent</mat-header-cell
-        >
-        <mat-cell class="monthlyRentSqm-cell" *matCellDef="let unit">{{
-          unit.monthlyRentSqm | currency: "EUR":true
-        }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="monthlyMaintenanceCostSqm">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>CAM</mat-header-cell>
-        <mat-cell
-          class="monthlyMaintenanceCostSqm-cell"
-          *matCellDef="let unit"
-          >{{ unit.monthlyMaintenanceCostSqm | currency: "EUR":true }}</mat-cell
-        >
-      </ng-container>
-
-      <ng-container matColumnDef="monthlyMarketingFeeSqm">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Marketing</mat-header-cell
-        >
-        <mat-cell class="monthlyMarketingFeeSqm-cell" *matCellDef="let unit">{{
-          unit.monthlyMarketingFeeSqm | currency: "EUR":true
-        }}</mat-cell>
-      </ng-container> -->
-
-  <!-- <ng-container matColumnDef="leaseNumber">
-        <mat-header-cell *matHeaderCellDef >Lease Number</mat-header-cell>
-        <mat-cell class="leaseNumber-cell" *matCellDef="let unit">{{
-          unit.validLease != null ? unit.validLease.leaseNumber : ""
-        }}</mat-cell>
-      </ng-container> -->
-
-  <!-- <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef id="actionsHeader"
-          >Actions</mat-header-cell
-        >
-        <mat-cell class="actions-cell" *matCellDef="let unit">
-          <button
-            mat-icon-button
-            [matMenuTriggerFor]="menu"
-            aria-label="Example icon-button with a menu"
-          >
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button
-              mat-menu-item
-              routerLink="/rentall/Center/{{ center.id }}/units/{{ unit.id }}"
-            >
-              <mat-icon>edit</mat-icon>
-              <span>Edit</span>
-            </button>
-            <button mat-menu-item (click)="deleteUnit(center.id, unit.id)">
-              <mat-icon>delete</mat-icon>
-              <span>Delete</span>
-            </button>
-          </mat-menu>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="lease">
-        <mat-header-cell *matHeaderCellDef id="leaseHeader"
-          >Lease Details</mat-header-cell
-        >
-        <mat-cell class="lease-cell" *matCellDef="let unit">
-          <button
-            *ngIf="unit.validLease != null"
-            mat-raised-button
-            color="primary"
-            (click)="openDialog(unit.id)"
-          >
-            View
-          </button>
-
-          <button
-            *ngIf="unit.validLease === null"
-            routerLink="/rentall/Center/{{ center.id }}/units/{{
-              unit.id
-            }}/leases"
-            mat-raised-button
-            color="primary"
-          >
-            Create
-          </button>
-        </mat-cell>
-      </ng-container> -->
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
