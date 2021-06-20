@@ -461,6 +461,16 @@ namespace RentAll.Web.Controllers
         }
 
 
+        [HttpGet]
+        [Route("reports")]
+        public ActionResult<IEnumerable<CenterReportDto>> GetCentersReports()
+        {
+            var centerReports = _reportsService.GetCentersReports();
+            var centerReportsDtos = _mapper.Map<IEnumerable<CenterReportDto>>(centerReports);
+
+            return Ok(centerReportsDtos);
+        }
+
         #endregion
 
 

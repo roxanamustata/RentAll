@@ -795,6 +795,31 @@
         }
       }
     },
+    "/Center/reports": {
+      "get": {
+        "tags": [
+          "Center"
+        ],
+        "operationId": "Center_GetCentersReports",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CenterReportDto"
+              }
+            }
+          }
+        }
+      }
+    },
     "/Company": {
       "get": {
         "tags": [
@@ -1781,6 +1806,8 @@
     "CenterReportDto": {
       "type": "object",
       "required": [
+        "centerId",
+        "centerName",
         "leasableArea",
         "leasedArea",
         "occupancyDegree",
@@ -1792,6 +1819,13 @@
         "totalRentIncomeOnServices"
       ],
       "properties": {
+        "centerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "centerName": {
+          "type": "string"
+        },
         "leasableArea": {
           "type": "number",
           "format": "double"

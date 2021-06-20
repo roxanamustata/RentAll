@@ -7,7 +7,8 @@ namespace RentAll.Web.DTOs
 {
     public class CenterReportDto
     {
-
+        public int CenterId { get; set; }
+        public string CenterName { get; set; }
         public double LeasableArea { get; set;}
         public double LeasedArea { get; set;}
         public double OccupancyDegree { get; set;}

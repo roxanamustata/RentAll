@@ -28,7 +28,7 @@ namespace RentAll.Domain.Interfaces
 
         Report GetCenterSummary(int centerId);
 
-
+        IEnumerable<Report> GetCentersReports();
 
     }
 }

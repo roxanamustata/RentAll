@@ -128,6 +128,8 @@ namespace RentAll.Infrastructure.Services
         {
             var centerReport = new Report
             {
+                CenterId = centerId,
+                CenterName = _centerRepository.GetCenterByIdAsync(centerId).Result.CenterName,
                 LeasableArea = CalculateGrossLeasableAreaOnCenter(centerId),
                 LeasedArea = CalculateLeasedAreaOnCenter(centerId),
                 OccupancyDegree = CalculateOcupancyDegreeOnCenter(centerId),
@@ -142,6 +144,20 @@ namespace RentAll.Infrastructure.Services
             };
             return centerReport;
 
+        }
+
+        public IEnumerable<Report> GetCentersReports()
+        {
+            var centers = _centerRepository.GetCentersAsync().Result;
+            var centersReport = new List<Report>();
+
+           foreach(var center in centers)
+            {
+                var report = GetCenterSummary(center.Id);
+                centersReport.Add(report);
+            }
+
+            return centersReport;
         }
 
 
