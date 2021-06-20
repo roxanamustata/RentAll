@@ -4,8 +4,11 @@
 
 
   .sub-entry{
-    width: 33.33%;
-    float: left;
+    display: inline-block;
+    padding-right: 50px;
+    padding-bottom: 30px;
+    /* width: 33.33%; */
+    /* float: left; */
   }
 
   input{
@@ -15,3 +18,8 @@
   .divider{
     border-bottom: 1px solid black;
   }
+
+  button{
+    width: 33.33%;
+    float: left;
+}

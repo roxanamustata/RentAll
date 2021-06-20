@@ -5,3 +5,29 @@
   input{
     color: white;
   }
+
+  mat-table {
+    width: 100%;
+    
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+    color: white;
+  }
+
+  .mat-column-chart {
+    flex: 0 0 30%;
+    
+    
+  }
+
+  mat-header-cell{
+text-align: center;
+  }
+
+ .cell{
+
+    text-align: center;
+  }

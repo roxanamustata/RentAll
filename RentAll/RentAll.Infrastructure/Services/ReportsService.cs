@@ -124,18 +124,40 @@ namespace RentAll.Infrastructure.Services
         }
 
 
-        public Report GetCenterSummary (int centerId)
+        public Report GetCenterSummary(int centerId)
         {
-            var centerReport= new Report
+            var centerReport = new Report
             {
+                CenterId = centerId,
+                CenterName = _centerRepository.GetCenterByIdAsync(centerId).Result.CenterName,
                 LeasableArea = CalculateGrossLeasableAreaOnCenter(centerId),
                 LeasedArea = CalculateLeasedAreaOnCenter(centerId),
                 OccupancyDegree = CalculateOcupancyDegreeOnCenter(centerId),
-                AverageRent =CalculateAverageRentPerSqmOnCenter(centerId),
-                TotalRentIncome = CalculateTotalRentOnCenter(centerId)
+                AverageRent = CalculateAverageRentPerSqmOnCenter(centerId),
+                TotalRentIncome = CalculateTotalRentOnCenter(centerId),
+                TotalRentIncomeOnNonFood = CalculateTotalRentInCenterOnActivityCategory(centerId, "Non Food"),
+                TotalRentIncomeOnFood = CalculateTotalRentInCenterOnActivityCategory(centerId, "Food"),
+                TotalRentIncomeOnEntertainment = CalculateTotalRentInCenterOnActivityCategory(centerId, "Entertainment"),
+                TotalRentIncomeOnServices = CalculateTotalRentInCenterOnActivityCategory(centerId, "Services"),
+
+
             };
             return centerReport;
 
+        }
+
+        public IEnumerable<Report> GetCentersReports()
+        {
+            var centers = _centerRepository.GetCentersAsync().Result;
+            var centersReport = new List<Report>();
+
+           foreach(var center in centers)
+            {
+                var report = GetCenterSummary(center.Id);
+                centersReport.Add(report);
+            }
+
+            return centersReport;
         }
 
 

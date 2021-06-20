@@ -1,4 +1,118 @@
+<mat-form-field>
+  <mat-label>Search</mat-label>
+  <input matInput placeholder="" (keyup)="applyFilter($event)" />
+</mat-form-field>
 
+<mat-table class="reports-table mat-elevation-z8" [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="centerId">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+    <mat-cell class="id-cell" *matCellDef="let report">{{ report.centerId }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="centerName">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Center</mat-header-cell>
+    <mat-cell class="centerName-cell" *matCellDef="let report">{{
+      report.centerName
+      }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="leasableArea">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Leasable Area (sq.m.)</mat-header-cell>
+    <mat-cell class="leasableArea-cell" *matCellDef="let report">{{
+      report.leasableArea | number
+      }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="leasedArea">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Leased Area (sq.m.)</mat-header-cell>
+    <mat-cell class="leasedArea-cell" *matCellDef="let report">{{
+      report.leasedArea | number
+      }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="occupancyDegree">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Ocuppancy Degree</mat-header-cell>
+    <mat-cell class="occupancyDegree-cell" *matCellDef="let report">{{
+      report.occupancyDegree===0 ?"-": (report.occupancyDegree | currency :'EUR')
+      }} %</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="averageRent">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Average Rent</mat-header-cell>
+    <mat-cell class="averageRent-cell" *matCellDef="let report">{{
+      report.averageRent===0 ? "-": (report.averageRent | currency :'EUR')
+      }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="totalRentIncome">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Total Rent Income</mat-header-cell>
+    <mat-cell class="totalRentIncome-cell" *matCellDef="let report">{{
+      report.totalRentIncome | currency:'EUR'
+      }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="chart">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+      Rent on Categories
+    </mat-header-cell>
+    <mat-cell class="chart-cell" *matCellDef="let report">
+      <div style="text-align:center">
+        <apx-chart *ngIf="!isEmpty(report.chartOptions.series)" [series]="report.chartOptions.series"
+          [chart]="report.chartOptions.chart" [labels]="report.chartOptions.labels" [xaxis]="report.chartOptions.xaxis"
+          [title]="report.chartOptions.title"></apx-chart>
+      </div>
+    </mat-cell>
+  </ng-container>
+
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+  <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></mat-row>
+</mat-table>
+<mat-paginator [length]="units?.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <section style="padding-top: 30px" class="create-new-lease">
     <h5 style="color: gainsboro; padding-bottom: 20px">Choose center and press generate</h5>
   
@@ -27,8 +141,8 @@
             Generate
           </button>
           <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-          <!-- <button mat-raised-button (click)="cancelCreate()">Cancel</button> -->
-        </p>
+<!-- <button mat-raised-button (click)="cancelCreate()">Cancel</button> -->
+<!-- </p>
       </div>
     </form>
 
@@ -44,8 +158,4 @@
       [xaxis]="chartOptions.xaxis"
       [title]="chartOptions.title"
     ></apx-chart>
-  </div>
-  
-
-         
-        
+  </div> -->

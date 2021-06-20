@@ -795,6 +795,31 @@
         }
       }
     },
+    "/Center/reports": {
+      "get": {
+        "tags": [
+          "Center"
+        ],
+        "operationId": "Center_GetCentersReports",
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": false,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CenterReportDto"
+              }
+            }
+          }
+        }
+      }
+    },
     "/Company": {
       "get": {
         "tags": [
@@ -1781,13 +1806,26 @@
     "CenterReportDto": {
       "type": "object",
       "required": [
+        "centerId",
+        "centerName",
         "leasableArea",
         "leasedArea",
         "occupancyDegree",
         "averageRent",
-        "totalRentIncome"
+        "totalRentIncome",
+        "totalRentIncomeOnNonFood",
+        "totalRentIncomeOnFood",
+        "totalRentIncomeOnEntertainment",
+        "totalRentIncomeOnServices"
       ],
       "properties": {
+        "centerId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "centerName": {
+          "type": "string"
+        },
         "leasableArea": {
           "type": "number",
           "format": "double"
@@ -1805,6 +1843,22 @@
           "format": "double"
         },
         "totalRentIncome": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnNonFood": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnFood": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnEntertainment": {
+          "type": "number",
+          "format": "double"
+        },
+        "totalRentIncomeOnServices": {
           "type": "number",
           "format": "double"
         }

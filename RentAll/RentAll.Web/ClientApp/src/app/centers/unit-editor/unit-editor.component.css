@@ -1,0 +1,16 @@
+.sub-entry{
+    display: inline-block;
+    padding-right: 50px;
+    padding-bottom: 30px;
+    /* width: 33.33%; */
+    /* float: left; */
+  }
+
+  input{
+    color: white;
+  }
+  
+  button{
+      width: 33.33%;
+      float: left;
+  }
