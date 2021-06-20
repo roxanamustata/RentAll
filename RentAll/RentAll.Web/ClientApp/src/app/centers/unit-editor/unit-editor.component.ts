@@ -65,23 +65,21 @@ unitToUpdate: UpdateUnitDto;
       
       this.unitToCreate = this.form.value;
       this.centerClient.createUnitInCenter(this.id, this.unitToCreate)
-        .pipe(first())
-        .subscribe({
-          next: () => {
-            // this.alertService.success('User added', { keepAfterRouteChange: true });
-            this.router.navigate(['../'], { relativeTo: this.route });
+         .subscribe(() => {
+            
+            this.router.navigate([`/rentall/Center/${this.id}/units`]);
+           
           },
 
-        });
-      this.router.navigate([`/rentall/Center/${this.id}/units`]);
+        );
     } else {
 
       this.unitToUpdate = this.form.value;
       this.centerClient.updateUnitInCenter(this.id, this.unitId, this.unitToUpdate)
         .subscribe(() => {
+          this.router.navigate([`/rentall/Center/${this.id}/units`]);
 
         });
-      this.router.navigate([`/rentall/Center/${this.id}/units`]);
     }
 
 

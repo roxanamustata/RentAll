@@ -24,6 +24,8 @@ namespace RentAll.Domain
 
         public string Description { get; set; }
 
+        public string Opening { get; set; }
+
         #endregion
 
 

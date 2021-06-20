@@ -1416,6 +1416,7 @@ export interface GetCenterDto {
     owner: string;
     parkingCapacity: number;
     description: string;
+    opening: string;
 }
 
 export interface GetActivityDto {
@@ -1432,6 +1433,7 @@ export interface Center {
     parkingCapacity: number;
     units: Unit[];
     description: string;
+    opening: string;
 }
 
 export interface Company {

@@ -936,7 +936,8 @@
         "centerName",
         "owner",
         "parkingCapacity",
-        "description"
+        "description",
+        "opening"
       ],
       "properties": {
         "id": {
@@ -954,6 +955,9 @@
           "format": "int32"
         },
         "description": {
+          "type": "string"
+        },
+        "opening": {
           "type": "string"
         }
       }
@@ -984,7 +988,8 @@
         "floors",
         "parkingCapacity",
         "units",
-        "description"
+        "description",
+        "opening"
       ],
       "properties": {
         "id": {
@@ -1018,6 +1023,9 @@
           }
         },
         "description": {
+          "type": "string"
+        },
+        "opening": {
           "type": "string"
         }
       }

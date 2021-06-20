@@ -16,6 +16,7 @@ namespace RentAll.Domain.DTOs
         public int ParkingCapacity { get; set; }
 
         public string Description { get; set; }
+        public string Opening { get; set; }
 
     }
 }
