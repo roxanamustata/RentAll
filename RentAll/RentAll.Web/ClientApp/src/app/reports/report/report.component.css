@@ -12,22 +12,28 @@
   }
   
   .mat-form-field {
-    font-size: 14px;
+    font-size: 12px;
     width: 100%;
     color: white;
   }
+  .mat-column-centerId{
+    flex: 0 0 5%;
 
-  .mat-column-chart {
-    flex: 0 0 30%;
-    
-    
   }
+
+  
+  .mat-column-chart {
+    flex: 0 0 25%;
+        
+  }
+
+  
 
   mat-header-cell{
 text-align: center;
   }
 
  .cell{
-
+  font-size: 12px;
     text-align: center;
   }

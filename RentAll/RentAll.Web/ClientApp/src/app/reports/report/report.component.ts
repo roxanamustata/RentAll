@@ -53,6 +53,10 @@ export class ReportComponent implements OnInit {
     "occupancyDegree",
     "averageRent",
     "totalRentIncome",
+    "averageRentOnNonFood",
+    "averageRentOnFood",
+    "averageRentEntertainment",
+    "averageRentOnServices",
     "chart",
 
   ];
@@ -63,7 +67,7 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private readonly centerClient: CenterClient,
-   
+
   ) {
 
 
@@ -76,6 +80,11 @@ export class ReportComponent implements OnInit {
       result.forEach(report => {
         var extendedReport: CenterReportDtoExtended = report as CenterReportDtoExtended;
         extendedReport.averageRent = isNaN(report.averageRent) ? 0 : report.averageRent;
+        extendedReport.averageRentOnNonFood = isNaN(report.averageRentOnNonFood) ? 0 : report.averageRentOnNonFood;
+        extendedReport.averageRentOnFood = isNaN(report.averageRentOnFood) ? 0 : report.averageRentOnFood;
+        extendedReport.averageRentEntertainment = isNaN(report.averageRentEntertainment) ? 0 : report.averageRentEntertainment;
+        extendedReport.averageRentOnServices = isNaN(report.averageRentOnServices) ? 0 : report.averageRentOnServices;
+
         extendedReport.occupancyDegree = isNaN(report.occupancyDegree) ? 0 : report.occupancyDegree;
         extendedReport.chartOptions = {
           series: [report.totalRentIncomeOnNonFood,

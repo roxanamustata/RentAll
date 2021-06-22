@@ -1821,6 +1821,10 @@
         "occupancyDegree",
         "averageRent",
         "totalRentIncome",
+        "averageRentOnNonFood",
+        "averageRentOnFood",
+        "averageRentEntertainment",
+        "averageRentOnServices",
         "totalRentIncomeOnNonFood",
         "totalRentIncomeOnFood",
         "totalRentIncomeOnEntertainment",
@@ -1851,6 +1855,22 @@
           "format": "double"
         },
         "totalRentIncome": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageRentOnNonFood": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageRentOnFood": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageRentEntertainment": {
+          "type": "number",
+          "format": "double"
+        },
+        "averageRentOnServices": {
           "type": "number",
           "format": "double"
         },

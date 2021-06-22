@@ -38,7 +38,7 @@
   </ng-container>
 
   <ng-container matColumnDef="averageRent">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Average Rent</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Avg. Rent</mat-header-cell>
     <mat-cell class="averageRent-cell" *matCellDef="let report">{{
       report.averageRent===0 ? "-": (report.averageRent | currency :'EUR')
       }}</mat-cell>
@@ -50,6 +50,39 @@
       report.totalRentIncome | currency:'EUR'
       }}</mat-cell>
   </ng-container>
+
+  <ng-container matColumnDef="averageRentOnNonFood">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Avg. Rent Non Food</mat-header-cell>
+    <mat-cell class="averageRentOnNonFood-cell" *matCellDef="let report">{{
+      report.averageRentOnNonFood===0 ? "-": (report.averageRentOnNonFood | currency :'EUR')
+      }}</mat-cell>
+  </ng-container>
+
+
+  <ng-container matColumnDef="averageRentOnFood">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Avg. Rent Food</mat-header-cell>
+    <mat-cell class="averageRentOnFood-cell" *matCellDef="let report">{{
+      report.averageRentOnFood===0 ? "-": (report.averageRentOnFood | currency :'EUR')
+      }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="averageRentEntertainment">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Avg. Rent Entertain.</mat-header-cell>
+    <mat-cell class="averageRentEntertainment-cell" *matCellDef="let report">{{
+      report.averageRentEntertainment===0 ? "-": (report.averageRentEntertainment | currency :'EUR')
+      }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="averageRentOnServices">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Avg. Rent Services</mat-header-cell>
+    <mat-cell class="averageRentOnServices-cell" *matCellDef="let report">{{
+      report.averageRentOnServices===0 ? "-": (report.averageRentOnServices | currency :'EUR')
+      }}</mat-cell>
+  </ng-container>
+
+
+
+
 
   <ng-container matColumnDef="chart">
     <mat-header-cell *matHeaderCellDef mat-sort-header>

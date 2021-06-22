@@ -16,6 +16,11 @@ namespace RentAll.Domain.Models
         public double AverageRent { get; set; }
         public double TotalRentIncome { get; set; }
 
+        public double AverageRentOnNonFood { get; set; }
+        public double AverageRentOnFood { get; set; }
+        public double AverageRentEntertainment { get; set; }
+        public double AverageRentOnServices { get; set; }
+
         public double TotalRentIncomeOnNonFood { get; set; }
         public double TotalRentIncomeOnFood { get; set; }
         public double TotalRentIncomeOnEntertainment { get; set; }

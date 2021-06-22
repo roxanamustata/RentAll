@@ -135,6 +135,12 @@ namespace RentAll.Infrastructure.Services
                 OccupancyDegree = CalculateOcupancyDegreeOnCenter(centerId),
                 AverageRent = CalculateAverageRentPerSqmOnCenter(centerId),
                 TotalRentIncome = CalculateTotalRentOnCenter(centerId),
+
+                AverageRentOnNonFood = CalculateAverageRentPerSqmInCenterOnActivityCategory(centerId, "Non Food"),
+                AverageRentOnFood = CalculateAverageRentPerSqmInCenterOnActivityCategory(centerId, "Food"),
+                AverageRentEntertainment = CalculateAverageRentPerSqmInCenterOnActivityCategory(centerId, "Entertainment"),
+                AverageRentOnServices = CalculateAverageRentPerSqmInCenterOnActivityCategory(centerId, "Services"),
+
                 TotalRentIncomeOnNonFood = CalculateTotalRentInCenterOnActivityCategory(centerId, "Non Food"),
                 TotalRentIncomeOnFood = CalculateTotalRentInCenterOnActivityCategory(centerId, "Food"),
                 TotalRentIncomeOnEntertainment = CalculateTotalRentInCenterOnActivityCategory(centerId, "Entertainment"),
@@ -151,7 +157,7 @@ namespace RentAll.Infrastructure.Services
             var centers = _centerRepository.GetCentersAsync().Result;
             var centersReport = new List<Report>();
 
-           foreach(var center in centers)
+            foreach (var center in centers)
             {
                 var report = GetCenterSummary(center.Id);
                 centersReport.Add(report);
