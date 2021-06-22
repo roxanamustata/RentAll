@@ -35,6 +35,7 @@ namespace RentAll.Infrastructure.Repositories
             {
                 return await _rentAllDbContext.Companies
                     .Include(c=>c.Address)
+                    .Include(c=>c.ContactPersons)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -90,7 +91,10 @@ namespace RentAll.Infrastructure.Repositories
 
         public async Task DeleteCompanyAsync(int companyId)
         {
-            var company = _rentAllDbContext.Companies.Find(companyId);
+            var company =await _rentAllDbContext.Companies
+                .Include(c=>c.Address)
+                .Include(c=>c.ContactPersons)
+                .FirstOrDefaultAsync(c=>c.Id==companyId);
 
 
             if (company != null)

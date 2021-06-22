@@ -1656,6 +1656,7 @@ export interface GetCompanyDto {
     fiscalAttribute: string;
     recomNumber: string;
     address: string;
+    contactPersons: string;
 }
 
 export interface GetUserDto {

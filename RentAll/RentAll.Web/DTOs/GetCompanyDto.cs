@@ -15,5 +15,7 @@ namespace RentAll.Web.DTOs
         public string RecomNumber { get; set; }
 
         public string Address { get; set; }
+
+        public string ContactPersons { get; set; }
     }
 }

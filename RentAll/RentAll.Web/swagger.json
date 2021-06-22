@@ -1900,7 +1900,8 @@
         "fiscalCode",
         "fiscalAttribute",
         "recomNumber",
-        "address"
+        "address",
+        "contactPersons"
       ],
       "properties": {
         "id": {
@@ -1921,6 +1922,9 @@
           "type": "string"
         },
         "address": {
+          "type": "string"
+        },
+        "contactPersons": {
           "type": "string"
         }
       }

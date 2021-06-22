@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace RentAll.Domain
 {
@@ -24,6 +25,21 @@ namespace RentAll.Domain
 
         #endregion
 
+
+        public string GetContactPersons()
+        {
+            var sb = new StringBuilder();
+
+
+            foreach (var person in ContactPersons)
+            {
+                sb.Append($"{person.FirstName} {person.LastName}, {person.Title}");
+                sb.Append("\n");
+
+            }
+
+            return sb.ToString();
+        }
 
 
     }

@@ -75,6 +75,7 @@ namespace RentAll.Web.Mappings
 
             CreateMap<Company, GetCompanyDto>()
                 .ForMember(dest => dest.Address, map => map.MapFrom(src => src.Address.ToString()))
+                 .ForMember(dest => dest.ContactPersons, map => map.MapFrom(src => src.GetContactPersons()))
 
                 .ReverseMap();
 
