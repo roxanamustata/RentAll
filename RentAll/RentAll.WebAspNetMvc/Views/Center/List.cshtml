@@ -1,0 +1,22 @@
+﻿
+@model IEnumerable<RentAll.Domain.Center>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Centers</title>
+</head>
+<body>
+
+    <h1>@ViewBag.CurrentCenter</h1>
+    @foreach (var center in Model)
+    {
+        <div>
+            <h2> @center.CenterName </h2>
+            <h3>@center.Owner.CompanyName</h3>
+
+        </div>
+
+    }
+
+
+</body>
+</html> 
